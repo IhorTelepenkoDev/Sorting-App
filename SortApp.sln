@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsSortApp", "WinForms
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSortApp", "ConsoleSortApp\ConsoleSortApp.csproj", "{33A17EEA-4EED-4E95-A33D-414E3EEAC117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortFunctionality", "SortFunctionality\SortFunctionality.csproj", "{E4D4AF30-C41E-46C2-AF76-8D0F3517BB61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFunctionality", "AppFunctionality\AppFunctionality.csproj", "{E4D4AF30-C41E-46C2-AF76-8D0F3517BB61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

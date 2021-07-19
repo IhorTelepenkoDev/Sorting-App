@@ -7,8 +7,8 @@
     <ProjectGuid>{E4D4AF30-C41E-46C2-AF76-8D0F3517BB61}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SortFunctionality</RootNamespace>
-    <AssemblyName>SortFunctionality</AssemblyName>
+    <RootNamespace>AppFunctionality</RootNamespace>
+    <AssemblyName>AppFunctionality</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArraySetting.cs" />
+    <Compile Include="ArraySetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

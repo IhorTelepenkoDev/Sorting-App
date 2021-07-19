@@ -1,44 +1,43 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SortFunctionality
-{   //the supported array types are "int", "double", "string" 
-    public class ArraySetting<T>
+namespace AppFunctionality
+{   
+    //the supported array2D types are "int", "double", "string" 
+    public class ArraySetter<T>
     {
-        private T[,] _arr;
-        private int _lenRows, _lenColumns;
+        private readonly T[,] _arr2D;
+        private readonly int _lenRows, _lenColumns;
 
         private static readonly Random rnd = new Random();
-        public T[,] array => _arr;
+        public T[,] array2D => _arr2D;
 
-        // getting array from a file:
-        public ArraySetting(string fileName)
+        // getting array2D from a file:
+        public ArraySetter(string fileName)
         {
 
         }
 
-        // assigning the array as random:
-        public ArraySetting(int lenRows, int lenCols)
+        // assigning the array2D as random:
+        public ArraySetter(int lenRows, int lenCols)
         {
             _lenRows = lenRows;
             _lenColumns = lenCols;
-            _arr = new T[_lenRows, _lenColumns];
+            _arr2D = new T[_lenRows, _lenColumns];
 
-            RandomArrayInit(_arr, _lenRows, _lenColumns);
+            Initialize2DArrayRandomly(_arr2D, _lenRows, _lenColumns);
         }
 
-        private static void RandomArrayInit(T[,] arr, int lenRows, int lenCols)
+        private void Initialize2DArrayRandomly(T[,] arr, int lenRows, int lenCols)
         {
             if (typeof(T) == typeof(string))
             {
+                const int maxStringLength = 15;
+
                 for (int i = 0; i < lenRows; i++)
                     for (int j = 0; j < lenCols; j++)
                     {
-                        int textLen = rnd.Next(1, 11);
+                        int textLen = rnd.Next(1, maxStringLength);
                         arr[i, j] = (T)Convert.ChangeType(RandStr(textLen), typeof(T));
                     }
             }
@@ -62,20 +61,32 @@ namespace SortFunctionality
 
         private static string RandStr(int len)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
             return new string(Enumerable.Repeat(chars, len)
                 .Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
         private static int RandInt()
         {
-            return rnd.Next(int.MinValue / 1000, int.MaxValue / 1000);
+            var rangeReducer = RangeReduceCoefficient();
+            return rnd.Next(int.MinValue / rangeReducer, int.MaxValue / rangeReducer);
         }
 
         private static double RandDouble()
         {
+            var rangeReducer = RangeReduceCoefficient();
             var number = rnd.NextDouble() * 2d - 1d;
-            return number * int.MaxValue / 1000;
+            return number * int.MaxValue / rangeReducer;
+        }
+
+        private static int RangeReduceCoefficient()
+        {
+            int reduceCoeff = 1;
+            bool isRangeReduce = rnd.Next(0, 2) > 0;
+            if (isRangeReduce)
+                reduceCoeff = 1000;
+
+            return reduceCoeff;
         }
     }
 }
