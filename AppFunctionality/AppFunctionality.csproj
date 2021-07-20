@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="ArraySetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomInitializer.cs" />
+    <Compile Include="RandomArrayInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AppFunctionality
 {
-    public class RandomInitializer
+    public class RandomArrayInitializer
     {
         //the supported array2D types are "int", "double", "string"
         private static readonly Random rnd = new Random();
