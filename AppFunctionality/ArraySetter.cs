@@ -9,7 +9,6 @@ namespace AppFunctionality
         private readonly T[,] _arr2D;
         private readonly int _lenRows, _lenColumns;
 
-        private static readonly Random rnd = new Random();
         public T[,] array2D => _arr2D;
 
         // getting array2D from a file:
@@ -25,68 +24,8 @@ namespace AppFunctionality
             _lenColumns = lenCols;
             _arr2D = new T[_lenRows, _lenColumns];
 
-            Initialize2DArrayRandomly(_arr2D, _lenRows, _lenColumns);
-        }
-
-        private void Initialize2DArrayRandomly(T[,] arr, int lenRows, int lenCols)
-        {
-            if (typeof(T) == typeof(string))
-            {
-                const int maxStringLength = 15;
-
-                for (int i = 0; i < lenRows; i++)
-                    for (int j = 0; j < lenCols; j++)
-                    {
-                        int textLen = rnd.Next(1, maxStringLength);
-                        arr[i, j] = (T)Convert.ChangeType(RandStr(textLen), typeof(T));
-                    }
-            }
-            else if (typeof(T) == typeof(int))
-            {
-                for (int i = 0; i < lenRows; i++)
-                    for (int j = 0; j < lenCols; j++)
-                    {
-                        arr[i, j] = (T)Convert.ChangeType(RandInt(), typeof(T));
-                    }
-            }
-            else if (typeof(T) == typeof(double))
-            {
-                for (int i = 0; i < lenRows; i++)
-                    for (int j = 0; j < lenCols; j++)
-                    {
-                        arr[i, j] = (T)Convert.ChangeType(RandDouble(), typeof(T));
-                    }
-            }
-        }
-
-        private static string RandStr(int len)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
-            return new string(Enumerable.Repeat(chars, len)
-                .Select(s => s[rnd.Next(s.Length)]).ToArray());
-        }
-
-        private static int RandInt()
-        {
-            var rangeReducer = RangeReduceCoefficient();
-            return rnd.Next(int.MinValue / rangeReducer, int.MaxValue / rangeReducer);
-        }
-
-        private static double RandDouble()
-        {
-            var rangeReducer = RangeReduceCoefficient();
-            var number = rnd.NextDouble() * 2d - 1d;
-            return number * int.MaxValue / rangeReducer;
-        }
-
-        private static int RangeReduceCoefficient()
-        {
-            int reduceCoeff = 1;
-            bool isRangeReduce = rnd.Next(0, 2) > 0;
-            if (isRangeReduce)
-                reduceCoeff = 1000;
-
-            return reduceCoeff;
+            RandomInitializer randInitializer = new RandomInitializer();
+            randInitializer.Initialize2DArrayRandomly(_arr2D, _lenRows, _lenColumns);
         }
     }
 }
