@@ -51,7 +51,7 @@
     <Compile Include="ArraySetter.cs" />
     <Compile Include="ReceivingArrayFromFile\IArrayReceiverFromFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomArrayInitializer.cs" />
+    <Compile Include="ReceivingArrayRandomly\RandomArrayInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

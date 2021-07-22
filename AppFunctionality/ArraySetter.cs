@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AppFunctionality.ReceivingArrayFromFile;
+using AppFunctionality.ReceivingArrayRandomly;
 
 namespace AppFunctionality
 {   
@@ -19,7 +20,7 @@ namespace AppFunctionality
             if (fileExtension == "json")
             {
                 Array2dReaderFromJSON<T> arrReaderFromJSON = new Array2dReaderFromJSON<T>(filePath);
-
+                
                 _arr2D = arrReaderFromJSON.Receive2DArrayFromFile();
             }
 
