@@ -10,7 +10,7 @@ namespace AppFunctionality.ReceivingArrayFromFile
         public string array { get; set; }
     }
 
-    internal class Array2dReaderFromJSON<T> : IArrayReceiverFromFile<T>
+    internal class Array2dReaderFromJSON<T> : IArrayReaderFromFile<T>
     {
         public string filePath { get; }
 

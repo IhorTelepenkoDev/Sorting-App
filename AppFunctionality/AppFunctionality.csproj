@@ -49,9 +49,10 @@
     <Compile Include="ReceivingArrayFromFile\Array2dReaderFromJSON.cs" />
     <Compile Include="ReceivingArrayFromFile\HelpFunctionalityOfArrReading.cs" />
     <Compile Include="ArraySetter.cs" />
-    <Compile Include="ReceivingArrayFromFile\IArrayReceiverFromFile.cs" />
+    <Compile Include="ReceivingArrayFromFile\IArrayReaderFromFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceivingArrayRandomly\RandomArrayInitializer.cs" />
+    <Compile Include="UIHelpFunctionality.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

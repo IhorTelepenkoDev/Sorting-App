@@ -1,7 +1,7 @@
 ﻿
 namespace AppFunctionality.ReceivingArrayFromFile
 {
-    internal interface IArrayReceiverFromFile<T>
+    internal interface IArrayReaderFromFile<T>
     {
         string filePath { get; }
 
