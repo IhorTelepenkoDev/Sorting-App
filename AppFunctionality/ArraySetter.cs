@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using AppFunctionality.ReceivingArrayFromFile;
-using AppFunctionality.ReceivingArrayRandomly;
+using AppFunctionality.ReceiveArrayFromFile;
+using AppFunctionality.ReceiveArrayRandomly;
 
 namespace AppFunctionality
 {   
@@ -9,21 +9,25 @@ namespace AppFunctionality
     public class ArraySetter<T>
     {
         private readonly T[,] _arr2D;
-
         public T[,] array2D => _arr2D;
+
+        private IArrayReader<T> arr2DReader;
 
         // getting array2D from a file:
         public ArraySetter(string filePath)
         {
             string fileExtension = filePath.Substring(filePath.LastIndexOf('.') + 1);
 
-            if (fileExtension == "json")
+            switch (fileExtension)
             {
-                Array2dReaderFromJSON<T> arrReaderFromJSON = new Array2dReaderFromJSON<T>(filePath);
-                
-                _arr2D = arrReaderFromJSON.Receive2DArrayFromFile();
+                case "json":
+                    arr2DReader = new Array2dReaderFromJSON<T>();
+                    break;
+                default:
+                    return;
             }
 
+            _arr2D = arr2DReader.Read2DArray(HelpFunctionalityOfArrReading.ReadFileContent(filePath));
         }
 
         // assigning the array2D as random:

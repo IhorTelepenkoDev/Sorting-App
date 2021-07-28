@@ -90,6 +90,7 @@ namespace WinFormsApp
             this.comboBoxDataTypeOfArr.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDataTypeOfArr.FormattingEnabled = true;
             this.comboBoxDataTypeOfArr.Items.AddRange(new object[] {
+            "",
             "Integer",
             "Float",
             "Text"});
@@ -148,7 +149,6 @@ namespace WinFormsApp
             this.textBoxBasicArrOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxBasicArrOutput.Size = new System.Drawing.Size(300, 286);
             this.textBoxBasicArrOutput.TabIndex = 10;
-            this.textBoxBasicArrOutput.Visible = false;
             this.textBoxBasicArrOutput.WordWrap = false;
             // 
             // textBoxResArrOutput
@@ -161,7 +161,6 @@ namespace WinFormsApp
             this.textBoxResArrOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxResArrOutput.Size = new System.Drawing.Size(300, 286);
             this.textBoxResArrOutput.TabIndex = 11;
-            this.textBoxResArrOutput.Visible = false;
             this.textBoxResArrOutput.WordWrap = false;
             // 
             // buttonDoSort

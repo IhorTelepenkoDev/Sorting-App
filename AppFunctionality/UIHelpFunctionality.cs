@@ -31,6 +31,9 @@ namespace AppFunctionality
 
         public static string Arr2dToStringMatrix<T>(T[,] matrixArr2d, string delimiter = " ")
         {
+            if (matrixArr2d == null)
+                return null;
+
             var strBuilder = new StringBuilder();
 
             for (var i = 0; i < matrixArr2d.GetLength(0); i++)

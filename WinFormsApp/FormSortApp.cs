@@ -5,11 +5,13 @@ using System.Data;
 using System.Deployment.Internal;
 using System.Drawing;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppFunctionality;
+using AppFunctionality.ReceiveArrayFromFile;
 
 namespace WinFormsApp
 {
@@ -25,7 +27,33 @@ namespace WinFormsApp
 
         private void buttonArrReadingByPath_Click(object sender, EventArgs e)
         {
+            var pathToFile = textBoxFilePath.Text;
+            //if (!File.Exists(pathToFile))
+                //return;
 
+
+            ArrType = HelpFunctionalityOfArrReading.TypeOfArray2DStoredInFile(pathToFile);
+
+            switch (ArrType)
+            {
+                case DataType.IntegerType:
+                    basicArray2D = new ArraySetter<int>(pathToFile).array2D;
+                    break;
+                case DataType.DoubleType:
+                    basicArray2D = new ArraySetter<double>(pathToFile).array2D;
+                    break;
+                default:
+                    basicArray2D = new ArraySetter<string>(pathToFile).array2D;
+                    break;
+            }
+
+            if(basicArray2D==null)
+                PrintOutput(textBoxBasicArrOutput, null);
+            else
+                PrintOutput(textBoxBasicArrOutput,
+                    UIHelpFunctionality.Arr2dToStringMatrix(basicArray2D, "    "));
+
+            CleanVisibleArrayCharacteristics();
         }
 
         private void buttonRandomArrayAssign_Click(object sender, EventArgs e)
@@ -50,25 +78,36 @@ namespace WinFormsApp
                             break;
                     }
 
-                    if (basicArray2D != null)
-                    {
-                        PrintOutput(textBoxBasicArrOutput,
-                            UIHelpFunctionality.Arr2dToStringMatrix(basicArray2D, "\t"));
-                    }
+                    
+                    PrintOutput(textBoxBasicArrOutput,
+                        UIHelpFunctionality.Arr2dToStringMatrix(basicArray2D, "   "));
+                    
 
                 }
             }
+
+            CleanVisibleArrayCharacteristics();
         }
 
         private void comboBoxDataTypeOfArr_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ArrType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
+            if(comboBoxDataTypeOfArr.SelectedIndex != 0)
+                ArrType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
         }
 
         private static void PrintOutput(TextBox textBoxField, string text)
         {
-            textBoxField.Visible = true;
+            //textBoxField.Visible = true;
             textBoxField.Text = text;
         }
+
+        private void CleanVisibleArrayCharacteristics()
+        {
+            comboBoxDataTypeOfArr.SelectedIndex = 0;
+            numUpDownRowsInArr.Value = 0;
+            numUpDownColumnsInArr.Value = 0;
+        }
+
+        
     }
 }

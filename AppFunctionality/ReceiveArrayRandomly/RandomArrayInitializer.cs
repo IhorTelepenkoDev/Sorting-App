@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace AppFunctionality.ReceivingArrayRandomly
+namespace AppFunctionality.ReceiveArrayRandomly
 {
     internal class RandomArrayInitializer
     {
