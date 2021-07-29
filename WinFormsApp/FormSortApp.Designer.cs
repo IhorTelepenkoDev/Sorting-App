@@ -44,8 +44,10 @@ namespace WinFormsApp
             this.buttonDoSort = new System.Windows.Forms.Button();
             this.comboBoxSortingMethod = new System.Windows.Forms.ComboBox();
             this.labelChoosingTypeOfSort = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxFilePath
@@ -76,7 +78,8 @@ namespace WinFormsApp
             // 
             // buttonRandomArrayAssigning
             // 
-            this.buttonRandomArrayAssigning.Location = new System.Drawing.Point(15, 95);
+            this.buttonRandomArrayAssigning.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonRandomArrayAssigning.Location = new System.Drawing.Point(6, 25);
             this.buttonRandomArrayAssigning.Name = "buttonRandomArrayAssigning";
             this.buttonRandomArrayAssigning.Size = new System.Drawing.Size(105, 41);
             this.buttonRandomArrayAssigning.TabIndex = 3;
@@ -193,6 +196,17 @@ namespace WinFormsApp
             this.labelChoosingTypeOfSort.TabIndex = 14;
             this.labelChoosingTypeOfSort.Text = "Sorting Type:";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonRandomArrayAssigning);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.groupBox1.Location = new System.Drawing.Point(12, 70);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(374, 78);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Random Aray";
+            // 
             // FormSortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -209,14 +223,15 @@ namespace WinFormsApp
             this.Controls.Add(this.numUpDownRowsInArr);
             this.Controls.Add(this.labelForChoosingDataType);
             this.Controls.Add(this.comboBoxDataTypeOfArr);
-            this.Controls.Add(this.buttonRandomArrayAssigning);
             this.Controls.Add(this.buttonArrReadingByPath);
             this.Controls.Add(this.labelForPathField);
             this.Controls.Add(this.textBoxFilePath);
+            this.Controls.Add(this.groupBox1);
             this.Name = "FormSortApp";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,6 +254,7 @@ namespace WinFormsApp
         private System.Windows.Forms.Button buttonDoSort;
         private System.Windows.Forms.ComboBox comboBoxSortingMethod;
         private System.Windows.Forms.Label labelChoosingTypeOfSort;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
