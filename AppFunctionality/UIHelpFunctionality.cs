@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace AppFunctionality
 {
-    public enum DataType
-    {
-        IntegerType,
-        DoubleType,
-        StringType
-    }
+    //public enum ArrayElementType
+    //{
+    //    IntegerType,
+    //    DoubleType,
+    //    StringType
+    //}
     public class UIHelpFunctionality
     {
-        public static DataType ChosenType(string dataTypePrinted)
+        public static Type ChosenType(string dataTypePrinted)
         {
             switch (dataTypePrinted)
             {
                 case "Integer":
-                    return DataType.IntegerType;
+                    return typeof(int);
                 case "Float":
-                    return DataType.DoubleType;
+                    return typeof(double);
                 case "Text":
-                    return DataType.StringType;
+                    return typeof(string);
                 default:
-                    return DataType.StringType;
+                    return null;
             }
         }
 

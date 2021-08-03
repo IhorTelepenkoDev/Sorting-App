@@ -40,7 +40,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
             }
         }
 
-        public static DataType TypeOfArray2DStoredInFile(string filePath)
+        public static Type TypeOfArray2DStoredInFile(string filePath)
         {
             var contentOfFile = ReadFileContent(filePath);
             string fileExtension = filePath.Substring(filePath.LastIndexOf('.') + 1);
@@ -50,23 +50,29 @@ namespace AppFunctionality.ReceiveArrayFromFile
                 case "json":
                 {
                     if (new Array2dReaderFromJSON<int>().Read2DArray(contentOfFile) != null)
-                        return DataType.IntegerType;
+                        return typeof(int);
                     if (new Array2dReaderFromJSON<double>().Read2DArray(contentOfFile) != null)
-                        return DataType.DoubleType;
-                    return DataType.StringType;
+                        return typeof(double);
+                    return typeof(string);
                 }
                 default:
-                    return DataType.StringType;
+                    return null;
 
             }
         }
 
+        public static IArrayReader<T> ReaderOf2DArrayFromDataSource<T>(string dataSourcePath)
+        {
+            string dataSourceExtension = dataSourcePath.Substring(dataSourcePath.LastIndexOf('.') + 1);
 
-        //private static bool IsReadingOfArrayFromDataPossible(Delegate arrayReadingOperation, string checkedData)
-        //{
-        //    var readResult = arrayReadingOperation.DynamicInvoke(checkedData);
+            switch (dataSourceExtension)
+            {
+                case "json":
+                    return new Array2dReaderFromJSON<T>();
+                default:
+                   return null;
+            }
 
-        //    return readResult != null;
-        //}
+        }
     }
 }

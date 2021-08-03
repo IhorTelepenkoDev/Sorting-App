@@ -1,7 +1,7 @@
 ﻿
 namespace AppFunctionality.ReceiveArrayFromFile
 {
-    internal interface IArrayReader<T>
+    public interface IArrayReader<T>
     {
         T[,] Read2DArray(string receivedText);
     }
