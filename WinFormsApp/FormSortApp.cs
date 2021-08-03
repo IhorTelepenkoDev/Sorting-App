@@ -18,8 +18,8 @@ namespace WinFormsApp
 {
     public partial class FormSortApp : Form
     {
-        public dynamic basicArray2D { get; set; } = null;  // may be 2d array of different type
-        public Type ArrType { get; set; }
+        public dynamic BasicArray2D { get; set; } = null;  // may be 2d array of different type
+        public Type ArrayElemType { get; set; }
 
         public FormSortApp()
         {
@@ -30,40 +30,41 @@ namespace WinFormsApp
         private void buttonArrReadingByPath_Click(object sender, EventArgs e)
         {
             CleanVisibleArrayCharacteristics();
-            basicArray2D = null;
+            BasicArray2D = null;
 
             var pathToFile = textBoxFilePath.Text;
-            var contentOfFile = HelpFunctionalityOfArrReading.ReadFileContent(pathToFile);
             
-            ArrType = HelpFunctionalityOfArrReading.TypeOfArray2DStoredInFile(pathToFile);
+            ArrayElemType = HelpFunctionalityOfArrReading.TypeOfArray2DStoredInFile(pathToFile);
             //make ArraySetter as it was before
-            if(ArrType != null)
+            if(ArrayElemType != null)
             {
-                if(ArrType == typeof(int))
-                    basicArray2D = new ArraySetter<int>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<int>(pathToFile)).array2D;
-                if (ArrType == typeof(double))
-                    basicArray2D = new ArraySetter<double>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<double>(pathToFile)).array2D;
-                if (ArrType == typeof(string))
-                    basicArray2D = new ArraySetter<string>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<string>(pathToFile)).array2D;
+                var contentOfFile = HelpFunctionalityOfArrReading.ReadFileContent(pathToFile);
+
+                if (ArrayElemType == typeof(int))
+                    BasicArray2D = new ArrayInitializer<int>(
+                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<int>(pathToFile)).Array2D;
+                if (ArrayElemType == typeof(double))
+                    BasicArray2D = new ArrayInitializer<double>(
+                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<double>(pathToFile)).Array2D;
+                if (ArrayElemType == typeof(string))
+                    BasicArray2D = new ArrayInitializer<string>(
+                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<string>(pathToFile)).Array2D;
             }
 
-            if (basicArray2D == null)
+            if (BasicArray2D == null)
             {
                 CleanBasicArrayField();
                 return;
             }
 
             PrintOutput(textBoxBasicArrOutput,
-                UIHelpFunctionality.Arr2dToStringMatrix(basicArray2D, "    "));
+                UIHelpFunctionality.Arr2dToStringMatrix(BasicArray2D, "    "));
 
         }
 
         private void buttonRandomArrayAssign_Click(object sender, EventArgs e)
         {
-            basicArray2D = null;
+            BasicArray2D = null;
 
             if (comboBoxDataTypeOfArr.SelectedIndex > 0)
             {
@@ -72,15 +73,15 @@ namespace WinFormsApp
                     int arr2dLengthRows = Convert.ToInt32(numUpDownRowsInArr.Value);
                     int arr2dLengthColumns = Convert.ToInt32(numUpDownColumnsInArr.Value);
 
-                    if(ArrType == typeof(int))
-                        basicArray2D = new ArraySetter<int>(arr2dLengthRows, arr2dLengthColumns).array2D;
-                    if (ArrType == typeof(double))
-                        basicArray2D = new ArraySetter<double>(arr2dLengthRows, arr2dLengthColumns).array2D;
-                    if (ArrType == typeof(string))
-                        basicArray2D = new ArraySetter<string>(arr2dLengthRows, arr2dLengthColumns).array2D;
+                    if(ArrayElemType == typeof(int))
+                        BasicArray2D = new ArrayInitializer<int>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+                    if (ArrayElemType == typeof(double))
+                        BasicArray2D = new ArrayInitializer<double>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+                    if (ArrayElemType == typeof(string))
+                        BasicArray2D = new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
 
                     PrintOutput(textBoxBasicArrOutput,
-                        UIHelpFunctionality.Arr2dToStringMatrix(basicArray2D, "   "));
+                        UIHelpFunctionality.Arr2dToStringMatrix(BasicArray2D, "   "));
 
                     return;
                 }
@@ -93,7 +94,7 @@ namespace WinFormsApp
         private void comboBoxDataTypeOfArr_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(comboBoxDataTypeOfArr.SelectedIndex != 0)
-                ArrType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
+                ArrayElemType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
         }
 
         private static void PrintOutput(TextBox textBoxField, string text)

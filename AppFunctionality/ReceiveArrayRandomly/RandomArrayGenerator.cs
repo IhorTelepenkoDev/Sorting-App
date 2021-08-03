@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace AppFunctionality.ReceiveArrayRandomly
 {
-    internal class RandomArrayInitializer
+    internal class RandomArrayGenerator
     {
         //the supported array2D types are "int", "double", "string"
         private static readonly Random rnd = new Random();
 
-        public void Initialize2DArrayRandomly<T>(T[,] arr, int lenRows, int lenCols)
+        public void Generate2DArrayRandomly<T>(T[,] arr, int lenRows, int lenCols)
         {
             if (typeof(T) == typeof(string))
             {

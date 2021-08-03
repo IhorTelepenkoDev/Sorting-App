@@ -6,7 +6,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
 {
     internal class TemplateOfArrayStoringInJSON
     {
-        public string array { get; set; }
+        public string Array { get; set; }
     }
 
     internal class Array2dReaderFromJSON<T> : IArrayReader<T>
@@ -20,7 +20,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
                 List<TemplateOfArrayStoringInJSON> receivedDataItems =
                     JsonConvert.DeserializeObject<List<TemplateOfArrayStoringInJSON>>(dataInJSON);
 
-                readJaggedArr = JsonConvert.DeserializeObject<T[][]>(receivedDataItems.FirstOrDefault().array);
+                readJaggedArr = JsonConvert.DeserializeObject<T[][]>(receivedDataItems.FirstOrDefault().Array);
             }
             catch
             {
