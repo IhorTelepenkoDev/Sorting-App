@@ -182,11 +182,13 @@ namespace WinFormsApp
             this.comboBoxSortingMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSortingMethod.FormattingEnabled = true;
             this.comboBoxSortingMethod.Items.AddRange(new object[] {
-            "Select another source..."});
+            "",
+            "[Select another source]"});
             this.comboBoxSortingMethod.Location = new System.Drawing.Point(411, 115);
             this.comboBoxSortingMethod.Name = "comboBoxSortingMethod";
             this.comboBoxSortingMethod.Size = new System.Drawing.Size(130, 21);
             this.comboBoxSortingMethod.TabIndex = 13;
+            this.comboBoxSortingMethod.SelectedIndexChanged += new System.EventHandler(this.comboBoxSortingMethod_SelectedIndexChanged);
             // 
             // labelChoosingTypeOfSort
             // 

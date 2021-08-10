@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppFunctionality;
 using AppFunctionality.ReceiveArrayFromFile;
+using AppFunctionality.ReceiveSorters;
+using BaseSort;
 
 namespace WinFormsApp
 {
@@ -20,10 +22,12 @@ namespace WinFormsApp
     {
         public dynamic BasicArray2D { get; set; } = null;  // may be 2d array of different type
         public Type ArrayElemType { get; set; }
+        public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
         public FormSortApp()
         {
             InitializeComponent();
+            SetBasicVisibleElements();
             //
         }
 
@@ -35,7 +39,7 @@ namespace WinFormsApp
             var pathToFile = textBoxFilePath.Text;
             
             ArrayElemType = HelpFunctionalityOfArrReading.TypeOfArray2DStoredInFile(pathToFile);
-            //make ArraySetter as it was before
+            
             if(ArrayElemType != null)
             {
                 var contentOfFile = HelpFunctionalityOfArrReading.ReadFileContent(pathToFile);
@@ -97,6 +101,59 @@ namespace WinFormsApp
                 ArrayElemType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
         }
 
+        private void comboBoxSortingMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxSortingMethod.SelectedIndex == comboBoxSortingMethod.Items.Count - 1)   //[select another folder of source]
+            {
+                comboBoxSortingMethod.SelectedIndex = 0;
+                string folderPath = PathToFolderByBrowser();
+
+                if (folderPath == null)
+                    return;
+
+                ReaderFromDLL folderReader = new ReaderFromDLL();
+                InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSpecificClassesInFolder<ISorter2D>(folderPath);
+
+                if(InstancesOfAvailableSortTypes!=null)
+                {
+                    var namesOfSorts = (
+                    from sortingInstance in InstancesOfAvailableSortTypes
+                    select sortingInstance.SortName).ToArray();
+                    SetItemsInDropDownOfAvailableSorts(namesOfSorts);
+                }
+                else SetItemsInDropDownOfAvailableSorts();
+            }
+        }
+
+        private void SetItemsInDropDownOfDataTypesOfArr(string[] namesOfTypes = null)
+        {
+            comboBoxDataTypeOfArr.Items.Clear();
+            comboBoxDataTypeOfArr.Items.Add("");
+            if (namesOfTypes != null)
+            foreach(var typeName in namesOfTypes)
+            {
+                comboBoxDataTypeOfArr.Items.Add(typeName);
+            }
+        }
+
+        private void SetItemsInDropDownOfAvailableSorts(string[] namesOfSortings = null)
+        {
+            comboBoxSortingMethod.Items.Clear();
+            comboBoxSortingMethod.Items.Add("");
+            if (namesOfSortings != null)
+            foreach (var sortName in namesOfSortings)
+            {
+                comboBoxSortingMethod.Items.Add(sortName);
+            }
+            comboBoxSortingMethod.Items.Add("[Select another source]");
+        }
+
+        private void SetBasicVisibleElements()
+        {
+            SetItemsInDropDownOfDataTypesOfArr(new string[] { "Integer", "Float", "Text" });
+            SetItemsInDropDownOfAvailableSorts();
+        }
+
         private static void PrintOutput(TextBox textBoxField, string text)
         {
             //textBoxField.Visible = true;
@@ -113,6 +170,14 @@ namespace WinFormsApp
         private void CleanBasicArrayField()
         {
             PrintOutput(textBoxBasicArrOutput, null);
+        }
+
+        private string PathToFolderByBrowser()
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
+                return folderBrowser.SelectedPath;
+            else return null;
         }
     }
 }
