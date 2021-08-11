@@ -34,6 +34,9 @@ namespace WinFormsApp
         private void buttonArrReadingByPath_Click(object sender, EventArgs e)
         {
             CleanVisibleArrayCharacteristics();
+
+            CleanResultArrayField();
+
             BasicArray2D = null;
 
             var pathToFile = textBoxFilePath.Text;
@@ -63,11 +66,12 @@ namespace WinFormsApp
 
             PrintOutput(textBoxBasicArrOutput,
                 UIHelpFunctionality.Arr2dToStringMatrix(BasicArray2D, "    "));
-
         }
 
         private void buttonRandomArrayAssign_Click(object sender, EventArgs e)
         {
+            CleanResultArrayField();
+
             BasicArray2D = null;
 
             if (comboBoxDataTypeOfArr.SelectedIndex > 0)
@@ -125,6 +129,17 @@ namespace WinFormsApp
             }
         }
 
+        private void buttonDoSort_Click(object sender, EventArgs e)
+        {
+            if(comboBoxSortingMethod.SelectedIndex > 0 && comboBoxSortingMethod.SelectedIndex < comboBoxSortingMethod.Items.Count - 1)
+            {
+                PerformSorting(comboBoxSortingMethod.SelectedIndex - 1);
+            }
+
+            if (comboBoxSortingMethod.SelectedIndex == 0)
+                CleanResultArrayField();
+        }
+
         private void SetItemsInDropDownOfDataTypesOfArr(string[] namesOfTypes = null)
         {
             comboBoxDataTypeOfArr.Items.Clear();
@@ -172,12 +187,33 @@ namespace WinFormsApp
             PrintOutput(textBoxBasicArrOutput, null);
         }
 
+        private void CleanResultArrayField()
+        {
+            PrintOutput(textBoxResArrOutput, null);
+        }
+
         private string PathToFolderByBrowser()
         {
             FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
             if (folderBrowser.ShowDialog() == DialogResult.OK)
                 return folderBrowser.SelectedPath;
             else return null;
+        }
+
+        private void PerformSorting(int indexOfSortType)
+        {
+            try
+            {
+                var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
+
+                dynamic sortingCopyOfBasic2dArr = UIHelpFunctionality.CopyOf2dArr(BasicArray2D, ArrayElemType);
+                //PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+
+                
+                chosenSorter.Sort(sortingCopyOfBasic2dArr);
+                PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+            }
+            catch { return; }
         }
     }
 }

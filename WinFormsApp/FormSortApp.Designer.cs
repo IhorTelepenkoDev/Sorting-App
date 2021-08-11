@@ -175,6 +175,7 @@ namespace WinFormsApp
             this.buttonDoSort.TabIndex = 12;
             this.buttonDoSort.Text = "SORT!";
             this.buttonDoSort.UseVisualStyleBackColor = true;
+            this.buttonDoSort.Click += new System.EventHandler(this.buttonDoSort_Click);
             // 
             // comboBoxSortingMethod
             // 

@@ -48,5 +48,24 @@ namespace AppFunctionality
 
             return strBuilder.ToString();
         }
+
+        public static dynamic CopyOf2dArr(dynamic array2d, Type arrType)
+        {
+            dynamic resultCopiedArr2d = null;
+            try
+            {
+                if (arrType == typeof(int))
+                    resultCopiedArr2d = new int[array2d.GetLength(0), array2d.GetLength(1)];
+                else
+                if (arrType == typeof(double))
+                    resultCopiedArr2d = new double[array2d.GetLength(0), array2d.GetLength(1)];
+                else resultCopiedArr2d = new string[array2d.GetLength(0), array2d.GetLength(1)];
+
+                Array.Copy(array2d, resultCopiedArr2d, array2d.GetLength(0) * array2d.GetLength(1));
+            }
+            catch { }
+
+            return resultCopiedArr2d;
+        }
     }
 }
