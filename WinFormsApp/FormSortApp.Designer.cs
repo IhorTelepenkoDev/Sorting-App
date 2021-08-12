@@ -231,7 +231,7 @@ namespace WinFormsApp
             this.Controls.Add(this.textBoxFilePath);
             this.Controls.Add(this.groupBox1);
             this.Name = "FormSortApp";
-            this.Text = "Form1";
+            this.Text = "Sorting Application";
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).EndInit();
             this.groupBox1.ResumeLayout(false);

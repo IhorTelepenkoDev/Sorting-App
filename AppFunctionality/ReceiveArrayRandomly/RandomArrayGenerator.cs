@@ -41,7 +41,7 @@ namespace AppFunctionality.ReceiveArrayRandomly
 
         private static string RandStr(int len)
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyz ";
+            const string chars = "abcdefghijklmnopqrstuvwxyz";
             return new string(Enumerable.Repeat(chars, len)
                 .Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
