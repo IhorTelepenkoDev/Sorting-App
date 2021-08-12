@@ -45,22 +45,25 @@ namespace WinFormsApp
             this.comboBoxSortingMethod = new System.Windows.Forms.ComboBox();
             this.labelChoosingTypeOfSort = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.trackBarOfSortSlower = new System.Windows.Forms.TrackBar();
+            this.labelSortSlower = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarOfSortSlower)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxFilePath
             // 
             this.textBoxFilePath.Location = new System.Drawing.Point(12, 44);
             this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(549, 20);
+            this.textBoxFilePath.Size = new System.Drawing.Size(601, 20);
             this.textBoxFilePath.TabIndex = 0;
             // 
             // labelForPathField
             // 
             this.labelForPathField.AutoSize = true;
-            this.labelForPathField.Location = new System.Drawing.Point(12, 28);
+            this.labelForPathField.Location = new System.Drawing.Point(15, 28);
             this.labelForPathField.Name = "labelForPathField";
             this.labelForPathField.Size = new System.Drawing.Size(108, 13);
             this.labelForPathField.TabIndex = 1;
@@ -68,7 +71,7 @@ namespace WinFormsApp
             // 
             // buttonArrReadingByPath
             // 
-            this.buttonArrReadingByPath.Location = new System.Drawing.Point(567, 41);
+            this.buttonArrReadingByPath.Location = new System.Drawing.Point(619, 42);
             this.buttonArrReadingByPath.Name = "buttonArrReadingByPath";
             this.buttonArrReadingByPath.Size = new System.Drawing.Size(75, 23);
             this.buttonArrReadingByPath.TabIndex = 2;
@@ -145,36 +148,38 @@ namespace WinFormsApp
             // textBoxBasicArrOutput
             // 
             this.textBoxBasicArrOutput.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxBasicArrOutput.Location = new System.Drawing.Point(15, 161);
+            this.textBoxBasicArrOutput.Location = new System.Drawing.Point(18, 161);
             this.textBoxBasicArrOutput.Multiline = true;
             this.textBoxBasicArrOutput.Name = "textBoxBasicArrOutput";
             this.textBoxBasicArrOutput.ReadOnly = true;
             this.textBoxBasicArrOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxBasicArrOutput.Size = new System.Drawing.Size(300, 286);
+            this.textBoxBasicArrOutput.Size = new System.Drawing.Size(317, 286);
             this.textBoxBasicArrOutput.TabIndex = 10;
             this.textBoxBasicArrOutput.WordWrap = false;
             // 
             // textBoxResArrOutput
             // 
             this.textBoxResArrOutput.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxResArrOutput.Location = new System.Drawing.Point(367, 161);
+            this.textBoxResArrOutput.Location = new System.Drawing.Point(379, 161);
             this.textBoxResArrOutput.Multiline = true;
             this.textBoxResArrOutput.Name = "textBoxResArrOutput";
             this.textBoxResArrOutput.ReadOnly = true;
             this.textBoxResArrOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxResArrOutput.Size = new System.Drawing.Size(300, 286);
+            this.textBoxResArrOutput.Size = new System.Drawing.Size(315, 286);
             this.textBoxResArrOutput.TabIndex = 11;
             this.textBoxResArrOutput.WordWrap = false;
             // 
             // buttonDoSort
             // 
+            this.buttonDoSort.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.buttonDoSort.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonDoSort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDoSort.Location = new System.Drawing.Point(567, 87);
+            this.buttonDoSort.Location = new System.Drawing.Point(631, 87);
             this.buttonDoSort.Name = "buttonDoSort";
-            this.buttonDoSort.Size = new System.Drawing.Size(75, 56);
+            this.buttonDoSort.Size = new System.Drawing.Size(63, 56);
             this.buttonDoSort.TabIndex = 12;
             this.buttonDoSort.Text = "SORT!";
-            this.buttonDoSort.UseVisualStyleBackColor = true;
+            this.buttonDoSort.UseVisualStyleBackColor = false;
             this.buttonDoSort.Click += new System.EventHandler(this.buttonDoSort_Click);
             // 
             // comboBoxSortingMethod
@@ -210,11 +215,31 @@ namespace WinFormsApp
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Random Array";
             // 
+            // trackBarOfSortSlower
+            // 
+            this.trackBarOfSortSlower.BackColor = System.Drawing.SystemColors.Control;
+            this.trackBarOfSortSlower.Cursor = System.Windows.Forms.Cursors.Default;
+            this.trackBarOfSortSlower.Location = new System.Drawing.Point(547, 110);
+            this.trackBarOfSortSlower.Name = "trackBarOfSortSlower";
+            this.trackBarOfSortSlower.Size = new System.Drawing.Size(78, 45);
+            this.trackBarOfSortSlower.TabIndex = 16;
+            // 
+            // labelSortSlower
+            // 
+            this.labelSortSlower.AutoSize = true;
+            this.labelSortSlower.Location = new System.Drawing.Point(556, 87);
+            this.labelSortSlower.Name = "labelSortSlower";
+            this.labelSortSlower.Size = new System.Drawing.Size(42, 13);
+            this.labelSortSlower.TabIndex = 17;
+            this.labelSortSlower.Text = "Slower:";
+            // 
             // FormSortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(688, 459);
+            this.ClientSize = new System.Drawing.Size(717, 459);
+            this.Controls.Add(this.labelSortSlower);
+            this.Controls.Add(this.trackBarOfSortSlower);
             this.Controls.Add(this.labelChoosingTypeOfSort);
             this.Controls.Add(this.comboBoxSortingMethod);
             this.Controls.Add(this.buttonDoSort);
@@ -235,6 +260,7 @@ namespace WinFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarOfSortSlower)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,6 +284,8 @@ namespace WinFormsApp
         private System.Windows.Forms.ComboBox comboBoxSortingMethod;
         private System.Windows.Forms.Label labelChoosingTypeOfSort;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TrackBar trackBarOfSortSlower;
+        private System.Windows.Forms.Label labelSortSlower;
     }
 }
 
