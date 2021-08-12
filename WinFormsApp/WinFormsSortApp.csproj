@@ -37,9 +37,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\for dll\Ready DLLs\BaseSort.dll</HintPath>
     </Reference>
-    <Reference Include="SortHelpFunctionality">
-      <HintPath>..\..\..\for dll\Ready DLLs\SortHelpFunctionality.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

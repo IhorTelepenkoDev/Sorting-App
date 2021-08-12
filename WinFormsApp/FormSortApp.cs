@@ -133,7 +133,7 @@ namespace WinFormsApp
         {
             if(comboBoxSortingMethod.SelectedIndex > 0 && comboBoxSortingMethod.SelectedIndex < comboBoxSortingMethod.Items.Count - 1)
             {
-                PerformSorting(comboBoxSortingMethod.SelectedIndex - 1);
+                PerformSorting(comboBoxSortingMethod.SelectedIndex - 1);    //index of received Sorter - as parameter
             }
 
             if (comboBoxSortingMethod.SelectedIndex == 0)
@@ -206,10 +206,9 @@ namespace WinFormsApp
             {
                 var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
 
-                dynamic sortingCopyOfBasic2dArr = UIHelpFunctionality.CopyOf2dArr(BasicArray2D, ArrayElemType);
-                //PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+                var sortingCopyOfBasic2dArr = UIHelpFunctionality.CopyOf2dArr(BasicArray2D, ArrayElemType);
+                PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
 
-                
                 chosenSorter.Sort(sortingCopyOfBasic2dArr);
                 PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
             }
