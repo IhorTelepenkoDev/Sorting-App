@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using AppFunctionality;
 using AppFunctionality.ReceiveArrayFromFile;
@@ -187,7 +188,9 @@ namespace WinFormsApp
         {
             if(comboBoxSelectedSorter.SelectedIndex > 0 && comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1)
             {
-                PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1);    //index of received Sorter - as parameter
+                Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1)));
+                SortCaller.Start();
+                //PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1);    //index of received Sorter - as parameter
             }
 
             if (comboBoxSelectedSorter.SelectedIndex == 0)
@@ -254,10 +257,15 @@ namespace WinFormsApp
                 textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-                //chosenSorter.FiredActionOnChangeOfElementsInArray = ()=> PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+                chosenSorter.FiredActionOnChangeOfElementsInArray = () => textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
 
                 trackBarSortSlower.Enabled = false;
+                buttonDoSort.Enabled = false;
+                buttonRandomArrayAssign.Enabled = false;
+                buttonReadArrByPath.Enabled = false;
+                comboBoxSelectedSorter.Enabled = false;
+
                 chosenSorter.Sort(sortingCopyOfBasic2dArr);
                 textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
@@ -265,6 +273,10 @@ namespace WinFormsApp
             catch { }
 
             trackBarSortSlower.Enabled = true;
+            buttonDoSort.Enabled = true;
+            buttonRandomArrayAssign.Enabled = true;
+            buttonReadArrByPath.Enabled = true;
+            comboBoxSelectedSorter.Enabled = true;
         }
     }
 }
