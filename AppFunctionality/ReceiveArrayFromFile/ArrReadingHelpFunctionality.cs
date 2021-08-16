@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AppFunctionality.ReceiveArrayFromFile
 {
-    public class HelpFunctionalityOfArrReading
+    public class ArrReadingHelpFunctionality
     {
         public static string ReadFileContent(string filePath)
         {
@@ -40,7 +40,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
             }
         }
 
-        public static Type TypeOfArray2DStoredInFile(string filePath)
+        public static Type GetTypeOfArray2DStoredInFile(string filePath)
         {
             var contentOfFile = ReadFileContent(filePath);
             string fileExtension = filePath.Substring(filePath.LastIndexOf('.') + 1);
@@ -61,7 +61,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
             }
         }
 
-        public static IArrayReader<T> ReaderOf2DArrayFromDataSource<T>(string dataSourcePath)
+        public static IArrayReader<T> Get2DArrayReaderFromDataSource<T>(string dataSourcePath)
         {
             string dataSourceExtension = dataSourcePath.Substring(dataSourcePath.LastIndexOf('.') + 1);
 

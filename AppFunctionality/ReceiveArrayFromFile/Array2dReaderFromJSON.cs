@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace AppFunctionality.ReceiveArrayFromFile
 {
-    internal class TemplateOfArrayStoringInJSON
+    internal class ArrayStoringInJSONTemplate
     {
         public string Array { get; set; }
     }
@@ -17,8 +17,8 @@ namespace AppFunctionality.ReceiveArrayFromFile
 
             try
             {
-                List<TemplateOfArrayStoringInJSON> receivedDataItems =
-                    JsonConvert.DeserializeObject<List<TemplateOfArrayStoringInJSON>>(dataInJSON);
+                List<ArrayStoringInJSONTemplate> receivedDataItems =
+                    JsonConvert.DeserializeObject<List<ArrayStoringInJSONTemplate>>(dataInJSON);
 
                 readJaggedArr = JsonConvert.DeserializeObject<T[][]>(receivedDataItems.FirstOrDefault().Array);
             }
@@ -28,7 +28,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
             }
                 
             
-            T[,] readArrIn2D = HelpFunctionalityOfArrReading.ConvertFromJaggedTo2DArray(readJaggedArr);
+            T[,] readArrIn2D = ArrReadingHelpFunctionality.ConvertFromJaggedTo2DArray(readJaggedArr);
 
             return readArrIn2D;
         }

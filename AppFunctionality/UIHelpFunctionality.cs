@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace AppFunctionality
 {
-    //public enum ArrayElementType
-    //{
-    //    IntegerType,
-    //    DoubleType,
-    //    StringType
-    //}
     public class UIHelpFunctionality
     {
-        public static Type ChosenType(string dataTypePrinted)
+        public static Type GetSelectedArrType(string dataTypePrinted)
         {
             switch (dataTypePrinted)
             {
@@ -29,7 +23,7 @@ namespace AppFunctionality
             }
         }
 
-        public static string Arr2dToStringMatrix<T>(T[,] matrixArr2d, string delimiter = " ")
+        public static string Arr2dToString<T>(T[,] matrixArr2d, string delimiter = " ")
         {
             if (matrixArr2d == null)
                 return null;
@@ -49,7 +43,7 @@ namespace AppFunctionality
             return strBuilder.ToString();
         }
 
-        public static dynamic CopyOf2dArr(dynamic array2d, Type arrType)
+        public static dynamic Copy2dArr(dynamic array2d, Type arrType)
         {
             dynamic resultCopiedArr2d = null;
             try

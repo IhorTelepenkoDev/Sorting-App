@@ -16,7 +16,7 @@ namespace WinFormsApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormSortApp());
+            Application.Run(new SortApp());
         }
     }
 }

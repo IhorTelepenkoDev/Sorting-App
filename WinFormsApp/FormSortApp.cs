@@ -18,63 +18,74 @@ using BaseSort;
 
 namespace WinFormsApp
 {
-    public partial class FormSortApp : Form
+    public partial class SortApp : Form
     {
         public dynamic BasicArray2D { get; set; } = null;  // may be 2d array of different type
         public Type ArrayElemType { get; set; }
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
-        public FormSortApp()
+        public SortApp()
         {
             InitializeComponent();
             SetBasicVisibleElements();
             //
         }
 
-        private void buttonArrReadingByPath_Click(object sender, EventArgs e)
+        private void buttonReadArrByPath_Click(object sender, EventArgs e)
         {
             CleanVisibleArrayCharacteristics();
 
-            CleanResultArrayField();
+            CleanSortedArrayTextBox();
 
             BasicArray2D = null;
 
             var pathToFile = textBoxFilePath.Text;
             
-            ArrayElemType = HelpFunctionalityOfArrReading.TypeOfArray2DStoredInFile(pathToFile);
+            ArrayElemType = ArrReadingHelpFunctionality.GetTypeOfArray2DStoredInFile(pathToFile);
             
             if(ArrayElemType != null)
             {
-                var contentOfFile = HelpFunctionalityOfArrReading.ReadFileContent(pathToFile);
+                var contentOfFile = ArrReadingHelpFunctionality.ReadFileContent(pathToFile);
 
                 if (ArrayElemType == typeof(int))
                     BasicArray2D = new ArrayInitializer<int>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<int>(pathToFile)).Array2D;
+                                contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<int>(pathToFile)).Array2D;
                 if (ArrayElemType == typeof(double))
                     BasicArray2D = new ArrayInitializer<double>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<double>(pathToFile)).Array2D;
+                                contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<double>(pathToFile)).Array2D;
                 if (ArrayElemType == typeof(string))
                     BasicArray2D = new ArrayInitializer<string>(
-                                contentOfFile, HelpFunctionalityOfArrReading.ReaderOf2DArrayFromDataSource<string>(pathToFile)).Array2D;
+                                contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<string>(pathToFile)).Array2D;
             }
 
             if (BasicArray2D == null)
             {
-                CleanBasicArrayField();
+                CleanUnsortedArrayTextBox();
+                buttonDoSort.Enabled = false;
                 return;
             }
 
-            PrintOutput(textBoxBasicArrOutput,
-                UIHelpFunctionality.Arr2dToStringMatrix(BasicArray2D, "    "));
+            if(comboBoxSelectedSorter.SelectedIndex > 0)
+                buttonDoSort.Enabled = true;
+
+            textBoxUnsortedArr.Text =
+                UIHelpFunctionality.Arr2dToString(BasicArray2D, "    ");
+        }
+
+        private void textBoxFilePath_TextChanged(object sender, EventArgs e)
+        {
+            if (File.Exists(textBoxFilePath.Text))
+                buttonReadArrByPath.Enabled = true;
+            else buttonReadArrByPath.Enabled = false;
         }
 
         private void buttonRandomArrayAssign_Click(object sender, EventArgs e)
         {
-            CleanResultArrayField();
+            CleanSortedArrayTextBox();
 
             BasicArray2D = null;
 
-            if (comboBoxDataTypeOfArr.SelectedIndex > 0)
+            if (comboBoxArrDataType.SelectedIndex > 0)
             {
                 if (numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
                 {
@@ -88,116 +99,149 @@ namespace WinFormsApp
                     if (ArrayElemType == typeof(string))
                         BasicArray2D = new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
 
-                    PrintOutput(textBoxBasicArrOutput,
-                        UIHelpFunctionality.Arr2dToStringMatrix(BasicArray2D, "   "));
+                    textBoxUnsortedArr.Text =
+                        UIHelpFunctionality.Arr2dToString(BasicArray2D, "   ");
+
+                    if (comboBoxSelectedSorter.SelectedIndex > 0)
+                        buttonDoSort.Enabled = true;
 
                     return;
                 }
             }
+
+            buttonDoSort.Enabled = false;
 
             CleanVisibleArrayCharacteristics();
-            CleanBasicArrayField();
+            CleanUnsortedArrayTextBox();
         }
 
-        private void comboBoxDataTypeOfArr_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxArrDataType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboBoxDataTypeOfArr.SelectedIndex != 0)
-                ArrayElemType = UIHelpFunctionality.ChosenType(comboBoxDataTypeOfArr.SelectedItem.ToString());
-        }
-
-        private void comboBoxSortingMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxSortingMethod.SelectedIndex == comboBoxSortingMethod.Items.Count - 1)   //[select another folder of source]
+            if(comboBoxArrDataType.SelectedIndex != 0)
             {
-                comboBoxSortingMethod.SelectedIndex = 0;
-                string folderPath = PathToFolderByBrowser();
+                ArrayElemType = UIHelpFunctionality.GetSelectedArrType(comboBoxArrDataType.SelectedItem.ToString());
 
-                if (folderPath == null)
-                    return;
+                if (numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
+                    buttonRandomArrayAssign.Enabled = true;
 
-                ReaderFromDLL folderReader = new ReaderFromDLL();
-                InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSpecificClassesInFolder<ISorter2D>(folderPath);
+            } else buttonRandomArrayAssign.Enabled = false;
 
-                if(InstancesOfAvailableSortTypes!=null)
+        }
+
+        private void numUpDownRowsInArr_ValueChanged(object sender, EventArgs e)
+        {
+            if(numUpDownRowsInArr.Value == 0)
+                buttonRandomArrayAssign.Enabled = false;
+            else
+                if (numUpDownColumnsInArr.Value > 0 && comboBoxArrDataType.SelectedIndex > 0)
+                    buttonRandomArrayAssign.Enabled = true;
+        }
+        
+        private void numUpDownColumnsInArr_ValueChanged(object sender, EventArgs e)
+        {
+            if (numUpDownColumnsInArr.Value == 0)
+                buttonRandomArrayAssign.Enabled = false;
+            else
+                if (numUpDownRowsInArr.Value > 0 && comboBoxArrDataType.SelectedIndex > 0)
+                buttonRandomArrayAssign.Enabled = true;
+        }
+
+        private void comboBoxSelectedSorter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxSelectedSorter.SelectedIndex == comboBoxSelectedSorter.Items.Count - 1)   //[select another folder of source]
+            {
+                comboBoxSelectedSorter.SelectedIndex = 0;
+
+                string folderPath = null;
+                FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+                if (folderBrowser.ShowDialog() == DialogResult.OK)
+                    folderPath = folderBrowser.SelectedPath;
+
+                if (folderPath != null)
                 {
-                    var namesOfSorts = (
-                    from sortingInstance in InstancesOfAvailableSortTypes
-                    select sortingInstance.SortName).ToArray();
-                    SetItemsInDropDownOfAvailableSorts(namesOfSorts);
+                    ReaderFromDLL folderReader = new ReaderFromDLL();
+                    InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSortersInFolder(folderPath);
+
+                    if (InstancesOfAvailableSortTypes != null)
+                    {
+                        var namesOfSorts = (from sortingInstance in InstancesOfAvailableSortTypes
+                                            select sortingInstance.SortName).ToArray();
+
+                        FillAvailableSortsDropDown(namesOfSorts);
+                    }
+                    else FillAvailableSortsDropDown();
                 }
-                else SetItemsInDropDownOfAvailableSorts();
+
+                comboBoxSelectedSorter.DroppedDown = true;
             }
+
+            if (comboBoxSelectedSorter.SelectedIndex > 0)
+            {
+                if (textBoxUnsortedArr.Text != "")
+                    buttonDoSort.Enabled = true;
+            }
+            else buttonDoSort.Enabled = false;
         }
 
         private void buttonDoSort_Click(object sender, EventArgs e)
         {
-            if(comboBoxSortingMethod.SelectedIndex > 0 && comboBoxSortingMethod.SelectedIndex < comboBoxSortingMethod.Items.Count - 1)
+            if(comboBoxSelectedSorter.SelectedIndex > 0 && comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1)
             {
-                PerformSorting(comboBoxSortingMethod.SelectedIndex - 1);    //index of received Sorter - as parameter
+                PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1);    //index of received Sorter - as parameter
             }
 
-            if (comboBoxSortingMethod.SelectedIndex == 0)
-                CleanResultArrayField();
+            if (comboBoxSelectedSorter.SelectedIndex == 0)
+                CleanSortedArrayTextBox();
         }
 
-        private void SetItemsInDropDownOfDataTypesOfArr(string[] namesOfTypes = null)
+        private void FillArrDataTypesDropDown(string[] namesOfTypes = null)
         {
-            comboBoxDataTypeOfArr.Items.Clear();
-            comboBoxDataTypeOfArr.Items.Add("");
+            comboBoxArrDataType.Items.Clear();
+            comboBoxArrDataType.Items.Add("");
             if (namesOfTypes != null)
             foreach(var typeName in namesOfTypes)
             {
-                comboBoxDataTypeOfArr.Items.Add(typeName);
+                comboBoxArrDataType.Items.Add(typeName);
             }
         }
 
-        private void SetItemsInDropDownOfAvailableSorts(string[] namesOfSortings = null)
+        private void FillAvailableSortsDropDown(string[] namesOfSortings = null)
         {
-            comboBoxSortingMethod.Items.Clear();
-            comboBoxSortingMethod.Items.Add("");
+            comboBoxSelectedSorter.Items.Clear();
+            comboBoxSelectedSorter.Items.Add("");
             if (namesOfSortings != null)
             foreach (var sortName in namesOfSortings)
             {
-                comboBoxSortingMethod.Items.Add(sortName);
+                comboBoxSelectedSorter.Items.Add(sortName);
             }
-            comboBoxSortingMethod.Items.Add("[Select another source]");
+            comboBoxSelectedSorter.Items.Add("[Select another source]");
         }
 
         private void SetBasicVisibleElements()
         {
-            SetItemsInDropDownOfDataTypesOfArr(new string[] { "Integer", "Float", "Text" });
-            SetItemsInDropDownOfAvailableSorts();
-        }
+            string[] defaultDataTypesAvailable = { "Integer", 
+                                                   "Float", 
+                                                   "Text" };
 
-        private static void PrintOutput(TextBox textBoxField, string text)
-        {
-            //textBoxField.Visible = true;
-            textBoxField.Text = text;
+            FillArrDataTypesDropDown(defaultDataTypesAvailable);
+            FillAvailableSortsDropDown();
         }
 
         private void CleanVisibleArrayCharacteristics()
         {
-            comboBoxDataTypeOfArr.SelectedIndex = 0;
+            comboBoxArrDataType.SelectedIndex = 0;
             numUpDownRowsInArr.Value = 0;
             numUpDownColumnsInArr.Value = 0;
         }
 
-        private void CleanBasicArrayField()
+        private void CleanUnsortedArrayTextBox()
         {
-            PrintOutput(textBoxBasicArrOutput, null);
+            textBoxUnsortedArr.Text = null;
         }
 
-        private void CleanResultArrayField()
+        private void CleanSortedArrayTextBox()
         {
-            PrintOutput(textBoxResArrOutput, null);
-        }
-
-        private string PathToFolderByBrowser()
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
-                return folderBrowser.SelectedPath;
-            else return null;
+            textBoxSortedArr.Text = null;
         }
 
         private void PerformSorting(int indexOfSortType)
@@ -206,13 +250,21 @@ namespace WinFormsApp
             {
                 var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
 
-                var sortingCopyOfBasic2dArr = UIHelpFunctionality.CopyOf2dArr(BasicArray2D, ArrayElemType);
-                PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+                var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
+                textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
+                chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+                //chosenSorter.FiredActionOnChangeOfElementsInArray = ()=> PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+
+
+                trackBarSortSlower.Enabled = false;
                 chosenSorter.Sort(sortingCopyOfBasic2dArr);
-                PrintOutput(textBoxResArrOutput, UIHelpFunctionality.Arr2dToStringMatrix(sortingCopyOfBasic2dArr, "    "));
+                textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
+
             }
-            catch { return; }
+            catch { }
+
+            trackBarSortSlower.Enabled = true;
         }
     }
 }

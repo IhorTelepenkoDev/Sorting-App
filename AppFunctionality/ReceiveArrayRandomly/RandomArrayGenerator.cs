@@ -18,7 +18,7 @@ namespace AppFunctionality.ReceiveArrayRandomly
                     for (int j = 0; j < lenCols; j++)
                     {
                         int textLen = rnd.Next(1, maxStringLength);
-                        arr[i, j] = (T)Convert.ChangeType(RandStr(textLen), typeof(T));
+                        arr[i, j] = (T)Convert.ChangeType(GenerateRandString(textLen), typeof(T));
                     }
             }
             else if (typeof(T) == typeof(int))
@@ -26,7 +26,7 @@ namespace AppFunctionality.ReceiveArrayRandomly
                 for (int i = 0; i < lenRows; i++)
                     for (int j = 0; j < lenCols; j++)
                     {
-                        arr[i, j] = (T)Convert.ChangeType(RandInt(), typeof(T));
+                        arr[i, j] = (T)Convert.ChangeType(GenerateRandInteger(), typeof(T));
                     }
             }
             else if (typeof(T) == typeof(double))
@@ -34,32 +34,32 @@ namespace AppFunctionality.ReceiveArrayRandomly
                 for (int i = 0; i < lenRows; i++)
                     for (int j = 0; j < lenCols; j++)
                     {
-                        arr[i, j] = (T)Convert.ChangeType(RandDouble(), typeof(T));
+                        arr[i, j] = (T)Convert.ChangeType(GenerateRandDouble(), typeof(T));
                     }
             }
         }
 
-        private static string RandStr(int len)
+        private static string GenerateRandString(int len)
         {
             const string chars = "abcdefghijklmnopqrstuvwxyz";
             return new string(Enumerable.Repeat(chars, len)
                 .Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
-        private static int RandInt()
+        private static int GenerateRandInteger()
         {
-            var rangeReducer = RangeReduceCoefficient();
+            var rangeReducer = GetRangeReduceCoefficient();
             return rnd.Next(int.MinValue / rangeReducer, int.MaxValue / rangeReducer);
         }
 
-        private static double RandDouble()
+        private static double GenerateRandDouble()
         {
-            var rangeReducer = RangeReduceCoefficient();
+            var rangeReducer = GetRangeReduceCoefficient();
             var number = rnd.NextDouble() * 2d - 1d;
             return number * int.MaxValue / rangeReducer;
         }
 
-        private static int RangeReduceCoefficient()
+        private static int GetRangeReduceCoefficient()
         {
             int reduceCoeff = 1;
             bool isRangeReduce = rnd.Next(0, 2) > 0;
