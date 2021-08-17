@@ -39,18 +39,20 @@ namespace WinFormsApp
             this.numUpDownColumnsInArr = new System.Windows.Forms.NumericUpDown();
             this.labelSignBetweenArrSizes = new System.Windows.Forms.Label();
             this.labelArrSizes = new System.Windows.Forms.Label();
-            this.textBoxUnsortedArr = new System.Windows.Forms.TextBox();
-            this.textBoxSortedArr = new System.Windows.Forms.TextBox();
             this.buttonDoSort = new System.Windows.Forms.Button();
             this.comboBoxSelectedSorter = new System.Windows.Forms.ComboBox();
             this.labelSelectSorter = new System.Windows.Forms.Label();
             this.groupBoxRandomArrInit = new System.Windows.Forms.GroupBox();
             this.trackBarSortSlower = new System.Windows.Forms.TrackBar();
             this.labelSortSlower = new System.Windows.Forms.Label();
+            this.dataGridViewUnsortedArr = new System.Windows.Forms.DataGridView();
+            this.dataGridViewSortedArr = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBoxRandomArrInit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxFilePath
@@ -128,46 +130,22 @@ namespace WinFormsApp
             this.numUpDownColumnsInArr.TabIndex = 7;
             this.numUpDownColumnsInArr.ValueChanged += new System.EventHandler(this.numUpDownColumnsInArr_ValueChanged);
             // 
-            // labelBtwSizesOfArr
+            // labelSignBetweenArrSizes
             // 
             this.labelSignBetweenArrSizes.AutoSize = true;
             this.labelSignBetweenArrSizes.Location = new System.Drawing.Point(312, 118);
-            this.labelSignBetweenArrSizes.Name = "labelBtwSizesOfArr";
+            this.labelSignBetweenArrSizes.Name = "labelSignBetweenArrSizes";
             this.labelSignBetweenArrSizes.Size = new System.Drawing.Size(12, 13);
             this.labelSignBetweenArrSizes.TabIndex = 8;
             this.labelSignBetweenArrSizes.Text = "x";
             // 
-            // labelSizesOfArr
+            // labelArrSizes
             // 
             this.labelArrSizes.Location = new System.Drawing.Point(260, 87);
-            this.labelArrSizes.Name = "labelSizesOfArr";
+            this.labelArrSizes.Name = "labelArrSizes";
             this.labelArrSizes.Size = new System.Drawing.Size(110, 25);
             this.labelArrSizes.TabIndex = 9;
             this.labelArrSizes.Text = "Size of the 2D Array:";
-            // 
-            // textBoxUnsortedArr
-            // 
-            this.textBoxUnsortedArr.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxUnsortedArr.Location = new System.Drawing.Point(18, 161);
-            this.textBoxUnsortedArr.Multiline = true;
-            this.textBoxUnsortedArr.Name = "textBoxUnsortedArr";
-            this.textBoxUnsortedArr.ReadOnly = true;
-            this.textBoxUnsortedArr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxUnsortedArr.Size = new System.Drawing.Size(317, 286);
-            this.textBoxUnsortedArr.TabIndex = 10;
-            this.textBoxUnsortedArr.WordWrap = false;
-            // 
-            // textBoxSortedArr
-            // 
-            this.textBoxSortedArr.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxSortedArr.Location = new System.Drawing.Point(379, 161);
-            this.textBoxSortedArr.Multiline = true;
-            this.textBoxSortedArr.Name = "textBoxSortedArr";
-            this.textBoxSortedArr.ReadOnly = true;
-            this.textBoxSortedArr.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxSortedArr.Size = new System.Drawing.Size(315, 286);
-            this.textBoxSortedArr.TabIndex = 11;
-            this.textBoxSortedArr.WordWrap = false;
             // 
             // buttonDoSort
             // 
@@ -233,18 +211,57 @@ namespace WinFormsApp
             this.labelSortSlower.TabIndex = 17;
             this.labelSortSlower.Text = "Slower:";
             // 
+            // dataGridViewUnsortedArr
+            // 
+            this.dataGridViewUnsortedArr.AllowUserToAddRows = false;
+            this.dataGridViewUnsortedArr.AllowUserToDeleteRows = false;
+            this.dataGridViewUnsortedArr.AllowUserToResizeColumns = false;
+            this.dataGridViewUnsortedArr.AllowUserToResizeRows = false;
+            this.dataGridViewUnsortedArr.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dataGridViewUnsortedArr.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridViewUnsortedArr.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dataGridViewUnsortedArr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUnsortedArr.ColumnHeadersVisible = false;
+            this.dataGridViewUnsortedArr.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dataGridViewUnsortedArr.Location = new System.Drawing.Point(18, 172);
+            this.dataGridViewUnsortedArr.Name = "dataGridViewUnsortedArr";
+            this.dataGridViewUnsortedArr.ReadOnly = true;
+            this.dataGridViewUnsortedArr.RowHeadersVisible = false;
+            this.dataGridViewUnsortedArr.ShowEditingIcon = false;
+            this.dataGridViewUnsortedArr.Size = new System.Drawing.Size(306, 275);
+            this.dataGridViewUnsortedArr.TabIndex = 18;
+            // 
+            // dataGridViewSortedArr
+            // 
+            this.dataGridViewSortedArr.AllowUserToAddRows = false;
+            this.dataGridViewSortedArr.AllowUserToDeleteRows = false;
+            this.dataGridViewSortedArr.AllowUserToResizeColumns = false;
+            this.dataGridViewSortedArr.AllowUserToResizeRows = false;
+            this.dataGridViewSortedArr.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dataGridViewSortedArr.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridViewSortedArr.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dataGridViewSortedArr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSortedArr.ColumnHeadersVisible = false;
+            this.dataGridViewSortedArr.Location = new System.Drawing.Point(389, 172);
+            this.dataGridViewSortedArr.Name = "dataGridViewSortedArr";
+            this.dataGridViewSortedArr.ReadOnly = true;
+            this.dataGridViewSortedArr.RowHeadersVisible = false;
+            this.dataGridViewSortedArr.ShowEditingIcon = false;
+            this.dataGridViewSortedArr.Size = new System.Drawing.Size(305, 275);
+            this.dataGridViewSortedArr.TabIndex = 19;
+            // 
             // SortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 459);
+            this.Controls.Add(this.dataGridViewSortedArr);
+            this.Controls.Add(this.dataGridViewUnsortedArr);
             this.Controls.Add(this.labelSortSlower);
             this.Controls.Add(this.trackBarSortSlower);
             this.Controls.Add(this.labelSelectSorter);
             this.Controls.Add(this.comboBoxSelectedSorter);
             this.Controls.Add(this.buttonDoSort);
-            this.Controls.Add(this.textBoxSortedArr);
-            this.Controls.Add(this.textBoxUnsortedArr);
             this.Controls.Add(this.labelArrSizes);
             this.Controls.Add(this.labelSignBetweenArrSizes);
             this.Controls.Add(this.numUpDownColumnsInArr);
@@ -261,6 +278,8 @@ namespace WinFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).EndInit();
             this.groupBoxRandomArrInit.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,14 +297,14 @@ namespace WinFormsApp
         private System.Windows.Forms.NumericUpDown numUpDownColumnsInArr;
         private System.Windows.Forms.Label labelSignBetweenArrSizes;
         private System.Windows.Forms.Label labelArrSizes;
-        private System.Windows.Forms.TextBox textBoxUnsortedArr;
-        private System.Windows.Forms.TextBox textBoxSortedArr;
         private System.Windows.Forms.Button buttonDoSort;
         private System.Windows.Forms.ComboBox comboBoxSelectedSorter;
         private System.Windows.Forms.Label labelSelectSorter;
         private System.Windows.Forms.GroupBox groupBoxRandomArrInit;
         private System.Windows.Forms.TrackBar trackBarSortSlower;
         private System.Windows.Forms.Label labelSortSlower;
+        private System.Windows.Forms.DataGridView dataGridViewUnsortedArr;
+        private System.Windows.Forms.DataGridView dataGridViewSortedArr;
     }
 }
 

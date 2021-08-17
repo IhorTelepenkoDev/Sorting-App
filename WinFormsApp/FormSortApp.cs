@@ -69,8 +69,7 @@ namespace WinFormsApp
             if(comboBoxSelectedSorter.SelectedIndex > 0)
                 buttonDoSort.Enabled = true;
 
-            textBoxUnsortedArr.Text =
-                UIHelpFunctionality.Arr2dToString(BasicArray2D, "    ");
+            PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
         }
 
         private void textBoxFilePath_TextChanged(object sender, EventArgs e)
@@ -100,8 +99,7 @@ namespace WinFormsApp
                     if (ArrayElemType == typeof(string))
                         BasicArray2D = new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
 
-                    textBoxUnsortedArr.Text =
-                        UIHelpFunctionality.Arr2dToString(BasicArray2D, "   ");
+                    PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
 
                     if (comboBoxSelectedSorter.SelectedIndex > 0)
                         buttonDoSort.Enabled = true;
@@ -178,7 +176,7 @@ namespace WinFormsApp
 
             if (comboBoxSelectedSorter.SelectedIndex > 0)
             {
-                if (textBoxUnsortedArr.Text != "")
+                if (dataGridViewUnsortedArr.RowCount != 0)
                     buttonDoSort.Enabled = true;
             }
             else buttonDoSort.Enabled = false;
@@ -239,12 +237,41 @@ namespace WinFormsApp
 
         private void CleanUnsortedArrayTextBox()
         {
-            textBoxUnsortedArr.Text = null;
+            dataGridViewUnsortedArr.Rows.Clear();
         }
 
         private void CleanSortedArrayTextBox()
         {
-            textBoxSortedArr.Text = null;
+            dataGridViewSortedArr.DataSource = null;
+        }
+
+        private void PrintArr2dIntoGridView(dynamic array2d, DataGridView dataGridVewField)
+        {
+            try
+            {
+                dataGridVewField.RowCount = 0;
+
+                int height = array2d.GetLength(0);
+                int width = array2d.GetLength(1);
+
+                dataGridVewField.ColumnCount = width;
+
+                for (int rowIndex = 0; rowIndex < height; rowIndex++)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dataGridVewField);
+
+                    for (int columnIndex = 0; columnIndex < width; columnIndex++)
+                    {
+                        row.Cells[columnIndex].Value = array2d[rowIndex, columnIndex];
+                    }
+
+                    dataGridVewField.Rows.Add(row);
+                }
+
+                dataGridVewField.Rows[0].Selected = false;
+            }
+            catch { }
         }
 
         private void PerformSorting(int indexOfSortType)
@@ -252,13 +279,13 @@ namespace WinFormsApp
             try
             {
                 var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
-
                 var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
-                textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
+                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, dataGridViewSortedArr));
+                Invoke(resultArrPrinter);
+                
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-                chosenSorter.FiredActionOnChangeOfElementsInArray = () => textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
-
+                //chosenSorter.FiredActionOnChangeOfElementsInArray = () => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, dataGridViewSortedArr);
 
                 trackBarSortSlower.Enabled = false;
                 buttonDoSort.Enabled = false;
@@ -267,8 +294,8 @@ namespace WinFormsApp
                 comboBoxSelectedSorter.Enabled = false;
 
                 chosenSorter.Sort(sortingCopyOfBasic2dArr);
-                textBoxSortedArr.Text = UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr, "    ");
 
+                Invoke(resultArrPrinter);
             }
             catch { }
 

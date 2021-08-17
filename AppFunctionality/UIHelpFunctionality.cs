@@ -23,7 +23,7 @@ namespace AppFunctionality
             }
         }
 
-        public static string Arr2dToString<T>(T[,] matrixArr2d, string delimiter = " ")
+        /*public static string Arr2dToString<T>(T[,] matrixArr2d, string delimiter = " ")
         {
             if (matrixArr2d == null)
                 return null;
@@ -41,7 +41,7 @@ namespace AppFunctionality
             }
 
             return strBuilder.ToString();
-        }
+        }*/
 
         public static dynamic Copy2dArr(dynamic array2d, Type arrType)
         {
