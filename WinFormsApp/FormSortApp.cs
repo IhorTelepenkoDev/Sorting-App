@@ -186,7 +186,8 @@ namespace WinFormsApp
         {
             if(comboBoxSelectedSorter.SelectedIndex > 0 && comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1)
             {
-                Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1)));
+                var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex - 1;
+                Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex)));
                 SortCaller.Start();
                 //PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1);    //index of received Sorter - as parameter
             }
@@ -285,7 +286,9 @@ namespace WinFormsApp
                 Invoke(resultArrPrinter);
                 
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-                //chosenSorter.FiredActionOnChangeOfElementsInArray = () => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, dataGridViewSortedArr);
+
+                Action<Tuple<int,int>, Tuple<int, int>> swappedElemsShower = VisualSortedArrUpdateWhenElementsSwapped;
+                chosenSorter.FiredActionOnChangeOfElementsInArray = swappedElemsShower;
 
                 trackBarSortSlower.Enabled = false;
                 buttonDoSort.Enabled = false;
@@ -304,6 +307,30 @@ namespace WinFormsApp
             buttonRandomArrayAssign.Enabled = true;
             buttonReadArrByPath.Enabled = true;
             comboBoxSelectedSorter.Enabled = true;
+        }
+
+        private void VisualSortedArrUpdateWhenElementsSwapped(Tuple<int,int> indicesOfElem1, Tuple<int, int> indicesOfElem2)
+        {
+
+            CleanGridViewCellsBackColor(dataGridViewSortedArr);
+            dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Style.BackColor = Color.Beige;
+            dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Style.BackColor = Color.Beige;
+
+            var tempCellVal = dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Value;
+            dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Value = dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Value;
+            dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Value = tempCellVal;
+        }
+
+        private void CleanGridViewCellsBackColor(DataGridView dataGridView)
+        {
+            for (var indexRow = 0;indexRow < dataGridView.Rows.Count; indexRow++)
+            { 
+                for(var indexColumn = 0; indexColumn < dataGridView.Columns.Count; indexColumn++)
+                {
+                    if (dataGridView[indexColumn, indexRow].Style.BackColor != Color.Empty)
+                        dataGridView[indexColumn, indexRow].Style.BackColor = Color.Empty;
+                }
+            }
         }
     }
 }
