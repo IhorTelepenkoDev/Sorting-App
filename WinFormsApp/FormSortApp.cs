@@ -9,6 +9,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,11 +26,16 @@ namespace WinFormsApp
         public Type ArrayElemType { get; set; }
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
+        private List<bool> isSortRunningOnTab;
+
         public SortApp()
         {
             InitializeComponent();
             SetBasicVisibleElements();
-            //
+
+            isSortRunningOnTab = new List<bool>();
+            isSortRunningOnTab.Add(false);  //the first default tab
+            tabControlSortedArrResult.Selecting += new TabControlCancelEventHandler(tabControlSortedArrResult_SelectedTabChanged);
         }
 
         private void buttonReadArrByPath_Click(object sender, EventArgs e)
@@ -196,6 +202,148 @@ namespace WinFormsApp
                 CleanSortedArrayTextBox();
         }
 
+        private void PerformSorting(int indexOfSortType)
+        {
+            var currentlySelectedTabIndex = tabControlSortedArrResult.SelectedIndex;
+            var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
+            try
+            {
+                var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
+                var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
+
+                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
+                Invoke(resultArrPrinter);
+
+                chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+
+                chosenSorter.FiredActionOnChangeOfElementsInArray = VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
+
+                DisableBasicSortConfigControls();
+                isSortRunningOnTab[currentlySelectedTabIndex] = true;
+
+                chosenSorter.Sort(sortingCopyOfBasic2dArr);
+
+                Invoke(resultArrPrinter);
+            }
+            catch { }
+            if(tabControlSortedArrResult.SelectedIndex == currentlySelectedTabIndex)
+                EnableBasicSortConfigControls();
+            isSortRunningOnTab[currentlySelectedTabIndex] = false;
+        }
+
+        private void buttonAddSortTab_Click(object sender, EventArgs e)
+        {
+            TabPage newSortTab = new TabPage();
+            newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
+            newSortTab.Text = "Sort " + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
+
+            CreateSortedArrGridView(newSortTab);
+
+            tabControlSortedArrResult.TabPages.Add(newSortTab);
+
+            isSortRunningOnTab.Add(false);
+        }
+
+        private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)
+        {            
+            TabPage currentTab = (sender as TabControl).SelectedTab;
+            int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
+
+            if (isSortRunningOnTab[currentTabIndex] == false)
+                EnableBasicSortConfigControls();
+            else
+            {
+                DisableBasicSortConfigControls();
+            }
+
+            //textBoxFilePath.Text = current.Name;
+            // Validate the current page. To cancel the select, use:
+            //e.Cancel = true;
+        }
+
+        private void PrintArr2dIntoGridView(dynamic array2d, DataGridView dataGridVewField)
+        {
+            try
+            {
+                dataGridVewField.RowCount = 0;
+
+                int height = array2d.GetLength(0);
+                int width = array2d.GetLength(1);
+
+                dataGridVewField.ColumnCount = width;
+
+                for (int rowIndex = 0; rowIndex < height; rowIndex++)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dataGridVewField);
+
+                    for (int columnIndex = 0; columnIndex < width; columnIndex++)
+                    {
+                        row.Cells[columnIndex].Value = array2d[rowIndex, columnIndex];
+                    }
+
+                    dataGridVewField.Rows.Add(row);
+                }
+
+                dataGridVewField.Rows[0].Selected = false;
+            }
+            catch { }
+        }
+
+        private Action<Tuple<int, int>, Tuple<int, int>> VisualArrChangeWhenElementsSwapped
+            (DataGridView selectedSortedArrGridView)
+        {   
+            Action<Tuple<int, int>, Tuple<int, int>> swappedElemsAction = (swappedElem1Indices, swappedElem2Indices) =>
+            {
+                CleanGridViewCellsBackColor(selectedSortedArrGridView);
+                selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Style.BackColor = Color.Beige;
+                selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Style.BackColor = Color.Beige;
+
+                var tempCellVal = selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Value;
+                selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Value = 
+                    selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Value;
+                selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Value = tempCellVal;
+            };
+
+            return swappedElemsAction;
+        }
+
+        private DataGridView GetCurrentSortedArrGridView()
+        {
+            var selectedTabPage = tabControlSortedArrResult.TabPages[tabControlSortedArrResult.SelectedIndex];
+
+            DataGridView currentGridView = 
+                selectedTabPage.Controls["dataGridViewSortedArr" + tabControlSortedArrResult.TabPages.IndexOf(selectedTabPage).ToString()] as DataGridView;
+
+            return currentGridView;
+        }
+
+        private void CreateSortedArrGridView(TabPage selectedTabPage)
+        {
+            var templateGridView = dataGridViewSortedArr0;
+            var createdGridView = new DataGridView();
+            
+            createdGridView.Name = "dataGridViewSortedArr" + (Convert.ToInt32(Regex.Match(selectedTabPage.Name, @"\d+$").Value) - 1).ToString();
+            createdGridView.Size = templateGridView.Size;
+            createdGridView.Location = templateGridView.Location;
+            createdGridView.BackgroundColor = templateGridView.BackgroundColor;
+            createdGridView.CellBorderStyle = templateGridView.CellBorderStyle;
+            createdGridView.ColumnHeadersVisible = templateGridView.ColumnHeadersVisible;
+            createdGridView.RowHeadersVisible = templateGridView.RowHeadersVisible;
+            createdGridView.RowTemplate = templateGridView.RowTemplate;
+            createdGridView.ShowEditingIcon = templateGridView.ShowEditingIcon;
+            createdGridView.AllowUserToAddRows = templateGridView.AllowUserToAddRows;
+            createdGridView.AllowUserToDeleteRows = templateGridView.AllowUserToDeleteRows;
+            createdGridView.AllowUserToResizeColumns = templateGridView.AllowUserToResizeColumns;
+            createdGridView.AllowUserToResizeRows = templateGridView.AllowUserToResizeRows;
+            createdGridView.ColumnHeadersHeight = templateGridView.ColumnHeadersHeight;
+            createdGridView.ReadOnly = templateGridView.ReadOnly;
+            createdGridView.TabIndex = templateGridView.TabIndex;
+            createdGridView.AutoSizeColumnsMode = templateGridView.AutoSizeColumnsMode;
+
+            selectedTabPage.Controls.Add(createdGridView);
+        }
+
         private void FillArrDataTypesDropDown(string[] namesOfTypes = null)
         {
             comboBoxArrDataType.Items.Clear();
@@ -243,65 +391,11 @@ namespace WinFormsApp
 
         private void CleanSortedArrayTextBox()
         {
-            dataGridViewSortedArr.DataSource = null;
+            GetCurrentSortedArrGridView().Rows.Clear();
         }
 
-        private void PrintArr2dIntoGridView(dynamic array2d, DataGridView dataGridVewField)
+        private void EnableBasicSortConfigControls()
         {
-            try
-            {
-                dataGridVewField.RowCount = 0;
-
-                int height = array2d.GetLength(0);
-                int width = array2d.GetLength(1);
-
-                dataGridVewField.ColumnCount = width;
-
-                for (int rowIndex = 0; rowIndex < height; rowIndex++)
-                {
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(dataGridVewField);
-
-                    for (int columnIndex = 0; columnIndex < width; columnIndex++)
-                    {
-                        row.Cells[columnIndex].Value = array2d[rowIndex, columnIndex];
-                    }
-
-                    dataGridVewField.Rows.Add(row);
-                }
-
-                dataGridVewField.Rows[0].Selected = false;
-            }
-            catch { }
-        }
-
-        private void PerformSorting(int indexOfSortType)
-        {
-            try
-            {
-                var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
-                var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
-
-                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, dataGridViewSortedArr));
-                Invoke(resultArrPrinter);
-                
-                chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-
-                Action<Tuple<int,int>, Tuple<int, int>> swappedElemsShower = VisualSortedArrUpdateWhenElementsSwapped;
-                chosenSorter.FiredActionOnChangeOfElementsInArray = swappedElemsShower;
-
-                trackBarSortSlower.Enabled = false;
-                buttonDoSort.Enabled = false;
-                buttonRandomArrayAssign.Enabled = false;
-                buttonReadArrByPath.Enabled = false;
-                comboBoxSelectedSorter.Enabled = false;
-
-                chosenSorter.Sort(sortingCopyOfBasic2dArr);
-
-                Invoke(resultArrPrinter);
-            }
-            catch { }
-
             trackBarSortSlower.Enabled = true;
             buttonDoSort.Enabled = true;
             buttonRandomArrayAssign.Enabled = true;
@@ -309,23 +403,20 @@ namespace WinFormsApp
             comboBoxSelectedSorter.Enabled = true;
         }
 
-        private void VisualSortedArrUpdateWhenElementsSwapped(Tuple<int,int> indicesOfElem1, Tuple<int, int> indicesOfElem2)
+        private void DisableBasicSortConfigControls()
         {
-
-            CleanGridViewCellsBackColor(dataGridViewSortedArr);
-            dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Style.BackColor = Color.Beige;
-            dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Style.BackColor = Color.Beige;
-
-            var tempCellVal = dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Value;
-            dataGridViewSortedArr[indicesOfElem1.Item2, indicesOfElem1.Item1].Value = dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Value;
-            dataGridViewSortedArr[indicesOfElem2.Item2, indicesOfElem2.Item1].Value = tempCellVal;
+            trackBarSortSlower.Enabled = false;
+            buttonDoSort.Enabled = false;
+            buttonRandomArrayAssign.Enabled = false;
+            buttonReadArrByPath.Enabled = false;
+            comboBoxSelectedSorter.Enabled = false;
         }
 
         private void CleanGridViewCellsBackColor(DataGridView dataGridView)
         {
-            for (var indexRow = 0;indexRow < dataGridView.Rows.Count; indexRow++)
-            { 
-                for(var indexColumn = 0; indexColumn < dataGridView.Columns.Count; indexColumn++)
+            for (var indexRow = 0; indexRow < dataGridView.Rows.Count; indexRow++)
+            {
+                for (var indexColumn = 0; indexColumn < dataGridView.Columns.Count; indexColumn++)
                 {
                     if (dataGridView[indexColumn, indexRow].Style.BackColor != Color.Empty)
                         dataGridView[indexColumn, indexRow].Style.BackColor = Color.Empty;

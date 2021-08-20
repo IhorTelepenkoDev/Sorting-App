@@ -46,13 +46,18 @@ namespace WinFormsApp
             this.trackBarSortSlower = new System.Windows.Forms.TrackBar();
             this.labelSortSlower = new System.Windows.Forms.Label();
             this.dataGridViewUnsortedArr = new System.Windows.Forms.DataGridView();
-            this.dataGridViewSortedArr = new System.Windows.Forms.DataGridView();
+            this.tabControlSortedArrResult = new System.Windows.Forms.TabControl();
+            this.tabPageSortedArr1 = new System.Windows.Forms.TabPage();
+            this.dataGridViewSortedArr0 = new System.Windows.Forms.DataGridView();
+            this.buttonAddSortTab = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBoxRandomArrInit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr)).BeginInit();
+            this.tabControlSortedArrResult.SuspendLayout();
+            this.tabPageSortedArr1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxFilePath
@@ -223,7 +228,7 @@ namespace WinFormsApp
             this.dataGridViewUnsortedArr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewUnsortedArr.ColumnHeadersVisible = false;
             this.dataGridViewUnsortedArr.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dataGridViewUnsortedArr.Location = new System.Drawing.Point(18, 172);
+            this.dataGridViewUnsortedArr.Location = new System.Drawing.Point(18, 174);
             this.dataGridViewUnsortedArr.Name = "dataGridViewUnsortedArr";
             this.dataGridViewUnsortedArr.ReadOnly = true;
             this.dataGridViewUnsortedArr.RowHeadersVisible = false;
@@ -231,31 +236,67 @@ namespace WinFormsApp
             this.dataGridViewUnsortedArr.Size = new System.Drawing.Size(306, 275);
             this.dataGridViewUnsortedArr.TabIndex = 18;
             // 
-            // dataGridViewSortedArr
+            // tabControlSortedArrResult
             // 
-            this.dataGridViewSortedArr.AllowUserToAddRows = false;
-            this.dataGridViewSortedArr.AllowUserToDeleteRows = false;
-            this.dataGridViewSortedArr.AllowUserToResizeColumns = false;
-            this.dataGridViewSortedArr.AllowUserToResizeRows = false;
-            this.dataGridViewSortedArr.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dataGridViewSortedArr.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.dataGridViewSortedArr.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dataGridViewSortedArr.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewSortedArr.ColumnHeadersVisible = false;
-            this.dataGridViewSortedArr.Location = new System.Drawing.Point(389, 172);
-            this.dataGridViewSortedArr.Name = "dataGridViewSortedArr";
-            this.dataGridViewSortedArr.ReadOnly = true;
-            this.dataGridViewSortedArr.RowHeadersVisible = false;
-            this.dataGridViewSortedArr.ShowEditingIcon = false;
-            this.dataGridViewSortedArr.Size = new System.Drawing.Size(305, 275);
-            this.dataGridViewSortedArr.TabIndex = 19;
+            this.tabControlSortedArrResult.Controls.Add(this.tabPageSortedArr1);
+            this.tabControlSortedArrResult.Location = new System.Drawing.Point(361, 149);
+            this.tabControlSortedArrResult.Name = "tabControlSortedArrResult";
+            this.tabControlSortedArrResult.SelectedIndex = 0;
+            this.tabControlSortedArrResult.Size = new System.Drawing.Size(319, 306);
+            this.tabControlSortedArrResult.TabIndex = 20;
+            // 
+            // tabPageSortedArr1
+            // 
+            this.tabPageSortedArr1.Controls.Add(this.dataGridViewSortedArr0);
+            this.tabPageSortedArr1.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSortedArr1.Name = "tabPageSortedArr1";
+            this.tabPageSortedArr1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSortedArr1.Size = new System.Drawing.Size(311, 280);
+            this.tabPageSortedArr1.TabIndex = 0;
+            this.tabPageSortedArr1.Text = "Sort 1";
+            this.tabPageSortedArr1.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewSortedArr0
+            // 
+            this.dataGridViewSortedArr0.AllowUserToAddRows = false;
+            this.dataGridViewSortedArr0.AllowUserToDeleteRows = false;
+            this.dataGridViewSortedArr0.AllowUserToResizeColumns = false;
+            this.dataGridViewSortedArr0.AllowUserToResizeRows = false;
+            this.dataGridViewSortedArr0.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dataGridViewSortedArr0.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridViewSortedArr0.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dataGridViewSortedArr0.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSortedArr0.ColumnHeadersVisible = false;
+            this.dataGridViewSortedArr0.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewSortedArr0.Name = "dataGridViewSortedArr0";
+            this.dataGridViewSortedArr0.ReadOnly = true;
+            this.dataGridViewSortedArr0.RowHeadersVisible = false;
+            this.dataGridViewSortedArr0.ShowEditingIcon = false;
+            this.dataGridViewSortedArr0.Size = new System.Drawing.Size(305, 275);
+            this.dataGridViewSortedArr0.TabIndex = 19;
+            // 
+            // buttonAddSortTab
+            // 
+            this.buttonAddSortTab.AutoSize = true;
+            this.buttonAddSortTab.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.buttonAddSortTab.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonAddSortTab.Location = new System.Drawing.Point(339, 149);
+            this.buttonAddSortTab.Name = "buttonAddSortTab";
+            this.buttonAddSortTab.Size = new System.Drawing.Size(23, 23);
+            this.buttonAddSortTab.TabIndex = 21;
+            this.buttonAddSortTab.Text = "+";
+            this.buttonAddSortTab.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonAddSortTab.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.buttonAddSortTab.UseVisualStyleBackColor = false;
+            this.buttonAddSortTab.Click += new System.EventHandler(this.buttonAddSortTab_Click);
             // 
             // SortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 459);
-            this.Controls.Add(this.dataGridViewSortedArr);
+            this.Controls.Add(this.buttonAddSortTab);
+            this.Controls.Add(this.tabControlSortedArrResult);
             this.Controls.Add(this.dataGridViewUnsortedArr);
             this.Controls.Add(this.labelSortSlower);
             this.Controls.Add(this.trackBarSortSlower);
@@ -279,7 +320,9 @@ namespace WinFormsApp
             this.groupBoxRandomArrInit.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr)).EndInit();
+            this.tabControlSortedArrResult.ResumeLayout(false);
+            this.tabPageSortedArr1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,7 +347,10 @@ namespace WinFormsApp
         private System.Windows.Forms.TrackBar trackBarSortSlower;
         private System.Windows.Forms.Label labelSortSlower;
         private System.Windows.Forms.DataGridView dataGridViewUnsortedArr;
-        private System.Windows.Forms.DataGridView dataGridViewSortedArr;
+        private System.Windows.Forms.TabControl tabControlSortedArrResult;
+        private System.Windows.Forms.TabPage tabPageSortedArr1;
+        private System.Windows.Forms.DataGridView dataGridViewSortedArr0;
+        private System.Windows.Forms.Button buttonAddSortTab;
     }
 }
 
