@@ -47,7 +47,7 @@ namespace WinFormsApp
             this.labelSortSlower = new System.Windows.Forms.Label();
             this.dataGridViewUnsortedArr = new System.Windows.Forms.DataGridView();
             this.tabControlSortedArrResult = new System.Windows.Forms.TabControl();
-            this.tabPageSortedArr1 = new System.Windows.Forms.TabPage();
+            this.tabPageSortedArr0 = new System.Windows.Forms.TabPage();
             this.dataGridViewSortedArr0 = new System.Windows.Forms.DataGridView();
             this.buttonAddSortTab = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
@@ -56,7 +56,7 @@ namespace WinFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).BeginInit();
             this.tabControlSortedArrResult.SuspendLayout();
-            this.tabPageSortedArr1.SuspendLayout();
+            this.tabPageSortedArr0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).BeginInit();
             this.SuspendLayout();
             // 
@@ -238,23 +238,23 @@ namespace WinFormsApp
             // 
             // tabControlSortedArrResult
             // 
-            this.tabControlSortedArrResult.Controls.Add(this.tabPageSortedArr1);
+            this.tabControlSortedArrResult.Controls.Add(this.tabPageSortedArr0);
             this.tabControlSortedArrResult.Location = new System.Drawing.Point(361, 149);
             this.tabControlSortedArrResult.Name = "tabControlSortedArrResult";
             this.tabControlSortedArrResult.SelectedIndex = 0;
             this.tabControlSortedArrResult.Size = new System.Drawing.Size(319, 306);
             this.tabControlSortedArrResult.TabIndex = 20;
             // 
-            // tabPageSortedArr1
+            // tabPageSortedArr0
             // 
-            this.tabPageSortedArr1.Controls.Add(this.dataGridViewSortedArr0);
-            this.tabPageSortedArr1.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSortedArr1.Name = "tabPageSortedArr1";
-            this.tabPageSortedArr1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSortedArr1.Size = new System.Drawing.Size(311, 280);
-            this.tabPageSortedArr1.TabIndex = 0;
-            this.tabPageSortedArr1.Text = "Sort 1";
-            this.tabPageSortedArr1.UseVisualStyleBackColor = true;
+            this.tabPageSortedArr0.Controls.Add(this.dataGridViewSortedArr0);
+            this.tabPageSortedArr0.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSortedArr0.Name = "tabPageSortedArr0";
+            this.tabPageSortedArr0.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSortedArr0.Size = new System.Drawing.Size(311, 280);
+            this.tabPageSortedArr0.TabIndex = 0;
+            this.tabPageSortedArr0.Text = "Sort 1";
+            this.tabPageSortedArr0.UseVisualStyleBackColor = true;
             // 
             // dataGridViewSortedArr0
             // 
@@ -321,7 +321,7 @@ namespace WinFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).EndInit();
             this.tabControlSortedArrResult.ResumeLayout(false);
-            this.tabPageSortedArr1.ResumeLayout(false);
+            this.tabPageSortedArr0.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -348,7 +348,7 @@ namespace WinFormsApp
         private System.Windows.Forms.Label labelSortSlower;
         private System.Windows.Forms.DataGridView dataGridViewUnsortedArr;
         private System.Windows.Forms.TabControl tabControlSortedArrResult;
-        private System.Windows.Forms.TabPage tabPageSortedArr1;
+        private System.Windows.Forms.TabPage tabPageSortedArr0;
         private System.Windows.Forms.DataGridView dataGridViewSortedArr0;
         private System.Windows.Forms.Button buttonAddSortTab;
     }

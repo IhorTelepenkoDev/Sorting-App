@@ -173,19 +173,33 @@ namespace WinFormsApp
                                             select sortingInstance.SortName).ToArray();
 
                         FillAvailableSortsDropDown(namesOfSorts);
+                        foreach (var sortName in namesOfSorts)
+                            CreateSortedArrTabPage(sortName);
                     }
                     else FillAvailableSortsDropDown();
                 }
 
                 comboBoxSelectedSorter.DroppedDown = true;
             }
-
-            if (comboBoxSelectedSorter.SelectedIndex > 0)
+            else
             {
-                if (dataGridViewUnsortedArr.RowCount != 0)
-                    buttonDoSort.Enabled = true;
+                if(comboBoxSelectedSorter.SelectedIndex !=0)
+                {
+                    tabControlSortedArrResult.SelectedTab = tabControlSortedArrResult.TabPages[comboBoxSelectedSorter.SelectedIndex - 1];
+                }
+
+                if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
+                {
+                    if (comboBoxSelectedSorter.SelectedIndex > 0)
+                    {
+                        if (dataGridViewUnsortedArr.RowCount != 0)
+                            buttonDoSort.Enabled = true;
+                    }
+                    else buttonDoSort.Enabled = false;
+                }
             }
-            else buttonDoSort.Enabled = false;
+                               
+
         }
 
         private void buttonDoSort_Click(object sender, EventArgs e)
@@ -233,11 +247,24 @@ namespace WinFormsApp
 
         private void buttonAddSortTab_Click(object sender, EventArgs e)
         {
-            TabPage newSortTab = new TabPage();
+            /*TabPage newSortTab = new TabPage();
             newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
             newSortTab.Text = "Sort " + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
 
             CreateSortedArrGridView(newSortTab);
+
+            tabControlSortedArrResult.TabPages.Add(newSortTab);
+
+            isSortRunningOnTab.Add(false);*/
+        }
+
+        private void CreateSortedArrTabPage(string sortingName)
+        {
+            TabPage newSortTab = new TabPage();
+            newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count).ToString() + sortingName;
+            newSortTab.Text = sortingName;
+
+            CreateSortedArrGridView(newSortTab, tabControlSortedArrResult.TabPages.Count - 1);
 
             tabControlSortedArrResult.TabPages.Add(newSortTab);
 
@@ -248,6 +275,8 @@ namespace WinFormsApp
         {            
             TabPage currentTab = (sender as TabControl).SelectedTab;
             int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
+
+            comboBoxArrDataType.SelectedIndex = currentTabIndex + 1;
 
             if (isSortRunningOnTab[currentTabIndex] == false)
                 EnableBasicSortConfigControls();
@@ -317,12 +346,13 @@ namespace WinFormsApp
             return currentGridView;
         }
 
-        private void CreateSortedArrGridView(TabPage selectedTabPage)
+        private void CreateSortedArrGridView(TabPage selectedTabPage, int gridIndex)
         {
             var templateGridView = dataGridViewSortedArr0;
             var createdGridView = new DataGridView();
-            
-            createdGridView.Name = "dataGridViewSortedArr" + (Convert.ToInt32(Regex.Match(selectedTabPage.Name, @"\d+$").Value) - 1).ToString();
+
+            //createdGridView.Name = "dataGridViewSortedArr" + (Convert.ToInt32(Regex.Match(selectedTabPage.Name, @"\d+$").Value) - 1).ToString();
+            createdGridView.Name = "dataGridViewSortedArr" + gridIndex;
             createdGridView.Size = templateGridView.Size;
             createdGridView.Location = templateGridView.Location;
             createdGridView.BackgroundColor = templateGridView.BackgroundColor;
@@ -395,20 +425,20 @@ namespace WinFormsApp
 
         private void EnableBasicSortConfigControls()
         {
-            trackBarSortSlower.Enabled = true;
+            //trackBarSortSlower.Enabled = true;
             buttonDoSort.Enabled = true;
             buttonRandomArrayAssign.Enabled = true;
             buttonReadArrByPath.Enabled = true;
-            comboBoxSelectedSorter.Enabled = true;
+            //comboBoxSelectedSorter.Enabled = true;
         }
 
         private void DisableBasicSortConfigControls()
         {
-            trackBarSortSlower.Enabled = false;
+            //trackBarSortSlower.Enabled = false;
             buttonDoSort.Enabled = false;
             buttonRandomArrayAssign.Enabled = false;
             buttonReadArrByPath.Enabled = false;
-            comboBoxSelectedSorter.Enabled = false;
+            //comboBoxSelectedSorter.Enabled = false;
         }
 
         private void CleanGridViewCellsBackColor(DataGridView dataGridView)
