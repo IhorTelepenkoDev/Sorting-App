@@ -195,7 +195,6 @@ namespace WinFormsApp
                 var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex - 1;
                 Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex)));
                 SortCaller.Start();
-                //PerformSorting(comboBoxSelectedSorter.SelectedIndex - 1);    //index of received Sorter - as parameter
             }
 
             if (comboBoxSelectedSorter.SelectedIndex == 0)
@@ -216,7 +215,7 @@ namespace WinFormsApp
 
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
 
-                chosenSorter.FiredActionOnChangeOfElementsInArray = VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
+                chosenSorter.FiredEventOnChangeOfArrayElements += VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
 
                 DisableBasicSortConfigControls();
                 isSortRunningOnTab[currentlySelectedTabIndex] = true;
@@ -226,6 +225,7 @@ namespace WinFormsApp
                 Invoke(resultArrPrinter);
             }
             catch { }
+
             if(tabControlSortedArrResult.SelectedIndex == currentlySelectedTabIndex)
                 EnableBasicSortConfigControls();
             isSortRunningOnTab[currentlySelectedTabIndex] = false;
@@ -256,7 +256,6 @@ namespace WinFormsApp
                 DisableBasicSortConfigControls();
             }
 
-            //textBoxFilePath.Text = current.Name;
             // Validate the current page. To cancel the select, use:
             //e.Cancel = true;
         }
@@ -290,22 +289,22 @@ namespace WinFormsApp
             catch { }
         }
 
-        private Action<Tuple<int, int>, Tuple<int, int>> VisualArrChangeWhenElementsSwapped
+        private ChangeOfArrayElementsHandler VisualArrChangeWhenElementsSwapped
             (DataGridView selectedSortedArrGridView)
-        {   
-            Action<Tuple<int, int>, Tuple<int, int>> swappedElemsAction = (swappedElem1Indices, swappedElem2Indices) =>
+        {
+            ChangeOfArrayElementsHandler swappedElemsDisplay = (rowIndexSwappedElem1, colIndexSwappedElem1, rowIndexSwappedElem2, colIndexSwappedElem2) =>
             {
                 CleanGridViewCellsBackColor(selectedSortedArrGridView);
-                selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Style.BackColor = Color.Beige;
-                selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Style.BackColor = Color.Beige;
+                selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Style.BackColor = Color.Beige;
+                selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Style.BackColor = Color.Beige;
 
-                var tempCellVal = selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Value;
-                selectedSortedArrGridView[swappedElem1Indices.Item2, swappedElem1Indices.Item1].Value = 
-                    selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Value;
-                selectedSortedArrGridView[swappedElem2Indices.Item2, swappedElem2Indices.Item1].Value = tempCellVal;
+                var tempCellVal = selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value;
+                selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value = 
+                    selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value;
+                selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value = tempCellVal;
             };
 
-            return swappedElemsAction;
+            return swappedElemsDisplay;
         }
 
         private DataGridView GetCurrentSortedArrGridView()
