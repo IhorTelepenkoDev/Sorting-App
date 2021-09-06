@@ -27,6 +27,7 @@ namespace WinFormsApp
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
         private List<bool> isSortRunningOnTab;
+        private DataGridView templateSortedArrGrid;
 
         public SortApp()
         {
@@ -34,8 +35,10 @@ namespace WinFormsApp
             SetBasicVisibleElements();
 
             isSortRunningOnTab = new List<bool>();
-            isSortRunningOnTab.Add(false);  //the first default tab
+            isSortRunningOnTab.Add(false);
             tabControlSortedArrResult.Selecting += new TabControlCancelEventHandler(tabControlSortedArrResult_SelectedTabChanged);
+
+            templateSortedArrGrid = dataGridViewSortedArr0;
         }
 
         private void buttonReadArrByPath_Click(object sender, EventArgs e)
@@ -72,7 +75,7 @@ namespace WinFormsApp
                 return;
             }
 
-            if(comboBoxSelectedSorter.SelectedIndex > 0)
+            if(comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
                 buttonDoSort.Enabled = true;
 
             PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
@@ -107,7 +110,7 @@ namespace WinFormsApp
 
                     PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
 
-                    if (comboBoxSelectedSorter.SelectedIndex > 0)
+                    if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
                         buttonDoSort.Enabled = true;
 
                     return;
@@ -155,8 +158,6 @@ namespace WinFormsApp
         {
             if (comboBoxSelectedSorter.SelectedIndex == comboBoxSelectedSorter.Items.Count - 1)   //[select another folder of source]
             {
-                comboBoxSelectedSorter.SelectedIndex = 0;
-
                 string folderPath = null;
                 FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
                 if (folderBrowser.ShowDialog() == DialogResult.OK)
@@ -172,64 +173,58 @@ namespace WinFormsApp
                         var namesOfSorts = (from sortingInstance in InstancesOfAvailableSortTypes
                                             select sortingInstance.SortName).ToArray();
 
+                        isSortRunningOnTab.Clear();
+
                         FillAvailableSortsDropDown(namesOfSorts);
+                        tabControlSortedArrResult.TabPages.Clear();
                         foreach (var sortName in namesOfSorts)
                             CreateSortedArrTabPage(sortName);
                     }
                     else FillAvailableSortsDropDown();
                 }
 
+                comboBoxSelectedSorter.SelectedIndex = 0;
                 comboBoxSelectedSorter.DroppedDown = true;
             }
             else
-            {
-                if(comboBoxSelectedSorter.SelectedIndex !=0)
-                {
-                    tabControlSortedArrResult.SelectedTab = tabControlSortedArrResult.TabPages[comboBoxSelectedSorter.SelectedIndex - 1];
-                }
+            {                
+                    tabControlSortedArrResult.SelectedTab = tabControlSortedArrResult.TabPages[comboBoxSelectedSorter.SelectedIndex];
 
-                if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
-                {
-                    if (comboBoxSelectedSorter.SelectedIndex > 0)
+                    if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
                     {
                         if (dataGridViewUnsortedArr.RowCount != 0)
-                            buttonDoSort.Enabled = true;
-                    }
-                    else buttonDoSort.Enabled = false;
-                }
-            }
-                               
+                             buttonDoSort.Enabled = true;
+                        
+                        else buttonDoSort.Enabled = false;
+                    }             
+            }                    
 
         }
 
         private void buttonDoSort_Click(object sender, EventArgs e)
         {
-            if(comboBoxSelectedSorter.SelectedIndex > 0 && comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1)
-            {
-                var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex - 1;
-                Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex)));
-                SortCaller.Start();
-            }
-
-            if (comboBoxSelectedSorter.SelectedIndex == 0)
-                CleanSortedArrayTextBox();
+            var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex;
+            var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
+            Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, currentlySelectedSortedArrGridView)));
+            SortCaller.Start();
         }
 
-        private void PerformSorting(int indexOfSortType)
+        private void PerformSorting(int indexOfSortType, DataGridView selectedSortedArrGridView)
         {
-            var currentlySelectedTabIndex = tabControlSortedArrResult.SelectedIndex;
-            var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
+            var currentlySelectedTabIndex = indexOfSortType;
+            //var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
+            //var currentlySelectedSortedArrGridView = this.Controls["dataGridViewSortedArr" + currentlySelectedTabIndex.ToString()] as DataGridView;
             try
             {
                 var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
                 var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
 
-                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
+                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, selectedSortedArrGridView));
                 Invoke(resultArrPrinter);
 
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
 
-                chosenSorter.FiredEventOnChangeOfArrayElements += VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
+                chosenSorter.FiredEventOnChangeOfArrayElements += VisualArrChangeWhenElementsSwapped(selectedSortedArrGridView);
 
                 DisableBasicSortConfigControls();
                 isSortRunningOnTab[currentlySelectedTabIndex] = true;
@@ -245,26 +240,13 @@ namespace WinFormsApp
             isSortRunningOnTab[currentlySelectedTabIndex] = false;
         }
 
-        private void buttonAddSortTab_Click(object sender, EventArgs e)
-        {
-            /*TabPage newSortTab = new TabPage();
-            newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
-            newSortTab.Text = "Sort " + (tabControlSortedArrResult.TabPages.Count + 1).ToString();
-
-            CreateSortedArrGridView(newSortTab);
-
-            tabControlSortedArrResult.TabPages.Add(newSortTab);
-
-            isSortRunningOnTab.Add(false);*/
-        }
-
         private void CreateSortedArrTabPage(string sortingName)
         {
             TabPage newSortTab = new TabPage();
             newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count).ToString() + sortingName;
             newSortTab.Text = sortingName;
 
-            CreateSortedArrGridView(newSortTab, tabControlSortedArrResult.TabPages.Count - 1);
+            CreateSortedArrGridView(newSortTab, tabControlSortedArrResult.TabPages.Count);
 
             tabControlSortedArrResult.TabPages.Add(newSortTab);
 
@@ -273,18 +255,21 @@ namespace WinFormsApp
 
         private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)
         {            
-            TabPage currentTab = (sender as TabControl).SelectedTab;
-            int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
-
-            comboBoxArrDataType.SelectedIndex = currentTabIndex + 1;
-
-            if (isSortRunningOnTab[currentTabIndex] == false)
-                EnableBasicSortConfigControls();
-            else
+            if(tabControlSortedArrResult.TabPages.Count != 0)
             {
-                DisableBasicSortConfigControls();
-            }
+                TabPage currentTab = (sender as TabControl).SelectedTab;
+                int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
 
+                comboBoxSelectedSorter.SelectedIndex = currentTabIndex;
+
+                if (isSortRunningOnTab[currentTabIndex] == false)
+                    EnableBasicSortConfigControls();
+                else
+                {
+                    DisableBasicSortConfigControls();
+                }
+            }
+            
             // Validate the current page. To cancel the select, use:
             //e.Cancel = true;
         }
@@ -348,27 +333,26 @@ namespace WinFormsApp
 
         private void CreateSortedArrGridView(TabPage selectedTabPage, int gridIndex)
         {
-            var templateGridView = dataGridViewSortedArr0;
             var createdGridView = new DataGridView();
 
             //createdGridView.Name = "dataGridViewSortedArr" + (Convert.ToInt32(Regex.Match(selectedTabPage.Name, @"\d+$").Value) - 1).ToString();
             createdGridView.Name = "dataGridViewSortedArr" + gridIndex;
-            createdGridView.Size = templateGridView.Size;
-            createdGridView.Location = templateGridView.Location;
-            createdGridView.BackgroundColor = templateGridView.BackgroundColor;
-            createdGridView.CellBorderStyle = templateGridView.CellBorderStyle;
-            createdGridView.ColumnHeadersVisible = templateGridView.ColumnHeadersVisible;
-            createdGridView.RowHeadersVisible = templateGridView.RowHeadersVisible;
-            createdGridView.RowTemplate = templateGridView.RowTemplate;
-            createdGridView.ShowEditingIcon = templateGridView.ShowEditingIcon;
-            createdGridView.AllowUserToAddRows = templateGridView.AllowUserToAddRows;
-            createdGridView.AllowUserToDeleteRows = templateGridView.AllowUserToDeleteRows;
-            createdGridView.AllowUserToResizeColumns = templateGridView.AllowUserToResizeColumns;
-            createdGridView.AllowUserToResizeRows = templateGridView.AllowUserToResizeRows;
-            createdGridView.ColumnHeadersHeight = templateGridView.ColumnHeadersHeight;
-            createdGridView.ReadOnly = templateGridView.ReadOnly;
-            createdGridView.TabIndex = templateGridView.TabIndex;
-            createdGridView.AutoSizeColumnsMode = templateGridView.AutoSizeColumnsMode;
+            createdGridView.Size = templateSortedArrGrid.Size;
+            createdGridView.Location = templateSortedArrGrid.Location;
+            createdGridView.BackgroundColor = templateSortedArrGrid.BackgroundColor;
+            createdGridView.CellBorderStyle = templateSortedArrGrid.CellBorderStyle;
+            createdGridView.ColumnHeadersVisible = templateSortedArrGrid.ColumnHeadersVisible;
+            createdGridView.RowHeadersVisible = templateSortedArrGrid.RowHeadersVisible;
+            createdGridView.RowTemplate = templateSortedArrGrid.RowTemplate;
+            createdGridView.ShowEditingIcon = templateSortedArrGrid.ShowEditingIcon;
+            createdGridView.AllowUserToAddRows = templateSortedArrGrid.AllowUserToAddRows;
+            createdGridView.AllowUserToDeleteRows = templateSortedArrGrid.AllowUserToDeleteRows;
+            createdGridView.AllowUserToResizeColumns = templateSortedArrGrid.AllowUserToResizeColumns;
+            createdGridView.AllowUserToResizeRows = templateSortedArrGrid.AllowUserToResizeRows;
+            createdGridView.ColumnHeadersHeight = templateSortedArrGrid.ColumnHeadersHeight;
+            createdGridView.ReadOnly = templateSortedArrGrid.ReadOnly;
+            createdGridView.TabIndex = templateSortedArrGrid.TabIndex;
+            createdGridView.AutoSizeColumnsMode = templateSortedArrGrid.AutoSizeColumnsMode;
 
             selectedTabPage.Controls.Add(createdGridView);
         }
@@ -387,7 +371,7 @@ namespace WinFormsApp
         private void FillAvailableSortsDropDown(string[] namesOfSortings = null)
         {
             comboBoxSelectedSorter.Items.Clear();
-            comboBoxSelectedSorter.Items.Add("");
+            //comboBoxSelectedSorter.Items.Add("");
             if (namesOfSortings != null)
             foreach (var sortName in namesOfSortings)
             {
@@ -426,9 +410,13 @@ namespace WinFormsApp
         private void EnableBasicSortConfigControls()
         {
             //trackBarSortSlower.Enabled = true;
-            buttonDoSort.Enabled = true;
-            buttonRandomArrayAssign.Enabled = true;
-            buttonReadArrByPath.Enabled = true;
+            if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "" 
+                                                                                            && dataGridViewUnsortedArr.RowCount != 0)
+                buttonDoSort.Enabled = true;
+            if (comboBoxArrDataType.SelectedIndex > 0 && numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
+                buttonRandomArrayAssign.Enabled = true;
+            if (File.Exists(textBoxFilePath.Text))
+                buttonReadArrByPath.Enabled = true;
             //comboBoxSelectedSorter.Enabled = true;
         }
 

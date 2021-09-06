@@ -47,17 +47,16 @@ namespace WinFormsApp
             this.labelSortSlower = new System.Windows.Forms.Label();
             this.dataGridViewUnsortedArr = new System.Windows.Forms.DataGridView();
             this.tabControlSortedArrResult = new System.Windows.Forms.TabControl();
-            this.tabPageSortedArr0 = new System.Windows.Forms.TabPage();
             this.dataGridViewSortedArr0 = new System.Windows.Forms.DataGridView();
-            this.buttonAddSortTab = new System.Windows.Forms.Button();
+            this.tabPageDefaultSortedArr = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBoxRandomArrInit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).BeginInit();
             this.tabControlSortedArrResult.SuspendLayout();
-            this.tabPageSortedArr0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).BeginInit();
+            this.tabPageDefaultSortedArr.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxFilePath
@@ -238,23 +237,12 @@ namespace WinFormsApp
             // 
             // tabControlSortedArrResult
             // 
-            this.tabControlSortedArrResult.Controls.Add(this.tabPageSortedArr0);
+            this.tabControlSortedArrResult.Controls.Add(this.tabPageDefaultSortedArr);
             this.tabControlSortedArrResult.Location = new System.Drawing.Point(361, 149);
             this.tabControlSortedArrResult.Name = "tabControlSortedArrResult";
             this.tabControlSortedArrResult.SelectedIndex = 0;
             this.tabControlSortedArrResult.Size = new System.Drawing.Size(319, 306);
             this.tabControlSortedArrResult.TabIndex = 20;
-            // 
-            // tabPageSortedArr0
-            // 
-            this.tabPageSortedArr0.Controls.Add(this.dataGridViewSortedArr0);
-            this.tabPageSortedArr0.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSortedArr0.Name = "tabPageSortedArr0";
-            this.tabPageSortedArr0.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSortedArr0.Size = new System.Drawing.Size(311, 280);
-            this.tabPageSortedArr0.TabIndex = 0;
-            this.tabPageSortedArr0.Text = "Sort 1";
-            this.tabPageSortedArr0.UseVisualStyleBackColor = true;
             // 
             // dataGridViewSortedArr0
             // 
@@ -275,27 +263,22 @@ namespace WinFormsApp
             this.dataGridViewSortedArr0.Size = new System.Drawing.Size(305, 275);
             this.dataGridViewSortedArr0.TabIndex = 19;
             // 
-            // buttonAddSortTab
+            // tabPageDefaultSortedArr
             // 
-            this.buttonAddSortTab.AutoSize = true;
-            this.buttonAddSortTab.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.buttonAddSortTab.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonAddSortTab.Location = new System.Drawing.Point(339, 149);
-            this.buttonAddSortTab.Name = "buttonAddSortTab";
-            this.buttonAddSortTab.Size = new System.Drawing.Size(23, 23);
-            this.buttonAddSortTab.TabIndex = 21;
-            this.buttonAddSortTab.Text = "+";
-            this.buttonAddSortTab.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.buttonAddSortTab.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
-            this.buttonAddSortTab.UseVisualStyleBackColor = false;
-            this.buttonAddSortTab.Click += new System.EventHandler(this.buttonAddSortTab_Click);
+            this.tabPageDefaultSortedArr.Controls.Add(this.dataGridViewSortedArr0);
+            this.tabPageDefaultSortedArr.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDefaultSortedArr.Name = "tabPageDefaultSortedArr";
+            this.tabPageDefaultSortedArr.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDefaultSortedArr.Size = new System.Drawing.Size(311, 280);
+            this.tabPageDefaultSortedArr.TabIndex = 0;
+            this.tabPageDefaultSortedArr.Text = "Sorting";
+            this.tabPageDefaultSortedArr.UseVisualStyleBackColor = true;
             // 
             // SortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 459);
-            this.Controls.Add(this.buttonAddSortTab);
             this.Controls.Add(this.tabControlSortedArrResult);
             this.Controls.Add(this.dataGridViewUnsortedArr);
             this.Controls.Add(this.labelSortSlower);
@@ -321,8 +304,8 @@ namespace WinFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSortSlower)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUnsortedArr)).EndInit();
             this.tabControlSortedArrResult.ResumeLayout(false);
-            this.tabPageSortedArr0.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortedArr0)).EndInit();
+            this.tabPageDefaultSortedArr.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,9 +331,8 @@ namespace WinFormsApp
         private System.Windows.Forms.Label labelSortSlower;
         private System.Windows.Forms.DataGridView dataGridViewUnsortedArr;
         private System.Windows.Forms.TabControl tabControlSortedArrResult;
-        private System.Windows.Forms.TabPage tabPageSortedArr0;
+        private System.Windows.Forms.TabPage tabPageDefaultSortedArr;
         private System.Windows.Forms.DataGridView dataGridViewSortedArr0;
-        private System.Windows.Forms.Button buttonAddSortTab;
     }
 }
 
