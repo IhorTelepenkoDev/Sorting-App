@@ -22,9 +22,12 @@ namespace WinFormsApp
 {
     public partial class SortApp : Form
     {
-        public dynamic BasicArray2D { get; set; } = null;  // may be 2d array of different type
-        public Type ArrayElemType { get; set; }
+        public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
+        public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
+
+        private dynamic displayedBasicArr2D = null;
+        private Type displayedArrElemType = null;
 
         private List<bool> isSortRunningOnTab;
         private DataGridView templateSortedArrGrid;
@@ -33,6 +36,11 @@ namespace WinFormsApp
         {
             InitializeComponent();
             SetBasicVisibleElements();
+
+            BasicArray2D = new List<dynamic>();
+            BasicArray2D.Add(null);
+            ArrayElemType = new List<Type>();
+            ArrayElemType.Add(null);
 
             isSortRunningOnTab = new List<bool>();
             isSortRunningOnTab.Add(false);
@@ -47,28 +55,36 @@ namespace WinFormsApp
 
             CleanSortedArrayTextBox();
 
-            BasicArray2D = null;
-
             var pathToFile = textBoxFilePath.Text;
             
-            ArrayElemType = ArrReadingHelpFunctionality.GetTypeOfArray2DStoredInFile(pathToFile);
+            ArrayElemType[tabControlSortedArrResult.SelectedIndex] = 
+                ArrReadingHelpFunctionality.GetTypeOfArray2DStoredInFile(pathToFile);
             
-            if(ArrayElemType != null)
+            if(ArrayElemType[tabControlSortedArrResult.SelectedIndex] != null)
             {
                 var contentOfFile = ArrReadingHelpFunctionality.ReadFileContent(pathToFile);
 
-                if (ArrayElemType == typeof(int))
-                    BasicArray2D = new ArrayInitializer<int>(
+                if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(int))
+                    BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<int>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<int>(pathToFile)).Array2D;
-                if (ArrayElemType == typeof(double))
-                    BasicArray2D = new ArrayInitializer<double>(
+                if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(double))
+                    BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<double>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<double>(pathToFile)).Array2D;
-                if (ArrayElemType == typeof(string))
-                    BasicArray2D = new ArrayInitializer<string>(
+                if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
+                    BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<string>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<string>(pathToFile)).Array2D;
+
+                displayedBasicArr2D = BasicArray2D[tabControlSortedArrResult.SelectedIndex];
+                displayedArrElemType = ArrayElemType[tabControlSortedArrResult.SelectedIndex];
+                for (int i = 0; i < BasicArray2D.Count; i++)
+                    if (BasicArray2D[i] == null)
+                    {
+                        BasicArray2D[i] = displayedBasicArr2D;
+                        ArrayElemType[i] = displayedArrElemType;
+                    }
             }
 
-            if (BasicArray2D == null)
+            if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] == null)
             {
                 CleanUnsortedArrayTextBox();
                 buttonDoSort.Enabled = false;
@@ -76,15 +92,19 @@ namespace WinFormsApp
             }
 
             if(comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
-                buttonDoSort.Enabled = true;
+                if(isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                    buttonDoSort.Enabled = true;
 
-            PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
+            PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
         }
 
         private void textBoxFilePath_TextChanged(object sender, EventArgs e)
         {
             if (File.Exists(textBoxFilePath.Text))
-                buttonReadArrByPath.Enabled = true;
+            {
+                if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                    buttonReadArrByPath.Enabled = true;
+            }
             else buttonReadArrByPath.Enabled = false;
         }
 
@@ -92,23 +112,36 @@ namespace WinFormsApp
         {
             CleanSortedArrayTextBox();
 
-            BasicArray2D = null;
-
             if (comboBoxArrDataType.SelectedIndex > 0)
             {
                 if (numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
                 {
+                    ArrayElemType[tabControlSortedArrResult.SelectedIndex] =
+                        UIHelpFunctionality.GetSelectedArrType(comboBoxArrDataType.SelectedItem.ToString());
+
                     int arr2dLengthRows = Convert.ToInt32(numUpDownRowsInArr.Value);
                     int arr2dLengthColumns = Convert.ToInt32(numUpDownColumnsInArr.Value);
 
-                    if(ArrayElemType == typeof(int))
-                        BasicArray2D = new ArrayInitializer<int>(arr2dLengthRows, arr2dLengthColumns).Array2D;
-                    if (ArrayElemType == typeof(double))
-                        BasicArray2D = new ArrayInitializer<double>(arr2dLengthRows, arr2dLengthColumns).Array2D;
-                    if (ArrayElemType == typeof(string))
-                        BasicArray2D = new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+                    if(ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(int))
+                        BasicArray2D[tabControlSortedArrResult.SelectedIndex] = 
+                            new ArrayInitializer<int>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+                    if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(double))
+                        BasicArray2D[tabControlSortedArrResult.SelectedIndex] = 
+                            new ArrayInitializer<double>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+                    if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
+                        BasicArray2D[tabControlSortedArrResult.SelectedIndex] = 
+                            new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
 
-                    PrintArr2dIntoGridView(BasicArray2D, dataGridViewUnsortedArr);
+                    displayedBasicArr2D = BasicArray2D[tabControlSortedArrResult.SelectedIndex];
+                    displayedArrElemType = ArrayElemType[tabControlSortedArrResult.SelectedIndex];
+                    for (int i = 0; i < BasicArray2D.Count; i++)
+                        if (BasicArray2D[i] == null)
+                        {
+                            BasicArray2D[i] = displayedBasicArr2D;
+                            ArrayElemType[i] = displayedArrElemType;
+                        }
+
+                    PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
 
                     if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
                         buttonDoSort.Enabled = true;
@@ -127,10 +160,9 @@ namespace WinFormsApp
         {
             if(comboBoxArrDataType.SelectedIndex != 0)
             {
-                ArrayElemType = UIHelpFunctionality.GetSelectedArrType(comboBoxArrDataType.SelectedItem.ToString());
-
                 if (numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
-                    buttonRandomArrayAssign.Enabled = true;
+                    if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                        buttonRandomArrayAssign.Enabled = true;
 
             } else buttonRandomArrayAssign.Enabled = false;
 
@@ -142,7 +174,8 @@ namespace WinFormsApp
                 buttonRandomArrayAssign.Enabled = false;
             else
                 if (numUpDownColumnsInArr.Value > 0 && comboBoxArrDataType.SelectedIndex > 0)
-                    buttonRandomArrayAssign.Enabled = true;
+                    if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                        buttonRandomArrayAssign.Enabled = true;
         }
         
         private void numUpDownColumnsInArr_ValueChanged(object sender, EventArgs e)
@@ -151,7 +184,8 @@ namespace WinFormsApp
                 buttonRandomArrayAssign.Enabled = false;
             else
                 if (numUpDownRowsInArr.Value > 0 && comboBoxArrDataType.SelectedIndex > 0)
-                buttonRandomArrayAssign.Enabled = true;
+                    if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                        buttonRandomArrayAssign.Enabled = true;
         }
 
         private void comboBoxSelectedSorter_SelectedIndexChanged(object sender, EventArgs e)
@@ -174,11 +208,17 @@ namespace WinFormsApp
                                             select sortingInstance.SortName).ToArray();
 
                         isSortRunningOnTab.Clear();
+                        BasicArray2D.Clear();
+                        ArrayElemType.Clear();
 
                         FillAvailableSortsDropDown(namesOfSorts);
                         tabControlSortedArrResult.TabPages.Clear();
                         foreach (var sortName in namesOfSorts)
+                        {
+                            BasicArray2D.Add(displayedBasicArr2D);
+                            ArrayElemType.Add(displayedArrElemType);
                             CreateSortedArrTabPage(sortName);
+                        }
                     }
                     else FillAvailableSortsDropDown();
                 }
@@ -188,11 +228,19 @@ namespace WinFormsApp
             }
             else
             {                
-                    tabControlSortedArrResult.SelectedTab = tabControlSortedArrResult.TabPages[comboBoxSelectedSorter.SelectedIndex];
+                tabControlSortedArrResult.SelectedTab = tabControlSortedArrResult.TabPages[comboBoxSelectedSorter.SelectedIndex];
 
+                if (BasicArray2D.Count != 0)
+                {
+                    displayedBasicArr2D = BasicArray2D[tabControlSortedArrResult.SelectedIndex];
+                    displayedArrElemType = ArrayElemType[comboBoxSelectedSorter.SelectedIndex];
+                    PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
+                }
+                
+                if(isSortRunningOnTab.Count != 0)
                     if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
                     {
-                        if (dataGridViewUnsortedArr.RowCount != 0)
+                        if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] != null)
                              buttonDoSort.Enabled = true;
                         
                         else buttonDoSort.Enabled = false;
@@ -217,9 +265,10 @@ namespace WinFormsApp
             try
             {
                 var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
-                var sortingCopyOfBasic2dArr = UIHelpFunctionality.Copy2dArr(BasicArray2D, ArrayElemType);
+                var sortingCopyOfBasic2dArr = 
+                    UIHelpFunctionality.Copy2dArr(BasicArray2D[currentlySelectedTabIndex], ArrayElemType[currentlySelectedTabIndex]);
 
-                MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, selectedSortedArrGridView));
+                MethodInvoker resultArrPrinter =  new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, selectedSortedArrGridView));
                 Invoke(resultArrPrinter);
 
                 chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
@@ -255,12 +304,15 @@ namespace WinFormsApp
 
         private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)
         {            
-            if(tabControlSortedArrResult.TabPages.Count != 0)
+            if(tabControlSortedArrResult.TabPages.Count != 0 && BasicArray2D.Count != 0)
             {
                 TabPage currentTab = (sender as TabControl).SelectedTab;
                 int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
 
                 comboBoxSelectedSorter.SelectedIndex = currentTabIndex;
+                displayedBasicArr2D = BasicArray2D[comboBoxSelectedSorter.SelectedIndex];
+                displayedArrElemType = ArrayElemType[comboBoxSelectedSorter.SelectedIndex];
+                PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
 
                 if (isSortRunningOnTab[currentTabIndex] == false)
                     EnableBasicSortConfigControls();
