@@ -257,6 +257,15 @@ namespace WinFormsApp
             SortCaller.Start();
         }
 
+        private void trackBarSortSlower_Scroll(object sender, EventArgs e)
+        {
+            if (InstancesOfAvailableSortTypes != null)
+            {
+                int currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
+                InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+            }
+        }
+
         private void PerformSorting(int indexOfSortType, DataGridView selectedSortedArrGridView)
         {
             var currentlySelectedTabIndex = indexOfSortType;
@@ -318,6 +327,7 @@ namespace WinFormsApp
                     EnableBasicSortConfigControls();
                 else
                 {
+                    trackBarSortSlower.Value = InstancesOfAvailableSortTypes[currentTabIndex].MillisecTimeoutOnSortingDelay;
                     DisableBasicSortConfigControls();
                 }
             }
