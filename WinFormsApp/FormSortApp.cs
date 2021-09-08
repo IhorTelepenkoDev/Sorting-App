@@ -32,6 +32,10 @@ namespace WinFormsApp
         private List<bool> isSortRunningOnTab;
         private DataGridView templateSortedArrGrid;
 
+        private Dictionary<TabPage, Color> sortedArrTabColors;
+        private Color notFinishedSortingTabColor = Color.MistyRose;
+        private Color finishedSortingTabColor = Color.FromArgb(150, 229, 187);
+
         public SortApp()
         {
             InitializeComponent();
@@ -47,6 +51,12 @@ namespace WinFormsApp
             tabControlSortedArrResult.Selecting += new TabControlCancelEventHandler(tabControlSortedArrResult_SelectedTabChanged);
 
             templateSortedArrGrid = dataGridViewSortedArr0;
+
+            sortedArrTabColors = new Dictionary<TabPage, Color>();
+            sortedArrTabColors.Add(tabControlSortedArrResult.SelectedTab, Color.White);
+
+            tabControlSortedArrResult.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControlSortedArrResult.DrawItem += new DrawItemEventHandler(tabControlSortedArrResult_DrawItem);
         }
 
         private void buttonReadArrByPath_Click(object sender, EventArgs e)
@@ -284,8 +294,13 @@ namespace WinFormsApp
 
                 chosenSorter.FiredEventOnChangeOfArrayElements += VisualArrChangeWhenElementsSwapped(selectedSortedArrGridView);
 
+                chosenSorter.FiredEventOnSortingEnd += new SortingEndHandler(() => 
+                    SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], finishedSortingTabColor));
+
                 DisableBasicSortConfigControls();
                 isSortRunningOnTab[currentlySelectedTabIndex] = true;
+
+                SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], notFinishedSortingTabColor);
 
                 chosenSorter.Sort(sortingCopyOfBasic2dArr);
 
@@ -306,6 +321,7 @@ namespace WinFormsApp
 
             CreateSortedArrGridView(newSortTab, tabControlSortedArrResult.TabPages.Count);
 
+            sortedArrTabColors.Add(newSortTab, Color.White);
             tabControlSortedArrResult.TabPages.Add(newSortTab);
 
             isSortRunningOnTab.Add(false);
@@ -417,6 +433,29 @@ namespace WinFormsApp
             createdGridView.AutoSizeColumnsMode = templateSortedArrGrid.AutoSizeColumnsMode;
 
             selectedTabPage.Controls.Add(createdGridView);
+        }
+
+        private void SetTabHeaderColor(TabPage tab, Color color)
+        {
+            sortedArrTabColors[tab] = color;
+            tabControlSortedArrResult.Invalidate();
+        }
+        private void tabControlSortedArrResult_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            using (Brush br = new SolidBrush(sortedArrTabColors[tabControlSortedArrResult.TabPages[e.Index]]))
+            {
+                e.Graphics.FillRectangle(br, e.Bounds);
+                SizeF sz = e.Graphics.MeasureString(tabControlSortedArrResult.TabPages[e.Index].Text, e.Font);
+                e.Graphics.DrawString(tabControlSortedArrResult.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + 
+                    (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1);
+
+                Rectangle rect = e.Bounds;
+                rect.Offset(0, 1);
+                rect.Inflate(0, -1);
+                e.Graphics.DrawRectangle(Pens.White, rect);
+                e.DrawFocusRectangle();
+            }
         }
 
         private void FillArrDataTypesDropDown(string[] namesOfTypes = null)
