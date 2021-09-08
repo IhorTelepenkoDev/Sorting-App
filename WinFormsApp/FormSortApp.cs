@@ -263,7 +263,31 @@ namespace WinFormsApp
         {
             var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex;
             var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
-            Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, currentlySelectedSortedArrGridView)));
+
+            var sortingCopyOfBasic2dArr =
+                    UIHelpFunctionality.Copy2dArr(BasicArray2D[selectedSorterIndex], ArrayElemType[selectedSorterIndex]);
+
+            MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
+
+            InstancesOfAvailableSortTypes[selectedSorterIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+            InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnChangeOfArrayElements += 
+                VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
+            InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnSortingEnd += new SortingEndHandler(() =>
+            {
+                Invoke(new MethodInvoker(delegate ()
+                {
+                    Invoke(resultArrPrinter);   //the array is already sorted, is displayed
+                    SetTabHeaderColor(tabControlSortedArrResult.TabPages[selectedSorterIndex], finishedSortingTabColor);
+                    if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)
+                        EnableBasicSortConfigControls();
+                    isSortRunningOnTab[selectedSorterIndex] = false;
+                }));
+            });
+
+            Invoke(resultArrPrinter); // the array is not sorted yet, is displayed
+            Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, sortingCopyOfBasic2dArr)));
+            DisableBasicSortConfigControls();
+            
             SortCaller.Start();
         }
 
@@ -276,41 +300,14 @@ namespace WinFormsApp
             }
         }
 
-        private void PerformSorting(int indexOfSortType, DataGridView selectedSortedArrGridView)
+        private void PerformSorting(int indexOfSortType, dynamic unsortedArray2d)
         {
-            var currentlySelectedTabIndex = indexOfSortType;
-            //var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
-            //var currentlySelectedSortedArrGridView = this.Controls["dataGridViewSortedArr" + currentlySelectedTabIndex.ToString()] as DataGridView;
-            try
-            {
-                var chosenSorter = InstancesOfAvailableSortTypes[indexOfSortType];
-                var sortingCopyOfBasic2dArr = 
-                    UIHelpFunctionality.Copy2dArr(BasicArray2D[currentlySelectedTabIndex], ArrayElemType[currentlySelectedTabIndex]);
+            var selectedSorter = InstancesOfAvailableSortTypes[indexOfSortType];
 
-                MethodInvoker resultArrPrinter =  new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, selectedSortedArrGridView));
-                Invoke(resultArrPrinter);
+            isSortRunningOnTab[indexOfSortType] = true;
+            SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], notFinishedSortingTabColor);
 
-                chosenSorter.MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-
-                chosenSorter.FiredEventOnChangeOfArrayElements += VisualArrChangeWhenElementsSwapped(selectedSortedArrGridView);
-
-                chosenSorter.FiredEventOnSortingEnd += new SortingEndHandler(() => 
-                    SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], finishedSortingTabColor));
-
-                DisableBasicSortConfigControls();
-                isSortRunningOnTab[currentlySelectedTabIndex] = true;
-
-                SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], notFinishedSortingTabColor);
-
-                chosenSorter.Sort(sortingCopyOfBasic2dArr);
-
-                Invoke(resultArrPrinter);
-            }
-            catch { }
-
-            if(tabControlSortedArrResult.SelectedIndex == currentlySelectedTabIndex)
-                EnableBasicSortConfigControls();
-            isSortRunningOnTab[currentlySelectedTabIndex] = false;
+            selectedSorter.Sort(unsortedArray2d);
         }
 
         private void CreateSortedArrTabPage(string sortingName)
@@ -386,14 +383,17 @@ namespace WinFormsApp
         {
             ChangeOfArrayElementsHandler swappedElemsDisplay = (rowIndexSwappedElem1, colIndexSwappedElem1, rowIndexSwappedElem2, colIndexSwappedElem2) =>
             {
-                CleanGridViewCellsBackColor(selectedSortedArrGridView);
-                selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Style.BackColor = Color.Beige;
-                selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Style.BackColor = Color.Beige;
+                Invoke(new MethodInvoker(delegate ()
+                {
+                    CleanGridViewCellsBackColor(selectedSortedArrGridView);
+                    selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Style.BackColor = Color.Beige;
+                    selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Style.BackColor = Color.Beige;
 
-                var tempCellVal = selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value;
-                selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value = 
-                    selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value;
-                selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value = tempCellVal;
+                    var tempCellVal = selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value;
+                    selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Value =
+                        selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value;
+                    selectedSortedArrGridView[colIndexSwappedElem2, rowIndexSwappedElem2].Value = tempCellVal;
+                }));
             };
 
             return swappedElemsDisplay;
