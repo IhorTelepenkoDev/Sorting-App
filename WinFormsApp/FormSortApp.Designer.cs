@@ -163,7 +163,7 @@ namespace WinFormsApp
             this.buttonStartSorting.TabIndex = 12;
             this.buttonStartSorting.Text = "SORT!";
             this.buttonStartSorting.UseVisualStyleBackColor = false;
-            this.buttonStartSorting.Click += new System.EventHandler(this.buttonDoSort_Click);
+            this.buttonStartSorting.Click += new System.EventHandler(this.buttonStartSorting_Click);
             // 
             // comboBoxSelectedSorter
             // 

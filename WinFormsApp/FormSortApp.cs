@@ -271,7 +271,7 @@ namespace WinFormsApp
 
         }
 
-        private void buttonDoSort_Click(object sender, EventArgs e)
+        private void buttonStartSorting_Click(object sender, EventArgs e)
         {
             var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex;
             var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
