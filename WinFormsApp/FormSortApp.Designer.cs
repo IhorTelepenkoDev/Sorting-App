@@ -39,7 +39,7 @@ namespace WinFormsApp
             this.numUpDownColumnsInArr = new System.Windows.Forms.NumericUpDown();
             this.labelSignBetweenArrSizes = new System.Windows.Forms.Label();
             this.labelArrSizes = new System.Windows.Forms.Label();
-            this.buttonDoSort = new System.Windows.Forms.Button();
+            this.buttonStartSorting = new System.Windows.Forms.Button();
             this.comboBoxSelectedSorter = new System.Windows.Forms.ComboBox();
             this.labelSelectSorter = new System.Windows.Forms.Label();
             this.groupBoxRandomArrInit = new System.Windows.Forms.GroupBox();
@@ -153,17 +153,17 @@ namespace WinFormsApp
             // 
             // buttonDoSort
             // 
-            this.buttonDoSort.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonDoSort.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.buttonDoSort.Enabled = false;
-            this.buttonDoSort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDoSort.Location = new System.Drawing.Point(631, 87);
-            this.buttonDoSort.Name = "buttonDoSort";
-            this.buttonDoSort.Size = new System.Drawing.Size(63, 56);
-            this.buttonDoSort.TabIndex = 12;
-            this.buttonDoSort.Text = "SORT!";
-            this.buttonDoSort.UseVisualStyleBackColor = false;
-            this.buttonDoSort.Click += new System.EventHandler(this.buttonDoSort_Click);
+            this.buttonStartSorting.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.buttonStartSorting.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.buttonStartSorting.Enabled = false;
+            this.buttonStartSorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonStartSorting.Location = new System.Drawing.Point(631, 87);
+            this.buttonStartSorting.Name = "buttonDoSort";
+            this.buttonStartSorting.Size = new System.Drawing.Size(63, 56);
+            this.buttonStartSorting.TabIndex = 12;
+            this.buttonStartSorting.Text = "SORT!";
+            this.buttonStartSorting.UseVisualStyleBackColor = false;
+            this.buttonStartSorting.Click += new System.EventHandler(this.buttonDoSort_Click);
             // 
             // comboBoxSelectedSorter
             // 
@@ -287,7 +287,7 @@ namespace WinFormsApp
             this.Controls.Add(this.trackBarSortSlower);
             this.Controls.Add(this.labelSelectSorter);
             this.Controls.Add(this.comboBoxSelectedSorter);
-            this.Controls.Add(this.buttonDoSort);
+            this.Controls.Add(this.buttonStartSorting);
             this.Controls.Add(this.labelArrSizes);
             this.Controls.Add(this.labelSignBetweenArrSizes);
             this.Controls.Add(this.numUpDownColumnsInArr);
@@ -325,7 +325,7 @@ namespace WinFormsApp
         private System.Windows.Forms.NumericUpDown numUpDownColumnsInArr;
         private System.Windows.Forms.Label labelSignBetweenArrSizes;
         private System.Windows.Forms.Label labelArrSizes;
-        private System.Windows.Forms.Button buttonDoSort;
+        private System.Windows.Forms.Button buttonStartSorting;
         private System.Windows.Forms.ComboBox comboBoxSelectedSorter;
         private System.Windows.Forms.Label labelSelectSorter;
         private System.Windows.Forms.GroupBox groupBoxRandomArrInit;

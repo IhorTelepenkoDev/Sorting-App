@@ -101,13 +101,13 @@ namespace WinFormsApp
             if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] == null)
             {
                 CleanUnsortedArrayTextBox();
-                buttonDoSort.Enabled = false;
+                buttonStartSorting.Enabled = false;
                 return;
             }
 
             if(comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
                 if(isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
-                    buttonDoSort.Enabled = true;
+                    buttonStartSorting.Enabled = true;
 
             PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
         }
@@ -158,13 +158,13 @@ namespace WinFormsApp
                     PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
 
                     if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
-                        buttonDoSort.Enabled = true;
+                        buttonStartSorting.Enabled = true;
 
                     return;
                 }
             }
 
-            buttonDoSort.Enabled = false;
+            buttonStartSorting.Enabled = false;
 
             CleanVisibleArrayCharacteristics();
             CleanUnsortedArrayTextBox();
@@ -263,9 +263,9 @@ namespace WinFormsApp
                     if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
                     {
                         if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] != null)
-                             buttonDoSort.Enabled = true;
+                             buttonStartSorting.Enabled = true;
                         
-                        else buttonDoSort.Enabled = false;
+                        else buttonStartSorting.Enabled = false;
                     }             
             }                    
 
@@ -527,7 +527,7 @@ namespace WinFormsApp
             //trackBarSortSlower.Enabled = true;
             if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "" 
                                                                                             && dataGridViewUnsortedArr.RowCount != 0)
-                buttonDoSort.Enabled = true;
+                buttonStartSorting.Enabled = true;
             if (comboBoxArrDataType.SelectedIndex > 0 && numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
                 buttonRandomArrayAssign.Enabled = true;
             if (File.Exists(textBoxFilePath.Text))
@@ -538,7 +538,7 @@ namespace WinFormsApp
         private void DisableBasicSortConfigControls()
         {
             //trackBarSortSlower.Enabled = false;
-            buttonDoSort.Enabled = false;
+            buttonStartSorting.Enabled = false;
             buttonRandomArrayAssign.Enabled = false;
             buttonReadArrByPath.Enabled = false;
             //comboBoxSelectedSorter.Enabled = false;
