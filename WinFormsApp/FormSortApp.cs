@@ -26,6 +26,8 @@ namespace WinFormsApp
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
+        private Thread[] runningSortThreads = null;
+
         private dynamic displayedBasicArr2D = null;
         private Type displayedArrElemType = null;
 
@@ -212,6 +214,14 @@ namespace WinFormsApp
                     ReaderFromDLL folderReader = new ReaderFromDLL();
                     InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSortersInFolder(folderPath);
 
+                    if(runningSortThreads != null)
+                        foreach (var thread in runningSortThreads)
+                                if(thread != null)
+                                    if (thread.IsAlive)
+                                        thread.Abort();
+
+                    runningSortThreads = new Thread[InstancesOfAvailableSortTypes.Length];
+
                     if (InstancesOfAvailableSortTypes != null)
                     {
                         var namesOfSorts = (from sortingInstance in InstancesOfAvailableSortTypes
@@ -286,8 +296,10 @@ namespace WinFormsApp
 
             Invoke(resultArrPrinter); // the array is not sorted yet, is displayed
             Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, sortingCopyOfBasic2dArr)));
+            runningSortThreads[selectedSorterIndex] = SortCaller;
             DisableBasicSortConfigControls();
-            
+
+            SortCaller.IsBackground = true;
             SortCaller.Start();
         }
 
