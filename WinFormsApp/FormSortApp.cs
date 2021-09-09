@@ -22,6 +22,8 @@ namespace WinFormsApp
 {
     public partial class SortApp : Form
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("FormSortApp.cs");
+
         public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
