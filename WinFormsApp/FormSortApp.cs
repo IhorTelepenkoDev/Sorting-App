@@ -233,7 +233,7 @@ namespace WinFormsApp
                                     if (thread.IsAlive)
                                         thread.Abort();
 
-                    if (InstancesOfAvailableSortTypes != null)
+                    if (InstancesOfAvailableSortTypes == null)
                         runningSortThreads = new Thread[0];
                     else
                         runningSortThreads = new Thread[InstancesOfAvailableSortTypes.Length];
@@ -333,7 +333,7 @@ namespace WinFormsApp
             {
                 int currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
                 InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-                log.Info($"Sorter '{InstancesOfAvailableSortTypes[currentlySelectedSortIndex].SortName}' got an updated slower value");
+                //log.Info($"Sorter '{InstancesOfAvailableSortTypes[currentlySelectedSortIndex].SortName}' got an updated slower value");
             }
         }
 
@@ -514,10 +514,10 @@ namespace WinFormsApp
             comboBoxArrDataType.Items.Clear();
             comboBoxArrDataType.Items.Add("");
             if (namesOfTypes != null)
-            foreach(var typeName in namesOfTypes)
-            {
-                comboBoxArrDataType.Items.Add(typeName);
-            }
+                foreach(var typeName in namesOfTypes)
+                {
+                    comboBoxArrDataType.Items.Add(typeName);
+                }
         }
 
         private void FillAvailableSortsDropDown(string[] namesOfSortings = null)
@@ -525,10 +525,10 @@ namespace WinFormsApp
             comboBoxSelectedSorter.Items.Clear();
             //comboBoxSelectedSorter.Items.Add("");
             if (namesOfSortings != null)
-            foreach (var sortName in namesOfSortings)
-            {
-                comboBoxSelectedSorter.Items.Add(sortName);
-            }
+                foreach (var sortName in namesOfSortings)
+                {
+                    comboBoxSelectedSorter.Items.Add(sortName);
+                }
             comboBoxSelectedSorter.Items.Add("[Select another source]");
         }
 
