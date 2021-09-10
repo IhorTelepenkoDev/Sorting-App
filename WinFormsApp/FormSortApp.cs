@@ -22,7 +22,7 @@ namespace WinFormsApp
 {
     public partial class SortApp : Form
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("FormSortApp.cs");
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
@@ -61,6 +61,8 @@ namespace WinFormsApp
 
             tabControlSortedArrResult.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControlSortedArrResult.DrawItem += new DrawItemEventHandler(tabControlSortedArrResult_DrawItem);
+
+            log.Info("The application is started and set");
         }
 
         private void buttonReadArrByPath_Click(object sender, EventArgs e)
@@ -76,6 +78,8 @@ namespace WinFormsApp
             
             if(ArrayElemType[tabControlSortedArrResult.SelectedIndex] != null)
             {
+                log.Debug("Array in file has type: " + ArrayElemType[tabControlSortedArrResult.SelectedIndex].ToString());
+
                 var contentOfFile = ArrReadingHelpFunctionality.ReadFileContent(pathToFile);
 
                 if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(int))
@@ -87,6 +91,8 @@ namespace WinFormsApp
                 if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
                     BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<string>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<string>(pathToFile)).Array2D;
+
+                log.Info("Unsorted array is read from file");
 
                 displayedBasicArr2D = BasicArray2D[tabControlSortedArrResult.SelectedIndex];
                 displayedArrElemType = ArrayElemType[tabControlSortedArrResult.SelectedIndex];
@@ -145,6 +151,8 @@ namespace WinFormsApp
                     if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
                         BasicArray2D[tabControlSortedArrResult.SelectedIndex] = 
                             new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
+
+                    log.Info("Unsorted array is randomly generated");
 
                     displayedBasicArr2D = BasicArray2D[tabControlSortedArrResult.SelectedIndex];
                     displayedArrElemType = ArrayElemType[tabControlSortedArrResult.SelectedIndex];
@@ -206,6 +214,8 @@ namespace WinFormsApp
         {
             if (comboBoxSelectedSorter.SelectedIndex == comboBoxSelectedSorter.Items.Count - 1)   //[select another folder of source]
             {
+                log.Info("Selecting of a new source of sorters");
+
                 string folderPath = null;
                 FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
                 if (folderBrowser.ShowDialog() == DialogResult.OK)
@@ -215,6 +225,7 @@ namespace WinFormsApp
                 {
                     ReaderFromDLL folderReader = new ReaderFromDLL();
                     InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSortersInFolder(folderPath);
+                    log.Debug("Quantity of newly uploaded sorters: " + InstancesOfAvailableSortTypes.Length);
 
                     if(runningSortThreads != null)
                         foreach (var thread in runningSortThreads)
@@ -222,7 +233,10 @@ namespace WinFormsApp
                                     if (thread.IsAlive)
                                         thread.Abort();
 
-                    runningSortThreads = new Thread[InstancesOfAvailableSortTypes.Length];
+                    if (InstancesOfAvailableSortTypes != null)
+                        runningSortThreads = new Thread[0];
+                    else
+                        runningSortThreads = new Thread[InstancesOfAvailableSortTypes.Length];
 
                     if (InstancesOfAvailableSortTypes != null)
                     {
@@ -241,6 +255,8 @@ namespace WinFormsApp
                             ArrayElemType.Add(displayedArrElemType);
                             CreateSortedArrTabPage(sortName);
                         }
+
+                        log.Info("New sorters are uploaded");
                     }
                     else FillAvailableSortsDropDown();
                 }
@@ -276,6 +292,8 @@ namespace WinFormsApp
             var selectedSorterIndex = comboBoxSelectedSorter.SelectedIndex;
             var currentlySelectedSortedArrGridView = GetCurrentSortedArrGridView();
 
+            log.Debug($"Sorting will start for sorter #{selectedSorterIndex} ('{InstancesOfAvailableSortTypes[selectedSorterIndex].SortName}')");
+
             var sortingCopyOfBasic2dArr =
                     UIHelpFunctionality.Copy2dArr(BasicArray2D[selectedSorterIndex], ArrayElemType[selectedSorterIndex]);
 
@@ -293,6 +311,8 @@ namespace WinFormsApp
                     if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)
                         EnableBasicSortConfigControls();
                     isSortRunningOnTab[selectedSorterIndex] = false;
+
+                    log.Info($"Sorting '{InstancesOfAvailableSortTypes[selectedSorterIndex].SortName}' is finished");
                 }));
             });
 
@@ -300,6 +320,8 @@ namespace WinFormsApp
             Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, sortingCopyOfBasic2dArr)));
             runningSortThreads[selectedSorterIndex] = SortCaller;
             DisableBasicSortConfigControls();
+
+            log.Info("Sorting is about to be started");
 
             SortCaller.IsBackground = true;
             SortCaller.Start();
@@ -311,16 +333,19 @@ namespace WinFormsApp
             {
                 int currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
                 InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+                log.Info($"Sorter '{InstancesOfAvailableSortTypes[currentlySelectedSortIndex].SortName}' got an updated slower value");
             }
         }
 
         private void PerformSorting(int indexOfSortType, dynamic unsortedArray2d)
         {
             var selectedSorter = InstancesOfAvailableSortTypes[indexOfSortType];
+            log.Debug($"New thread is opened for sorter #{indexOfSortType} ('{selectedSorter.SortName}')");
 
             isSortRunningOnTab[indexOfSortType] = true;
             SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], notFinishedSortingTabColor);
 
+            log.Info($"Sorting '{selectedSorter.SortName} starts'");
             selectedSorter.Sort(unsortedArray2d);
         }
 
@@ -339,8 +364,8 @@ namespace WinFormsApp
         }
 
         private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)
-        {            
-            if(tabControlSortedArrResult.TabPages.Count != 0 && BasicArray2D.Count != 0)
+        {
+            if (tabControlSortedArrResult.TabPages.Count != 0 && BasicArray2D.Count != 0)
             {
                 TabPage currentTab = (sender as TabControl).SelectedTab;
                 int currentTabIndex = tabControlSortedArrResult.TabPages.IndexOf(currentTab);
@@ -357,6 +382,12 @@ namespace WinFormsApp
                     trackBarSortSlower.Value = InstancesOfAvailableSortTypes[currentTabIndex].MillisecTimeoutOnSortingDelay;
                     DisableBasicSortConfigControls();
                 }
+            } else
+            {
+                if (tabControlSortedArrResult.TabPages.Count == 0)
+                    log.Warn("Selected sorted array tab is changed whereas no tabs created");
+                if(BasicArray2D.Count == 0)
+                    log.Warn("Selected sorted array tab is changed whereas no arrays available");
             }
             
             // Validate the current page. To cancel the select, use:
@@ -389,7 +420,10 @@ namespace WinFormsApp
 
                 dataGridVewField.Rows[0].Selected = false;
             }
-            catch { }
+            catch (Exception e)
+            {
+                log.Debug($"Printing of array into grid '{dataGridVewField.Name}' failed due to exception {e}");
+            }
         }
 
         private ChangeOfArrayElementsHandler VisualArrChangeWhenElementsSwapped
@@ -419,6 +453,9 @@ namespace WinFormsApp
 
             DataGridView currentGridView = 
                 selectedTabPage.Controls["dataGridViewSortedArr" + tabControlSortedArrResult.TabPages.IndexOf(selectedTabPage).ToString()] as DataGridView;
+
+            if (currentGridView == null)
+                log.Error($"No grid was found for sorted array displaying (selected sorted array tab is #{tabControlSortedArrResult.SelectedIndex})");
 
             return currentGridView;
         }
