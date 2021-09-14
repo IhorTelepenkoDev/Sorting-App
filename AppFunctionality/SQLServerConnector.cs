@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace AppFunctionality
@@ -24,20 +25,94 @@ namespace AppFunctionality
 
         public void CreateStoredSortingsTable(string tableName)
         {
-            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
-            {
-                conn.Open();
-                using(SqlCommand command = new SqlCommand())
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            {   
+                if(connection != null)
                 {
-                    command.Connection = conn;
-                    command.CommandText = $"CREATE TABLE {tableName} " +
-                        "(SortingID int NOT NULL IDENTITY CONSTRAINT AUTO_INCREMENT, " +
-                        "Sorter varchar(25), " +
-                        "InputArray varchar(max) NOT NULL, " +
-                        "OutputArray varchar(max), " +
-                        "Date datetime DEFAULT(CONVERT(date, getdate())) NOT NULL, " +
-                        "PRIMARY KEY (SortingID))";
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    using (SqlCommand createTableCommand = new SqlCommand())
+                    {
+                        createTableCommand.Connection = connection;
+                        createTableCommand.CommandText = $"CREATE TABLE {tableName} " +
+                            "(Sorting_ID int IDENTITY(1,1) PRIMARY KEY,, " +
+                            "Sorter varchar(25), " +
+                            "Input_Array varchar(max) NOT NULL, " +
+                            "Output_Array varchar(max), " +
+                            "Date date DEFAULT(CONVERT(date, getdate())) NOT NULL)";
+                        createTableCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public void StoreSortData(string tableName, string sorterName, string unsortedArray, string sortedArray)
+        {
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            {
+                if (connection != null)
+                {
+                    connection.Open();
+                    using (SqlCommand insertDataCommand = new SqlCommand())
+                    {
+                        insertDataCommand.Connection = connection;
+                        insertDataCommand.CommandText = $"INSERT INTO {tableName} (Sorter, Input_Array, Output_Array) " +
+                            $"VALUES ({sorterName}, {unsortedArray}, {sortedArray})";
+                        try
+                        {
+                            insertDataCommand.ExecuteNonQuery();
+                        }
+                        catch 
+                        { 
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public DataTable GetStoredSortData(string tableName)
+        {
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            { 
+                if(connection != null)
+                {
+                    var selectQuery = $"SELECT Sorter, Input_Array, Output_Array, Date FROM {tableName}";
+                    try
+                    {
+                        using (var adapter = new SqlDataAdapter(selectQuery, connection))
+                        {
+                            var sortDataTable = new DataTable();
+                            adapter.Fill(sortDataTable);
+                            return sortDataTable;
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            return null;
+        }
+
+        public void CleanStoredSortData(string tableName)
+        {
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            {
+                if (connection != null)
+                {
+                    connection.Open();
+                    using (SqlCommand cleanDataCommand = new SqlCommand())
+                    {
+                        cleanDataCommand.Connection = connection;
+                        cleanDataCommand.CommandText = $"DELETE FROM {tableName}";
+                        try
+                        {
+                            cleanDataCommand.ExecuteNonQuery();
+                        }
+                        catch
+                        {
+
+                        }
+                    }
                 }
             }
         }
