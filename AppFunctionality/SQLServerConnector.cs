@@ -34,8 +34,8 @@ namespace AppFunctionality
                     {
                         createTableCommand.Connection = connection;
                         createTableCommand.CommandText = $"CREATE TABLE {tableName} " +
-                            "(Sorting_ID int IDENTITY(1,1) PRIMARY KEY,, " +
-                            "Sorter varchar(25), " +
+                            "(Sorting_ID int IDENTITY(1,1) PRIMARY KEY, " +
+                            "Sorter varchar(30), " +
                             "Input_Array varchar(max) NOT NULL, " +
                             "Output_Array varchar(max), " +
                             "Date date DEFAULT(CONVERT(date, getdate())) NOT NULL)";
@@ -56,7 +56,7 @@ namespace AppFunctionality
                     {
                         insertDataCommand.Connection = connection;
                         insertDataCommand.CommandText = $"INSERT INTO {tableName} (Sorter, Input_Array, Output_Array) " +
-                            $"VALUES ({sorterName}, {unsortedArray}, {sortedArray})";
+                            $"VALUES ('{sorterName}', '{unsortedArray}', '{sortedArray}')";
                         try
                         {
                             insertDataCommand.ExecuteNonQuery();
@@ -103,7 +103,8 @@ namespace AppFunctionality
                     using (SqlCommand cleanDataCommand = new SqlCommand())
                     {
                         cleanDataCommand.Connection = connection;
-                        cleanDataCommand.CommandText = $"DELETE FROM {tableName}";
+                        cleanDataCommand.CommandText = $"DELETE FROM {tableName} " +
+                            $"DBCC CHECKIDENT ('{tableName}', RESEED, 0)";
                         try
                         {
                             cleanDataCommand.ExecuteNonQuery();
@@ -126,6 +127,26 @@ namespace AppFunctionality
             }
 
             return null;
+        }
+
+        public bool DoesTableExist(string tableName)
+        {
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            {
+                if (connection != null)
+                {
+                    connection.Open();
+                    using (SqlCommand cleanDataCommand = new SqlCommand())
+                    {
+                        cleanDataCommand.Connection = connection;
+                        cleanDataCommand.CommandText = "SELECT COUNT(*) " +
+                            $"FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{tableName}'";
+
+                        return Convert.ToBoolean(cleanDataCommand.ExecuteScalar());
+                    }
+                }
+                return false;
+            }
         }
     }
 }

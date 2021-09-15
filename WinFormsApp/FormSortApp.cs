@@ -28,6 +28,9 @@ namespace WinFormsApp
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
+        private SQLServerConnector dbConnector;
+        private const string dbTableName = "Sortings";  //to provide reading from file later!
+
         private Thread[] runningSortThreads = null;
 
         private dynamic displayedBasicArr2D = null;
@@ -44,6 +47,12 @@ namespace WinFormsApp
         {
             InitializeComponent();
             SetBasicVisibleElements();
+
+            dbConnector = new SQLServerConnector(@"IHORT\LOCALSERVER", "SortingsDB", "sa", "Password12345678");  //to provide reading from file later!
+            if (dbConnector.DoesTableExist(dbTableName) == false)
+                dbConnector.CreateStoredSortingsTable(dbTableName);
+            //dbConnector.StoreSortData(dbTableName, "testSorterApp", "123", "45666");
+            dbConnector.CleanStoredSortData(dbTableName);
 
             BasicArray2D = new List<dynamic>();
             BasicArray2D.Add(null);
@@ -299,20 +308,30 @@ namespace WinFormsApp
 
             MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
 
+
             InstancesOfAvailableSortTypes[selectedSorterIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+
+            InstancesOfAvailableSortTypes[selectedSorterIndex].CleanEventChangeOfArrElements();
             InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnChangeOfArrayElements += 
                 VisualArrChangeWhenElementsSwapped(currentlySelectedSortedArrGridView);
+
+            InstancesOfAvailableSortTypes[selectedSorterIndex].CleanEventSortingEnd();
             InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnSortingEnd += new SortingEndHandler(() =>
             {
                 Invoke(new MethodInvoker(delegate ()
                 {
                     Invoke(resultArrPrinter);   //the array is already sorted, is displayed
+
+                    dbConnector.StoreSortData(dbTableName, InstancesOfAvailableSortTypes[selectedSorterIndex].SortName,
+                        UIHelpFunctionality.Arr2dToString(BasicArray2D[selectedSorterIndex]), UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr));
+
                     SetTabHeaderColor(tabControlSortedArrResult.TabPages[selectedSorterIndex], finishedSortingTabColor);
                     if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)
                         EnableBasicSortConfigControls();
                     isSortRunningOnTab[selectedSorterIndex] = false;
 
                     log.Info($"Sorting '{InstancesOfAvailableSortTypes[selectedSorterIndex].SortName}' is finished");
+
                 }));
             });
 
