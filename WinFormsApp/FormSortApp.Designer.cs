@@ -151,14 +151,14 @@ namespace WinFormsApp
             this.labelArrSizes.TabIndex = 9;
             this.labelArrSizes.Text = "Size of the 2D Array:";
             // 
-            // buttonDoSort
+            // buttonStartSorting
             // 
             this.buttonStartSorting.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.buttonStartSorting.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.buttonStartSorting.Enabled = false;
             this.buttonStartSorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonStartSorting.Location = new System.Drawing.Point(631, 87);
-            this.buttonStartSorting.Name = "buttonDoSort";
+            this.buttonStartSorting.Name = "buttonStartSorting";
             this.buttonStartSorting.Size = new System.Drawing.Size(63, 56);
             this.buttonStartSorting.TabIndex = 12;
             this.buttonStartSorting.Text = "SORT!";
@@ -251,7 +251,7 @@ namespace WinFormsApp
             this.tabPageDefaultSortedArr.Controls.Add(this.dataGridViewSortedArr0);
             this.tabPageDefaultSortedArr.Location = new System.Drawing.Point(4, 22);
             this.tabPageDefaultSortedArr.Name = "tabPageDefaultSortedArr";
-            this.tabPageDefaultSortedArr.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageDefaultSortedArr.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageDefaultSortedArr.Size = new System.Drawing.Size(311, 280);
             this.tabPageDefaultSortedArr.TabIndex = 0;
             this.tabPageDefaultSortedArr.UseVisualStyleBackColor = true;
@@ -298,6 +298,9 @@ namespace WinFormsApp
             this.Controls.Add(this.labelForPathTextBox);
             this.Controls.Add(this.textBoxFilePath);
             this.Controls.Add(this.groupBoxRandomArrInit);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SortApp";
             this.Text = "Sorting Application";
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).EndInit();
