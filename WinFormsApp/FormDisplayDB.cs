@@ -13,6 +13,8 @@ namespace WinFormsApp
 {
     public partial class FormDisplayDB : Form
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private SortApp parentSortAppForm;
         private SQLServerConnector historyDatabaseConnector;
         private string dbTable;
@@ -24,6 +26,7 @@ namespace WinFormsApp
             dbTable = dbTableName;
 
             DisplayDatabaseContent(historyDatabaseConnector, dbTable);
+            log.Info("History of sortings is opened");
         }
 
         private void FormDisplayDB_Load(object sender, EventArgs e)
@@ -39,11 +42,14 @@ namespace WinFormsApp
             System.Threading.Thread.Sleep(visualReloadingTimeoutMs);
 
             DisplayDatabaseContent(historyDatabaseConnector, dbTable);
+            log.Info("Data of sortings history is updated");
         }
 
         private void buttonCleanContent_Click(object sender, EventArgs e)
         {
             historyDatabaseConnector.CleanStoredSortData(dbTable);
+            log.Info("Data of sortings history is cleaned");
+
             DisplayDatabaseContent(historyDatabaseConnector, dbTable);
         }
 
