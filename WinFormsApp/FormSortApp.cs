@@ -52,7 +52,7 @@ namespace WinFormsApp
             if (dbConnector.DoesTableExist(dbTableName) == false)
                 dbConnector.CreateStoredSortingsTable(dbTableName);
             //dbConnector.StoreSortData(dbTableName, "testSorterApp", "123", "45666");
-            dbConnector.CleanStoredSortData(dbTableName);
+            //dbConnector.CleanStoredSortData(dbTableName);
 
             BasicArray2D = new List<dynamic>();
             BasicArray2D.Add(null);
@@ -413,6 +413,13 @@ namespace WinFormsApp
             //e.Cancel = true;
         }
 
+        private void buttonSortingHistory_Click(object sender, EventArgs e)
+        {
+            var dbDisplayForm = new FormDisplayDB(this, dbConnector, dbTableName);
+            buttonSortingHistory.Enabled = false;
+            dbDisplayForm.Show();
+        }
+
         private void PrintArr2dIntoGridView(dynamic array2d, DataGridView dataGridVewField)
         {
             try
@@ -611,5 +618,6 @@ namespace WinFormsApp
                 }
             }
         }
+
     }
 }

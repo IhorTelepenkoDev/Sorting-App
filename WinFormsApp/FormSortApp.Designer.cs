@@ -29,6 +29,7 @@ namespace WinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SortApp));
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.labelForPathTextBox = new System.Windows.Forms.Label();
             this.buttonReadArrByPath = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@ namespace WinFormsApp
             this.tabControlSortedArrResult = new System.Windows.Forms.TabControl();
             this.tabPageDefaultSortedArr = new System.Windows.Forms.TabPage();
             this.dataGridViewSortedArr0 = new System.Windows.Forms.DataGridView();
+            this.buttonSortingHistory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBoxRandomArrInit.SuspendLayout();
@@ -240,7 +242,7 @@ namespace WinFormsApp
             // tabControlSortedArrResult
             // 
             this.tabControlSortedArrResult.Controls.Add(this.tabPageDefaultSortedArr);
-            this.tabControlSortedArrResult.Location = new System.Drawing.Point(361, 149);
+            this.tabControlSortedArrResult.Location = new System.Drawing.Point(357, 149);
             this.tabControlSortedArrResult.Name = "tabControlSortedArrResult";
             this.tabControlSortedArrResult.SelectedIndex = 0;
             this.tabControlSortedArrResult.Size = new System.Drawing.Size(319, 306);
@@ -276,11 +278,22 @@ namespace WinFormsApp
             this.dataGridViewSortedArr0.Size = new System.Drawing.Size(305, 275);
             this.dataGridViewSortedArr0.TabIndex = 19;
             // 
+            // buttonSortingHistory
+            // 
+            this.buttonSortingHistory.Image = ((System.Drawing.Image)(resources.GetObject("buttonSortingHistory.Image")));
+            this.buttonSortingHistory.Location = new System.Drawing.Point(678, 171);
+            this.buttonSortingHistory.Name = "buttonSortingHistory";
+            this.buttonSortingHistory.Size = new System.Drawing.Size(32, 30);
+            this.buttonSortingHistory.TabIndex = 21;
+            this.buttonSortingHistory.UseVisualStyleBackColor = true;
+            this.buttonSortingHistory.Click += new System.EventHandler(this.buttonSortingHistory_Click);
+            // 
             // SortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 459);
+            this.Controls.Add(this.buttonSortingHistory);
             this.Controls.Add(this.tabControlSortedArrResult);
             this.Controls.Add(this.dataGridViewUnsortedArr);
             this.Controls.Add(this.labelSortSlower);
@@ -338,6 +351,7 @@ namespace WinFormsApp
         private System.Windows.Forms.TabControl tabControlSortedArrResult;
         private System.Windows.Forms.TabPage tabPageDefaultSortedArr;
         private System.Windows.Forms.DataGridView dataGridViewSortedArr0;
+        private System.Windows.Forms.Button buttonSortingHistory;
     }
 }
 
