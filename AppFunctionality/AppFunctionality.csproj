@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigReceiver.cs" />
     <Compile Include="ReceiveSorters\ReaderFromDLL.cs" />
     <Compile Include="ReceiveArrayFromFile\Array2dReaderFromJSON.cs" />
     <Compile Include="ReceiveArrayFromFile\ArrReadingHelpFunctionality.cs" />

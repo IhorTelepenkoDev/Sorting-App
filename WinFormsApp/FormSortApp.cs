@@ -29,7 +29,7 @@ namespace WinFormsApp
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
         private SQLServerConnector dbConnector;
-        private const string dbTableName = "Sortings";  //to provide reading from file later!
+        private string dbTableName;
 
         private Thread[] runningSortThreads = null;
 
@@ -48,7 +48,11 @@ namespace WinFormsApp
             InitializeComponent();
             SetBasicVisibleElements();
 
-            dbConnector = new SQLServerConnector(@"IHORT\LOCALSERVER", "SortingsDB", "sa", "Password12345678");  //to provide reading from file later!
+            var configDatabaseValuesReceiver = new ConfigReceiver(UIHelpFunctionality.GetConfigFilePath(), "database");
+            dbConnector = new SQLServerConnector(configDatabaseValuesReceiver.GetValue("server"), configDatabaseValuesReceiver.GetValue("database"), 
+                configDatabaseValuesReceiver.GetValue("user"), configDatabaseValuesReceiver.GetValue("password"));
+            dbTableName = configDatabaseValuesReceiver.GetValue("table");
+
             if (dbConnector.DoesTableExist(dbTableName) == false)
                 dbConnector.CreateStoredSortingsTable(dbTableName);
             //dbConnector.StoreSortData(dbTableName, "testSorterApp", "123", "45666");
