@@ -15,6 +15,11 @@ namespace AppFunctionality
         public string UserId { private get; set; } = null;
         public string Password { private get; set; } = null;
 
+        private string sorterColumnName = "Sorter";
+        private string unsortedArrColumnName = "Input_Array";
+        private string sortedArrColumnName = "Output_Array";
+        private string dateColumnName = "Date";
+
         public SQLServerConnector(string serverName, string dbName, string userId, string password)
         {
             ServerName = serverName;
@@ -35,10 +40,10 @@ namespace AppFunctionality
                         createTableCommand.Connection = connection;
                         createTableCommand.CommandText = $"CREATE TABLE {tableName} " +
                             "(Sorting_ID int IDENTITY(1,1) PRIMARY KEY, " +
-                            "Sorter varchar(30), " +
-                            "Input_Array varchar(max) NOT NULL, " +
-                            "Output_Array varchar(max), " +
-                            "Date date DEFAULT(CONVERT(date, getdate())) NOT NULL)";
+                            $"{sorterColumnName} varchar(30), " +
+                            $"{unsortedArrColumnName} varchar(max) NOT NULL, " +
+                            $"{sortedArrColumnName} varchar(max), " +
+                            $"{dateColumnName} date DEFAULT(CONVERT(date, getdate())) NOT NULL)";
                         createTableCommand.ExecuteNonQuery();
                     }
                 }
@@ -55,7 +60,7 @@ namespace AppFunctionality
                     using (SqlCommand insertDataCommand = new SqlCommand())
                     {
                         insertDataCommand.Connection = connection;
-                        insertDataCommand.CommandText = $"INSERT INTO {tableName} (Sorter, Input_Array, Output_Array) " +
+                        insertDataCommand.CommandText = $"INSERT INTO {tableName} ({sorterColumnName}, {unsortedArrColumnName}, {sortedArrColumnName}) " +
                             $"VALUES ('{sorterName}', '{unsortedArray}', '{sortedArray}')";
                         try
                         {
@@ -76,14 +81,22 @@ namespace AppFunctionality
             { 
                 if(connection != null)
                 {
-                    var selectQuery = $"SELECT Sorter, Input_Array, Output_Array, Date FROM {tableName}";
+                    var selectQuery = $"SELECT {sorterColumnName}, {unsortedArrColumnName}, {sortedArrColumnName}, {dateColumnName} FROM {tableName}";
+                    string[] columnNames = new string[] { sorterColumnName, unsortedArrColumnName, sortedArrColumnName, dateColumnName};
                     try
                     {
                         using (var adapter = new SqlDataAdapter(selectQuery, connection))
                         {
                             var sortDataTable = new DataTable();
                             adapter.Fill(sortDataTable);
-                            return sortDataTable;
+
+                            if(sortDataTable != null)
+                            {
+                                for(int i = 0; i < sortDataTable.Columns.Count; i++)
+                                    sortDataTable.Columns[i].ColumnName = columnNames[i];
+                                
+                                return sortDataTable;
+                            }
                         }
                     }
                     catch { }

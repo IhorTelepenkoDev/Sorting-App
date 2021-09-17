@@ -45,7 +45,6 @@ namespace WinFormsApp
             this.dataGridViewSortHistory.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridViewSortHistory.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dataGridViewSortHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewSortHistory.ColumnHeadersVisible = false;
             this.dataGridViewSortHistory.Cursor = System.Windows.Forms.Cursors.Default;
             this.dataGridViewSortHistory.Location = new System.Drawing.Point(12, 46);
             this.dataGridViewSortHistory.Name = "dataGridViewSortHistory";
