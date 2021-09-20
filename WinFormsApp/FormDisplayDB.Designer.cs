@@ -29,11 +29,13 @@ namespace WinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDisplayDB));
             this.dataGridViewSortHistory = new System.Windows.Forms.DataGridView();
             this.labelSortHistory = new System.Windows.Forms.Label();
             this.buttonUpdateContent = new System.Windows.Forms.Button();
             this.buttonCleanContent = new System.Windows.Forms.Button();
+            this.toolTipInfo = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortHistory)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,6 +74,7 @@ namespace WinFormsApp
             this.buttonUpdateContent.Name = "buttonUpdateContent";
             this.buttonUpdateContent.Size = new System.Drawing.Size(47, 46);
             this.buttonUpdateContent.TabIndex = 2;
+            this.toolTipInfo.SetToolTip(this.buttonUpdateContent, "Update data");
             this.buttonUpdateContent.UseVisualStyleBackColor = true;
             this.buttonUpdateContent.Click += new System.EventHandler(this.buttonUpdateContent_Click);
             // 
@@ -82,6 +85,7 @@ namespace WinFormsApp
             this.buttonCleanContent.Name = "buttonCleanContent";
             this.buttonCleanContent.Size = new System.Drawing.Size(47, 46);
             this.buttonCleanContent.TabIndex = 3;
+            this.toolTipInfo.SetToolTip(this.buttonCleanContent, "Clean history");
             this.buttonCleanContent.UseVisualStyleBackColor = true;
             this.buttonCleanContent.Click += new System.EventHandler(this.buttonCleanContent_Click);
             // 
@@ -113,5 +117,6 @@ namespace WinFormsApp
         private System.Windows.Forms.Label labelSortHistory;
         private System.Windows.Forms.Button buttonUpdateContent;
         private System.Windows.Forms.Button buttonCleanContent;
+        private System.Windows.Forms.ToolTip toolTipInfo;
     }
 }

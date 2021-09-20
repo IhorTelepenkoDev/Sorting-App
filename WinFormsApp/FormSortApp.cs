@@ -75,7 +75,30 @@ namespace WinFormsApp
             tabControlSortedArrResult.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControlSortedArrResult.DrawItem += new DrawItemEventHandler(tabControlSortedArrResult_DrawItem);
 
+            components = new Container();
+            toolTipValue = new ToolTip(components);
+
             log.Info("The application is started and set");
+        }
+
+        private void textBoxFilePath_TextChanged(object sender, EventArgs e)
+        {
+            if (File.Exists(textBoxFilePath.Text))
+            {
+                if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+                    buttonReadArrByPath.Enabled = true;
+            }
+            else buttonReadArrByPath.Enabled = false;
+        }
+
+        private void buttonSelectArrFileLocation_Click(object sender, EventArgs e)
+        {
+            string filePath = null;
+            OpenFileDialog fileBrowser = new OpenFileDialog();
+            if (fileBrowser.ShowDialog() == DialogResult.OK)
+                filePath = fileBrowser.FileName;
+
+            textBoxFilePath.Text = filePath;
         }
 
         private void buttonReadArrByPath_Click(object sender, EventArgs e)
@@ -85,11 +108,11 @@ namespace WinFormsApp
             CleanSortedArrayTextBox();
 
             var pathToFile = textBoxFilePath.Text;
-            
-            ArrayElemType[tabControlSortedArrResult.SelectedIndex] = 
+
+            ArrayElemType[tabControlSortedArrResult.SelectedIndex] =
                 ArrReadingHelpFunctionality.GetTypeOfArray2DStoredInFile(pathToFile);
-            
-            if(ArrayElemType[tabControlSortedArrResult.SelectedIndex] != null)
+
+            if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] != null)
             {
                 log.Debug("Array in file has type: " + ArrayElemType[tabControlSortedArrResult.SelectedIndex].ToString());
 
@@ -116,29 +139,18 @@ namespace WinFormsApp
                         ArrayElemType[i] = displayedArrElemType;
                     }
             }
-
-            if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] == null)
+            else
             {
                 CleanUnsortedArrayTextBox();
                 buttonStartSorting.Enabled = false;
                 return;
             }
 
-            if(comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
-                if(isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
+            if (comboBoxSelectedSorter.SelectedIndex < comboBoxSelectedSorter.Items.Count - 1 && comboBoxSelectedSorter.Text != "")
+                if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
                     buttonStartSorting.Enabled = true;
 
             PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
-        }
-
-        private void textBoxFilePath_TextChanged(object sender, EventArgs e)
-        {
-            if (File.Exists(textBoxFilePath.Text))
-            {
-                if (isSortRunningOnTab[tabControlSortedArrResult.SelectedIndex] == false)
-                    buttonReadArrByPath.Enabled = true;
-            }
-            else buttonReadArrByPath.Enabled = false;
         }
 
         private void buttonRandomArrayAssign_Click(object sender, EventArgs e)
@@ -356,8 +368,9 @@ namespace WinFormsApp
             {
                 int currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
                 InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
-                //log.Info($"Sorter '{InstancesOfAvailableSortTypes[currentlySelectedSortIndex].SortName}' got an updated slower value");
             }
+            double divisionSlowerCoeffValue = 1000f;
+            toolTipValue.SetToolTip(trackBarSortSlower, (Convert.ToDouble(trackBarSortSlower.Value)/divisionSlowerCoeffValue).ToString() + " seconds");
         }
 
         private void PerformSorting(int indexOfSortType, dynamic unsortedArray2d)
@@ -622,6 +635,5 @@ namespace WinFormsApp
                 }
             }
         }
-
     }
 }

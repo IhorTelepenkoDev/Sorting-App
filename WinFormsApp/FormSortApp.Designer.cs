@@ -29,6 +29,7 @@ namespace WinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SortApp));
             this.textBoxFilePath = new System.Windows.Forms.TextBox();
             this.labelForPathTextBox = new System.Windows.Forms.Label();
@@ -51,6 +52,9 @@ namespace WinFormsApp
             this.tabPageDefaultSortedArr = new System.Windows.Forms.TabPage();
             this.dataGridViewSortedArr0 = new System.Windows.Forms.DataGridView();
             this.buttonSortingHistory = new System.Windows.Forms.Button();
+            this.toolTipValue = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipInfo = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonSelectArrFileLocation = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownRowsInArr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownColumnsInArr)).BeginInit();
             this.groupBoxRandomArrInit.SuspendLayout();
@@ -63,16 +67,16 @@ namespace WinFormsApp
             // 
             // textBoxFilePath
             // 
-            this.textBoxFilePath.Location = new System.Drawing.Point(12, 44);
+            this.textBoxFilePath.Location = new System.Drawing.Point(12, 34);
             this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(601, 20);
+            this.textBoxFilePath.Size = new System.Drawing.Size(543, 20);
             this.textBoxFilePath.TabIndex = 0;
             this.textBoxFilePath.TextChanged += new System.EventHandler(this.textBoxFilePath_TextChanged);
             // 
             // labelForPathTextBox
             // 
             this.labelForPathTextBox.AutoSize = true;
-            this.labelForPathTextBox.Location = new System.Drawing.Point(15, 28);
+            this.labelForPathTextBox.Location = new System.Drawing.Point(15, 18);
             this.labelForPathTextBox.Name = "labelForPathTextBox";
             this.labelForPathTextBox.Size = new System.Drawing.Size(108, 13);
             this.labelForPathTextBox.TabIndex = 1;
@@ -81,9 +85,9 @@ namespace WinFormsApp
             // buttonReadArrByPath
             // 
             this.buttonReadArrByPath.Enabled = false;
-            this.buttonReadArrByPath.Location = new System.Drawing.Point(619, 42);
+            this.buttonReadArrByPath.Location = new System.Drawing.Point(624, 31);
             this.buttonReadArrByPath.Name = "buttonReadArrByPath";
-            this.buttonReadArrByPath.Size = new System.Drawing.Size(75, 23);
+            this.buttonReadArrByPath.Size = new System.Drawing.Size(81, 23);
             this.buttonReadArrByPath.TabIndex = 2;
             this.buttonReadArrByPath.Text = "Read Array";
             this.buttonReadArrByPath.UseVisualStyleBackColor = true;
@@ -159,7 +163,7 @@ namespace WinFormsApp
             this.buttonStartSorting.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.buttonStartSorting.Enabled = false;
             this.buttonStartSorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonStartSorting.Location = new System.Drawing.Point(631, 87);
+            this.buttonStartSorting.Location = new System.Drawing.Point(642, 87);
             this.buttonStartSorting.Name = "buttonStartSorting";
             this.buttonStartSorting.Size = new System.Drawing.Size(63, 56);
             this.buttonStartSorting.TabIndex = 12;
@@ -204,7 +208,7 @@ namespace WinFormsApp
             this.trackBarSortSlower.Location = new System.Drawing.Point(547, 110);
             this.trackBarSortSlower.Maximum = 800;
             this.trackBarSortSlower.Name = "trackBarSortSlower";
-            this.trackBarSortSlower.Size = new System.Drawing.Size(78, 45);
+            this.trackBarSortSlower.Size = new System.Drawing.Size(89, 45);
             this.trackBarSortSlower.TabIndex = 16;
             this.trackBarSortSlower.TickFrequency = 80;
             this.trackBarSortSlower.Scroll += new System.EventHandler(this.trackBarSortSlower_Scroll);
@@ -212,11 +216,11 @@ namespace WinFormsApp
             // labelSortSlower
             // 
             this.labelSortSlower.AutoSize = true;
-            this.labelSortSlower.Location = new System.Drawing.Point(560, 87);
+            this.labelSortSlower.Location = new System.Drawing.Point(550, 87);
             this.labelSortSlower.Name = "labelSortSlower";
-            this.labelSortSlower.Size = new System.Drawing.Size(42, 13);
+            this.labelSortSlower.Size = new System.Drawing.Size(78, 13);
             this.labelSortSlower.TabIndex = 17;
-            this.labelSortSlower.Text = "Slower:";
+            this.labelSortSlower.Text = "Sorting Slower:";
             // 
             // dataGridViewUnsortedArr
             // 
@@ -285,14 +289,30 @@ namespace WinFormsApp
             this.buttonSortingHistory.Name = "buttonSortingHistory";
             this.buttonSortingHistory.Size = new System.Drawing.Size(32, 30);
             this.buttonSortingHistory.TabIndex = 21;
+            this.toolTipInfo.SetToolTip(this.buttonSortingHistory, "Open sorting history");
             this.buttonSortingHistory.UseVisualStyleBackColor = true;
             this.buttonSortingHistory.Click += new System.EventHandler(this.buttonSortingHistory_Click);
+            // 
+            // buttonSelectArrFileLocation
+            // 
+            this.buttonSelectArrFileLocation.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.buttonSelectArrFileLocation.Font = new System.Drawing.Font("Impact", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSelectArrFileLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.buttonSelectArrFileLocation.Location = new System.Drawing.Point(558, 32);
+            this.buttonSelectArrFileLocation.Name = "buttonSelectArrFileLocation";
+            this.buttonSelectArrFileLocation.Size = new System.Drawing.Size(51, 23);
+            this.buttonSelectArrFileLocation.TabIndex = 22;
+            this.buttonSelectArrFileLocation.Text = ". . .";
+            this.buttonSelectArrFileLocation.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonSelectArrFileLocation.UseVisualStyleBackColor = false;
+            this.buttonSelectArrFileLocation.Click += new System.EventHandler(this.buttonSelectArrFileLocation_Click);
             // 
             // SortApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 459);
+            this.Controls.Add(this.buttonSelectArrFileLocation);
             this.Controls.Add(this.buttonSortingHistory);
             this.Controls.Add(this.tabControlSortedArrResult);
             this.Controls.Add(this.dataGridViewUnsortedArr);
@@ -352,6 +372,9 @@ namespace WinFormsApp
         private System.Windows.Forms.TabPage tabPageDefaultSortedArr;
         private System.Windows.Forms.DataGridView dataGridViewSortedArr0;
         private System.Windows.Forms.Button buttonSortingHistory;
+        private System.Windows.Forms.ToolTip toolTipValue;
+        private System.Windows.Forms.ToolTip toolTipInfo;
+        private System.Windows.Forms.Button buttonSelectArrFileLocation;
     }
 }
 

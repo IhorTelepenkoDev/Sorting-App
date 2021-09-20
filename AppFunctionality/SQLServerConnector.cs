@@ -15,10 +15,10 @@ namespace AppFunctionality
         public string UserId { private get; set; } = null;
         public string Password { private get; set; } = null;
 
-        private string sorterColumnName = "Sorter";
-        private string unsortedArrColumnName = "Input_Array";
-        private string sortedArrColumnName = "Output_Array";
-        private string dateColumnName = "Date";
+        private const string sorterColumnName = "Sorter";
+        private const string unsortedArrColumnName = "Input_Array";
+        private const string sortedArrColumnName = "Output_Array";
+        private const string dateColumnName = "Date";
 
         public SQLServerConnector(string serverName, string dbName, string userId, string password)
         {
