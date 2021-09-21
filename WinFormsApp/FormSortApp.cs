@@ -131,6 +131,7 @@ namespace WinFormsApp
                 log.Info("Unsorted array is read from file");
 
                 SetNewUnsortedArrayAsDefault(tabControlSortedArrResult.SelectedIndex);
+                SetTabHeaderColor(tabControlSortedArrResult.SelectedTab, Color.White);
             }
             else
             {
@@ -205,6 +206,7 @@ namespace WinFormsApp
                     log.Info("Unsorted array is randomly generated");
 
                     SetNewUnsortedArrayAsDefault(tabControlSortedArrResult.SelectedIndex);
+                    SetTabHeaderColor(tabControlSortedArrResult.SelectedTab, Color.White);
 
                     PrintArr2dIntoGridView(displayedBasicArr2D, dataGridViewUnsortedArr);
 
