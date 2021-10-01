@@ -8,24 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppFunctionality;
+using AppFunctionality.DBConnection;
 
 namespace WinFormsApp
 {
-    public partial class FormDisplayDB : Form
+    public partial class FormDisplayHistory : Form
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private SortApp parentSortAppForm;
-        private SQLServerConnector historyDatabaseConnector;
-        private string dbTable;
-        public FormDisplayDB(SortApp parentForm, SQLServerConnector dbConnect, string dbTableName)
+        private DatabaseController historyDatabaseController;
+        public FormDisplayHistory(SortApp parentForm, DatabaseController dbController)
         {
             InitializeComponent();
             parentSortAppForm = parentForm;
-            historyDatabaseConnector = dbConnect;
-            dbTable = dbTableName;
+            historyDatabaseController = dbController;
 
-            DisplayDatabaseContent(historyDatabaseConnector, dbTable);
+            DisplayDatabaseContent();
             log.Info("History of sortings is opened");
         }
 
@@ -41,21 +40,21 @@ namespace WinFormsApp
             int visualReloadingTimeoutMs = 75;
             System.Threading.Thread.Sleep(visualReloadingTimeoutMs);
 
-            DisplayDatabaseContent(historyDatabaseConnector, dbTable);
+            DisplayDatabaseContent();
             log.Info("Data of sortings history is updated");
         }
 
         private void buttonCleanContent_Click(object sender, EventArgs e)
         {
-            historyDatabaseConnector.CleanStoredSortData(dbTable);
+            historyDatabaseController.CleanHistory();
             log.Info("Data of sortings history is cleaned");
 
-            DisplayDatabaseContent(historyDatabaseConnector, dbTable);
+            DisplayDatabaseContent();
         }
 
-        private void DisplayDatabaseContent(SQLServerConnector dbConnector, string tableName)
+        private void DisplayDatabaseContent()
         {
-            var contentDataTable = dbConnector.GetStoredSortData(tableName);
+            DataTable contentDataTable = historyDatabaseController.GetSortHistory();
             dataGridViewSortHistory.DataSource = contentDataTable;
 
             dataGridViewSortHistory.ClearSelection();

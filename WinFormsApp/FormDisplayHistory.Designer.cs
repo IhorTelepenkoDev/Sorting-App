@@ -1,7 +1,7 @@
 ﻿
 namespace WinFormsApp
 {
-    partial class FormDisplayDB
+    partial class FormDisplayHistory
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace WinFormsApp
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDisplayDB));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDisplayHistory));
             this.dataGridViewSortHistory = new System.Windows.Forms.DataGridView();
             this.labelSortHistory = new System.Windows.Forms.Label();
             this.buttonUpdateContent = new System.Windows.Forms.Button();
@@ -89,7 +89,7 @@ namespace WinFormsApp
             this.buttonCleanContent.UseVisualStyleBackColor = true;
             this.buttonCleanContent.Click += new System.EventHandler(this.buttonCleanContent_Click);
             // 
-            // FormDisplayDB
+            // FormDisplayHistory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -101,7 +101,7 @@ namespace WinFormsApp
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormDisplayDB";
+            this.Name = "FormDisplayHistory";
             this.Text = "History";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDisplayDB_FormClosing);
             this.Load += new System.EventHandler(this.FormDisplayDB_Load);

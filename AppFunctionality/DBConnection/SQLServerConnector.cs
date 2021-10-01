@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace AppFunctionality
+namespace AppFunctionality.DBConnection
 {
-    public class SQLServerConnector
+    internal class SQLServerConnector: IDatabaseConnector
     {
         public string ServerName { private get; set; } = null;
         public string DatabaseName { private get; set; } = null;
@@ -28,7 +28,7 @@ namespace AppFunctionality
             Password = password;
         }
 
-        public void CreateStoredSortingsTable(string tableName)
+        public void CreateSortTable(string tableName)
         {
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {   
@@ -50,7 +50,7 @@ namespace AppFunctionality
             }
         }
 
-        public void StoreSortData(string tableName, string sorterName, string unsortedArray, string sortedArray)
+        public void StoreSortData(string tableName, string sorterName, string unsortedArray, string sortedArray, string sortDate)
         {
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {
@@ -60,8 +60,8 @@ namespace AppFunctionality
                     using (SqlCommand insertDataCommand = new SqlCommand())
                     {
                         insertDataCommand.Connection = connection;
-                        insertDataCommand.CommandText = $"INSERT INTO {tableName} ({sorterColumnName}, {unsortedArrColumnName}, {sortedArrColumnName}) " +
-                            $"VALUES ('{sorterName}', '{unsortedArray}', '{sortedArray}')";
+                        insertDataCommand.CommandText = $"INSERT INTO {tableName} ({sorterColumnName}, {unsortedArrColumnName}, {sortedArrColumnName}, {dateColumnName}) " +
+                            $"VALUES ('{sorterName}', '{unsortedArray}', '{sortedArray}', '{sortDate}')";
                         try
                         {
                             insertDataCommand.ExecuteNonQuery();
@@ -75,7 +75,7 @@ namespace AppFunctionality
             }
         }
 
-        public DataTable GetStoredSortData(string tableName)
+        public DataTable ReadSortTable(string tableName)
         {
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             { 
@@ -106,7 +106,7 @@ namespace AppFunctionality
             return null;
         }
 
-        public void CleanStoredSortData(string tableName)
+        public void CleanSortTable(string tableName)
         {
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {

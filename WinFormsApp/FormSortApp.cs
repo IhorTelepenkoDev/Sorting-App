@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using AppFunctionality;
 using AppFunctionality.ReceiveArrayFromFile;
 using AppFunctionality.ReceiveSorters;
+using AppFunctionality.DBConnection;
 using BaseSort;
 
 namespace WinFormsApp
@@ -28,8 +29,7 @@ namespace WinFormsApp
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
         public ISorter2D[] InstancesOfAvailableSortTypes { get; set; } = null;
 
-        private SQLServerConnector dbConnector;
-        private string dbTableName;
+        private DatabaseController dbController;
 
         private Thread[] runningSortThreads = null;
 
@@ -48,15 +48,7 @@ namespace WinFormsApp
             InitializeComponent();
             SetBasicVisibleElements();
 
-            var configDatabaseValuesReceiver = new ConfigReceiver(UIHelpFunctionality.GetConfigFilePath(), "database");
-            dbConnector = new SQLServerConnector(configDatabaseValuesReceiver.GetValue("server"), configDatabaseValuesReceiver.GetValue("database"), 
-                configDatabaseValuesReceiver.GetValue("user"), configDatabaseValuesReceiver.GetValue("password"));
-            dbTableName = configDatabaseValuesReceiver.GetValue("table");
-
-            if (dbConnector.DoesTableExist(dbTableName) == false)
-                dbConnector.CreateStoredSortingsTable(dbTableName);
-            //dbConnector.StoreSortData(dbTableName, "testSorterApp", "123", "45666");
-            //dbConnector.CleanStoredSortData(dbTableName);
+            dbController = new DatabaseController();
 
             BasicArray2D = new List<dynamic>();
             BasicArray2D.Add(null);
@@ -188,7 +180,7 @@ namespace WinFormsApp
                 if (numUpDownRowsInArr.Value > 0 && numUpDownColumnsInArr.Value > 0)
                 {
                     ArrayElemType[tabControlSortedArrResult.SelectedIndex] =
-                        UIHelpFunctionality.GetSelectedArrType(comboBoxArrDataType.SelectedItem.ToString());
+                        ArrayHelpFunctionality.GetSelectedArrType(comboBoxArrDataType.SelectedItem.ToString());
 
                     int arr2dLengthRows = Convert.ToInt32(numUpDownRowsInArr.Value);
                     int arr2dLengthColumns = Convert.ToInt32(numUpDownColumnsInArr.Value);
@@ -320,7 +312,7 @@ namespace WinFormsApp
             log.Debug($"Sorting will start for sorter #{selectedSorterIndex} ('{InstancesOfAvailableSortTypes[selectedSorterIndex].SortName}')");
 
             var sortingCopyOfBasic2dArr =
-                    UIHelpFunctionality.Copy2dArr(BasicArray2D[selectedSorterIndex], ArrayElemType[selectedSorterIndex]);
+                    ArrayHelpFunctionality.Copy2dArr(BasicArray2D[selectedSorterIndex], ArrayElemType[selectedSorterIndex]);
 
             MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
 
@@ -338,8 +330,7 @@ namespace WinFormsApp
                 {
                     Invoke(resultArrPrinter);   //the array is already sorted, is displayed
 
-                    dbConnector.StoreSortData(dbTableName, InstancesOfAvailableSortTypes[selectedSorterIndex].SortName,
-                        UIHelpFunctionality.Arr2dToString(BasicArray2D[selectedSorterIndex]), UIHelpFunctionality.Arr2dToString(sortingCopyOfBasic2dArr));
+                    dbController.AddSortToHistory(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
 
                     SetTabHeaderColor(tabControlSortedArrResult.TabPages[selectedSorterIndex], finishedSortingTabColor);
                     if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)
@@ -432,7 +423,7 @@ namespace WinFormsApp
 
         private void buttonSortingHistory_Click(object sender, EventArgs e)
         {
-            var dbDisplayForm = new FormDisplayDB(this, dbConnector, dbTableName);
+            var dbDisplayForm = new FormDisplayHistory(this, dbController);
             buttonSortingHistory.Enabled = false;
             dbDisplayForm.Show();
         }

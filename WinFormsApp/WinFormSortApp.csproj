@@ -55,11 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormDisplayDB.cs">
+    <Compile Include="FormDisplayHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDisplayDB.Designer.cs">
-      <DependentUpon>FormDisplayDB.cs</DependentUpon>
+    <Compile Include="FormDisplayHistory.Designer.cs">
+      <DependentUpon>FormDisplayHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSortApp.cs">
       <SubType>Form</SubType>
@@ -69,8 +69,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormDisplayDB.resx">
-      <DependentUpon>FormDisplayDB.cs</DependentUpon>
+    <EmbeddedResource Include="FormDisplayHistory.resx">
+      <DependentUpon>FormDisplayHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSortApp.resx">
       <DependentUpon>FormSortApp.cs</DependentUpon>

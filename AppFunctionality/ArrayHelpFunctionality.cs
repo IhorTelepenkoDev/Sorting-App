@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace AppFunctionality
 {
-    public class UIHelpFunctionality
+    public class ArrayHelpFunctionality
     {
-        private static string configFileName = "config.ini";
-
         public static Type GetSelectedArrType(string dataTypePrinted)
         {
             switch (dataTypePrinted)
@@ -62,12 +60,6 @@ namespace AppFunctionality
             catch { }
 
             return resultCopiedArr2d;
-        }
-
-        public static string GetConfigFilePath()
-        {
-            string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, configFileName);
-            return startupPath;
         }
     }
 }
