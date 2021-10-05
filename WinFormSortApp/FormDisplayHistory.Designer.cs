@@ -1,5 +1,5 @@
 ﻿
-namespace WinFormsApp
+namespace WinFormSortApp
 {
     partial class FormDisplayHistory
     {

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using AppFunctionality;
 using AppFunctionality.DBConnection;
 
-namespace WinFormsApp
+namespace WinFormSortApp
 {
     public partial class FormDisplayHistory : Form
     {

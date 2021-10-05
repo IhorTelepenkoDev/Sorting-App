@@ -19,7 +19,7 @@ using AppFunctionality.ReceiveSorters;
 using AppFunctionality.DBConnection;
 using BaseSort;
 
-namespace WinFormsApp
+namespace WinFormSortApp
 {
     public partial class SortApp : Form
     {
