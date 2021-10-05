@@ -17,13 +17,15 @@ using AppFunctionality;
 using AppFunctionality.ReceiveArrayFromFile;
 using AppFunctionality.ReceiveSorters;
 using AppFunctionality.DBConnection;
+using AppFunctionality.Logging;
 using BaseSort;
 
 namespace WinFormSortApp
 {
     public partial class SortApp : Form
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger log = new Logger();
 
         public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array

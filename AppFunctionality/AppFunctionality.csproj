@@ -36,11 +36,16 @@
     <Reference Include="BaseSort">
       <HintPath>..\..\..\for dll\Ready DLLs\BaseSort.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +57,7 @@
     <Compile Include="ConfigReceiver.cs" />
     <Compile Include="DBConnection\DatabaseController.cs" />
     <Compile Include="DBConnection\IDatabaseConnector.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="ReceiveSorters\ReaderFromDLL.cs" />
     <Compile Include="ReceiveArrayFromFile\Array2dReaderFromJSON.cs" />
     <Compile Include="ReceiveArrayFromFile\ArrReadingHelpFunctionality.cs" />
@@ -63,8 +69,13 @@
     <Compile Include="ArrayHelpFunctionality.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Logging\log4net.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)WinFormSortApp"
+xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)ConsoleSortApp"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
