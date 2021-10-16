@@ -10,16 +10,18 @@ namespace AppFunctionality.Logging
     public class Logger
     {
         private readonly log4net.ILog _log;
+        private const string configFileLocalPath = @"\Logging\log4net.config";
+        private const string loggerName = "log4netFileLogger";
 
         public Logger()
         {
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var configFileDirectory = Path.Combine(baseDirectory, "log4net.config");
+            var baseProjectDirectory = Path.GetFullPath(@"..\..\");
+            var configFileDirectory = baseProjectDirectory + configFileLocalPath;
 
-            FileInfo configFileInfo = new FileInfo(@"C:\My Projects\Sort Project\Main Project\SortApp\WinFormsApp\log4net.config");
+            FileInfo configFileInfo = new FileInfo( configFileDirectory);
             log4net.Config.XmlConfigurator.ConfigureAndWatch(configFileInfo);
 
-            _log = log4net.LogManager.GetLogger("log4netFileLogger");
+            _log = log4net.LogManager.GetLogger(loggerName);
         }
 
         public void Debug(string value)

@@ -75,7 +75,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)WinFormSortApp"
-xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)ConsoleSortApp"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)WinFormSortApp\Logging"
+xcopy /Y "$(ProjectDir)Logging\log4net.config" "$(SolutionDir)ConsoleSortApp\Logging"</PostBuildEvent>
   </PropertyGroup>
 </Project>
