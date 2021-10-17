@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using AppFunctionality.Logging;
 
 namespace AppFunctionality.ReceiveArrayFromFile
 {
     public class ArrReadingHelpFunctionality
     {
+        private static readonly Logger log = Logger.GetInstance();
+
         public static string ReadFileContent(string filePath)
         {
             string fileContent = null;
@@ -15,7 +18,10 @@ namespace AppFunctionality.ReceiveArrayFromFile
                 using (StreamReader reader = new StreamReader(filePath))
                     fileContent = reader.ReadToEnd();
             }
-            catch {}
+            catch (Exception e)
+            {
+                log.Error($"File ({filePath}) cannot be read: {e}");
+            }
             
             return fileContent;
         }
@@ -36,6 +42,7 @@ namespace AppFunctionality.ReceiveArrayFromFile
             }
             catch (InvalidOperationException)
             {
+                log.Error("The array is not 2-dimensional, cannot be read");
                 return null;
             }
         }
@@ -56,7 +63,10 @@ namespace AppFunctionality.ReceiveArrayFromFile
                     return typeof(string);
                 }
                 default:
+                {
+                    log.Warn($"Files '.{fileExtension}' are not supported, file cannot be read");
                     return null;
+                }
 
             }
         }
@@ -70,7 +80,10 @@ namespace AppFunctionality.ReceiveArrayFromFile
                 case "json":
                     return new Array2dReaderFromJSON<T>();
                 default:
-                   return null;
+                {
+                    log.Error($"Format '.{dataSourcePath}' is not supported for reading");
+                    return null;
+                }
             }
 
         }

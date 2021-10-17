@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AppFunctionality.Logging;
 using Newtonsoft.Json;
 
 namespace AppFunctionality.ReceiveArrayFromFile
@@ -11,6 +13,8 @@ namespace AppFunctionality.ReceiveArrayFromFile
 
     internal class Array2dReaderFromJSON<T> : IArrayReader<T>
     {
+        private readonly Logger log = Logger.GetInstance();
+
         public T[,] Read2DArray(string dataInJSON)
         {
             T[][] readJaggedArr;
@@ -22,13 +26,16 @@ namespace AppFunctionality.ReceiveArrayFromFile
 
                 readJaggedArr = JsonConvert.DeserializeObject<T[][]>(receivedDataItems.FirstOrDefault().Array);
             }
-            catch
+            catch (Exception e)
             {
+                log.Error($"Cannot read the array from JSON: {e}");
                 return null;
             }
                 
             
             T[,] readArrIn2D = ArrReadingHelpFunctionality.ConvertFromJaggedTo2DArray(readJaggedArr);
+            if(readArrIn2D != null)
+                log.Info("Array is successfully read");
 
             return readArrIn2D;
         }

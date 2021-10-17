@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppFunctionality.Logging;
 
 namespace AppFunctionality
 {
     public class ConfigReceiver
     {
         Dictionary<string, string> confValues;
+
+        private readonly Logger log = Logger.GetInstance();
+
         public ConfigReceiver(string configFilePath, string section = null)
         {
             string sectionTitle = $"[{section}]";
@@ -43,8 +47,11 @@ namespace AppFunctionality
         {
             if (confValues != null && confValues.ContainsKey(keyName))
             {
+                log.Debug($"Value '{keyName}' is read successfully from config file");
                 return confValues[keyName];
             }
+
+            log.Debug($"Value '{keyName}' is not found in the config file");
             return defaultValue;
         }
     }

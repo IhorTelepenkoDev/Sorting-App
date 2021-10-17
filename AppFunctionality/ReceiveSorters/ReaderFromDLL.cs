@@ -2,12 +2,15 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AppFunctionality.Logging;
 using BaseSort;
 
 namespace AppFunctionality.ReceiveSorters
 {
     public class ReaderFromDLL
     {
+        private readonly Logger log = Logger.GetInstance();
+
         public ISorter2D[] GetInstancesOfSortersInFolder(string pathToFolderWithDLL)
         {
             var allDllFiles = GetPathesToAllDllFilesInGivenFolder(pathToFolderWithDLL);
@@ -21,10 +24,12 @@ namespace AppFunctionality.ReceiveSorters
                                        where typeof(ISorter2D).IsAssignableFrom(type)
                                        select (ISorter2D)Activator.CreateInstance(type, constructorArgs)).ToArray();
 
+                log.Debug("DLLs with sorters are successfully read from the folder");
                 return resultInstances;
             }
-            catch
+            catch (Exception e)
             {
+                log.Warn($"DLLs with sorters are not read: {e}");
                 return null;
             }
         }

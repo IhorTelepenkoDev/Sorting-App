@@ -112,6 +112,8 @@ namespace WinFormSortApp
 
                 var contentOfFile = ArrReadingHelpFunctionality.ReadFileContent(pathToFile);
 
+                log.Info("Unsorted array will be read from file");
+
                 if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(int))
                     BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<int>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<int>(pathToFile)).Array2D;
@@ -121,8 +123,6 @@ namespace WinFormSortApp
                 if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
                     BasicArray2D[tabControlSortedArrResult.SelectedIndex] = new ArrayInitializer<string>(
                                 contentOfFile, ArrReadingHelpFunctionality.Get2DArrayReaderFromDataSource<string>(pathToFile)).Array2D;
-
-                log.Info("Unsorted array is read from file");
 
                 SetNewUnsortedArrayAsDefault(tabControlSortedArrResult.SelectedIndex);
                 SetTabHeaderColor(tabControlSortedArrResult.SelectedTab, Color.White);
@@ -187,6 +187,8 @@ namespace WinFormSortApp
                     int arr2dLengthRows = Convert.ToInt32(numUpDownRowsInArr.Value);
                     int arr2dLengthColumns = Convert.ToInt32(numUpDownColumnsInArr.Value);
 
+                    log.Info("Unsorted array will be randomly generated");
+
                     if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(int))
                         BasicArray2D[tabControlSortedArrResult.SelectedIndex] =
                             new ArrayInitializer<int>(arr2dLengthRows, arr2dLengthColumns).Array2D;
@@ -196,8 +198,6 @@ namespace WinFormSortApp
                     if (ArrayElemType[tabControlSortedArrResult.SelectedIndex] == typeof(string))
                         BasicArray2D[tabControlSortedArrResult.SelectedIndex] =
                             new ArrayInitializer<string>(arr2dLengthRows, arr2dLengthColumns).Array2D;
-
-                    log.Info("Unsorted array is randomly generated");
 
                     SetNewUnsortedArrayAsDefault(tabControlSortedArrResult.SelectedIndex);
                     SetTabHeaderColor(tabControlSortedArrResult.SelectedTab, Color.White);
