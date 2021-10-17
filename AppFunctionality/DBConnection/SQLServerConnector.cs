@@ -28,6 +28,19 @@ namespace AppFunctionality.DBConnection
             Password = password;
         }
 
+        public bool IsDatabaseConnectionPossible()
+        {
+            try
+            {
+                SqlConnection testConnection = new SqlConnection(GetConnectionString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public void CreateSortTable(string tableName)
         {
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))

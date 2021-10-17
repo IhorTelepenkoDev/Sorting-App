@@ -10,6 +10,8 @@ namespace AppFunctionality.DBConnection
 {
     public class DatabaseController
     {
+        public readonly bool isDatabaseConnectable = false;
+
         private readonly IDatabaseConnector dbConnector;
         public string tableName { get; private set; }
 
@@ -34,6 +36,13 @@ namespace AppFunctionality.DBConnection
 
             dbConnector = new SQLServerConnector(configurationsReceiver.GetValue(configParamServer), configurationsReceiver.GetValue(configParamDatabase), 
                 configurationsReceiver.GetValue(configParamUser), configurationsReceiver.GetValue(configParamPaaword));
+
+            if (dbConnector.IsDatabaseConnectionPossible() == false)
+            {
+                isDatabaseConnectable = false;
+                return;
+            }
+            else isDatabaseConnectable = true;
 
             if (dbConnector.DoesTableExist(tableName) == false)
                 dbConnector.CreateSortTable(tableName);

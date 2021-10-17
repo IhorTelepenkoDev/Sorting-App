@@ -15,5 +15,6 @@ namespace AppFunctionality.DBConnection
         public void CleanSortTable(string tableName);
 
         public bool DoesTableExist(string tableName);
+        public bool IsDatabaseConnectionPossible();
     }
 }
