@@ -374,7 +374,7 @@ namespace WinFormSortApp
             isSortRunningOnTab[indexOfSortType] = true;
             SetTabHeaderColor(tabControlSortedArrResult.TabPages[indexOfSortType], notFinishedSortingTabColor);
 
-            log.Info($"Sorting '{selectedSorter.SortName} starts'");
+            log.Info($"Sorting '{selectedSorter.SortName}' starts");
             selectedSorter.Sort(unsortedArray2d);
         }
 
@@ -458,7 +458,8 @@ namespace WinFormSortApp
             }
             catch (Exception e)
             {
-                log.Debug($"Printing of array into grid '{dataGridVewField.Name}' failed due to exception {e}");
+                if(!(e is NullReferenceException))
+                    log.Debug($"Printing of array into grid '{dataGridVewField.Name}' failed due to exception {e}");
             }
         }
 

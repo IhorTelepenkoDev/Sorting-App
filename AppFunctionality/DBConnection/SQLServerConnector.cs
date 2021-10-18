@@ -35,7 +35,9 @@ namespace AppFunctionality.DBConnection
         {
             try
             {
-                new SqlConnection(GetConnectionString());
+                var testConnection = new SqlConnection(GetConnectionString());
+                testConnection.Open();
+                testConnection.Close();
                 log.Debug("Database is successfully connected");
                 return true;
             }
