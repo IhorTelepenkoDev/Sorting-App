@@ -67,6 +67,10 @@
     <Compile Include="FormSortApp.Designer.cs">
       <DependentUpon>FormSortApp.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSortApp.Functionality.cs">
+      <DependentUpon>FormSortApp.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormDisplayHistory.resx">

@@ -1,4 +1,6 @@
-﻿
+﻿using System.Windows.Forms;
+using System.ComponentModel;
+
 namespace WinFormSortApp
 {
     partial class SortApp
@@ -347,6 +349,14 @@ namespace WinFormSortApp
             this.ResumeLayout(false);
             this.PerformLayout();
 
+
+            SetBasicVisibleElements();
+
+            tabControlSortedArrResult.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControlSortedArrResult.DrawItem += new DrawItemEventHandler(tabControlSortedArrResult_DrawItem);
+
+            components = new Container();
+            toolTipValue = new ToolTip(components);
         }
 
         #endregion
