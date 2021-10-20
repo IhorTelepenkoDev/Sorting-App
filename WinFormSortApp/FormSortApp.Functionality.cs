@@ -4,6 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms;
+using System.ComponentModel;
 using AppFunctionality.DBConnection;
 using AppFunctionality.Logging;
 using BaseSort;
@@ -12,7 +14,7 @@ namespace WinFormSortApp
 {
     public partial class SortApp
     {
-        private static readonly Logger log = Logger.GetInstance();
+        private readonly Logger log = Logger.GetInstance();
 
         public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
@@ -35,22 +37,25 @@ namespace WinFormSortApp
         public SortApp()
         {
             InitializeComponent();
+            SetBasicVisibleElements();
 
             dbController = new DatabaseController();
 
-            BasicArray2D = new List<dynamic>();
-            BasicArray2D.Add(null);
-            ArrayElemType = new List<Type>();
-            ArrayElemType.Add(null);
+            BasicArray2D = new List<dynamic> {null};
+            ArrayElemType = new List<Type> {null};
 
-            isSortRunningOnTab = new List<bool>();
-            isSortRunningOnTab.Add(false);
+            isSortRunningOnTab = new List<bool> {false};
             tabControlSortedArrResult.Selecting += new TabControlCancelEventHandler(tabControlSortedArrResult_SelectedTabChanged);
 
             templateSortedArrGrid = dataGridViewSortedArr0;
 
-            sortedArrTabColors = new Dictionary<TabPage, Color>();
-            sortedArrTabColors.Add(tabControlSortedArrResult.SelectedTab, Color.White);
+            sortedArrTabColors = new Dictionary<TabPage, Color> {{tabControlSortedArrResult.SelectedTab, Color.White}};
+
+            tabControlSortedArrResult.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControlSortedArrResult.DrawItem += new DrawItemEventHandler(tabControlSortedArrResult_DrawItem);
+
+            components = new Container();
+            toolTipValue = new ToolTip(components);
 
             log.Info("The application is started and set");
         }
@@ -81,9 +86,11 @@ namespace WinFormSortApp
 
         private void CreateSortedArrTabPage(string sortingName)
         {
-            TabPage newSortTab = new TabPage();
-            newSortTab.Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count).ToString() + sortingName;
-            newSortTab.Text = sortingName;
+            TabPage newSortTab = new TabPage
+            {
+                Name = "tabPageSortedArr" + (tabControlSortedArrResult.TabPages.Count) + sortingName,
+                Text = sortingName
+            };
 
             CreateSortedArrGridView(newSortTab, tabControlSortedArrResult.TabPages.Count);
 
@@ -131,7 +138,7 @@ namespace WinFormSortApp
         {
             ChangeOfArrayElementsHandler swappedElemsDisplay = (rowIndexSwappedElem1, colIndexSwappedElem1, rowIndexSwappedElem2, colIndexSwappedElem2) =>
             {
-                Invoke(new MethodInvoker(delegate ()
+                Invoke(new MethodInvoker(delegate
                 {
                     CleanGridViewCellsBackColor(selectedSortedArrGridView);
                     selectedSortedArrGridView[colIndexSwappedElem1, rowIndexSwappedElem1].Style.BackColor = Color.Beige;
@@ -162,26 +169,27 @@ namespace WinFormSortApp
 
         private void CreateSortedArrGridView(TabPage selectedTabPage, int gridIndex)
         {
-            var createdGridView = new DataGridView();
+            var createdGridView = new DataGridView
+            {
+                Name = "dataGridViewSortedArr" + gridIndex,
+                Size = templateSortedArrGrid.Size,
+                Location = templateSortedArrGrid.Location,
+                BackgroundColor = templateSortedArrGrid.BackgroundColor,
+                CellBorderStyle = templateSortedArrGrid.CellBorderStyle,
+                ColumnHeadersVisible = templateSortedArrGrid.ColumnHeadersVisible,
+                RowHeadersVisible = templateSortedArrGrid.RowHeadersVisible,
+                RowTemplate = templateSortedArrGrid.RowTemplate,
+                ShowEditingIcon = templateSortedArrGrid.ShowEditingIcon,
+                AllowUserToAddRows = templateSortedArrGrid.AllowUserToAddRows,
+                AllowUserToDeleteRows = templateSortedArrGrid.AllowUserToDeleteRows,
+                AllowUserToResizeColumns = templateSortedArrGrid.AllowUserToResizeColumns,
+                AllowUserToResizeRows = templateSortedArrGrid.AllowUserToResizeRows,
+                ColumnHeadersHeight = templateSortedArrGrid.ColumnHeadersHeight,
+                ReadOnly = templateSortedArrGrid.ReadOnly,
+                TabIndex = templateSortedArrGrid.TabIndex,
+                AutoSizeColumnsMode = templateSortedArrGrid.AutoSizeColumnsMode
+            };
 
-            //createdGridView.Name = "dataGridViewSortedArr" + (Convert.ToInt32(Regex.Match(selectedTabPage.Name, @"\d+$").Value) - 1).ToString();
-            createdGridView.Name = "dataGridViewSortedArr" + gridIndex;
-            createdGridView.Size = templateSortedArrGrid.Size;
-            createdGridView.Location = templateSortedArrGrid.Location;
-            createdGridView.BackgroundColor = templateSortedArrGrid.BackgroundColor;
-            createdGridView.CellBorderStyle = templateSortedArrGrid.CellBorderStyle;
-            createdGridView.ColumnHeadersVisible = templateSortedArrGrid.ColumnHeadersVisible;
-            createdGridView.RowHeadersVisible = templateSortedArrGrid.RowHeadersVisible;
-            createdGridView.RowTemplate = templateSortedArrGrid.RowTemplate;
-            createdGridView.ShowEditingIcon = templateSortedArrGrid.ShowEditingIcon;
-            createdGridView.AllowUserToAddRows = templateSortedArrGrid.AllowUserToAddRows;
-            createdGridView.AllowUserToDeleteRows = templateSortedArrGrid.AllowUserToDeleteRows;
-            createdGridView.AllowUserToResizeColumns = templateSortedArrGrid.AllowUserToResizeColumns;
-            createdGridView.AllowUserToResizeRows = templateSortedArrGrid.AllowUserToResizeRows;
-            createdGridView.ColumnHeadersHeight = templateSortedArrGrid.ColumnHeadersHeight;
-            createdGridView.ReadOnly = templateSortedArrGrid.ReadOnly;
-            createdGridView.TabIndex = templateSortedArrGrid.TabIndex;
-            createdGridView.AutoSizeColumnsMode = templateSortedArrGrid.AutoSizeColumnsMode;
 
             selectedTabPage.Controls.Add(createdGridView);
         }

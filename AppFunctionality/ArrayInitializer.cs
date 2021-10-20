@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using AppFunctionality.ReceiveArrayFromFile;
+﻿using AppFunctionality.ReceiveArrayFromFile;
 using AppFunctionality.ReceiveArrayRandomly;
 using AppFunctionality.Logging;
 
@@ -9,8 +7,9 @@ namespace AppFunctionality
     //the supported array2D types are "int", "double", "string" 
     public class ArrayInitializer<T>
     {
-        public T[,] Array2D { get; }
         private readonly Logger log = Logger.GetInstance();
+
+        public T[,] Array2D { get; }
 
         // getting array2D from a file:
         public ArrayInitializer(string receivedData, IArrayReader<T> arr2DReader)

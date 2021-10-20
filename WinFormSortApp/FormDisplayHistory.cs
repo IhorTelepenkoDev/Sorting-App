@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using AppFunctionality;
 using AppFunctionality.DBConnection;
+using AppFunctionality.Logging;
 
 namespace WinFormSortApp
 {
     public partial class FormDisplayHistory : Form
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Logger log = Logger.GetInstance();
 
         private SortApp parentSortAppForm;
         private DatabaseController historyDatabaseController;
+
         public FormDisplayHistory(SortApp parentForm, DatabaseController dbController)
         {
             InitializeComponent();
@@ -62,8 +57,17 @@ namespace WinFormSortApp
 
         private void FormDisplayDB_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Button parentHistoryButton = parentSortAppForm.Controls["buttonSortingHistory"] as Button;
-            parentHistoryButton.Enabled = true;
+            const string openSortHistoryButtonName = "buttonSortingHistory";
+
+            try
+            {
+                Button parentHistoryButton = parentSortAppForm.Controls[openSortHistoryButtonName] as Button;
+                parentHistoryButton.Enabled = true;
+            }
+            catch (NullReferenceException)
+            {
+                log.Fatal("'history of sortings' button is not found. The name do not match.");
+            }
         }
 
     }

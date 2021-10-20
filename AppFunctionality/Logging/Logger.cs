@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace AppFunctionality.Logging
 {
@@ -12,18 +7,18 @@ namespace AppFunctionality.Logging
         private static Logger instance; //Logger is "Singleton"
 
         private readonly log4net.ILog _log;
-        private const string configFileLocalPath = @"AppFunctionality\Logging\log4net.config";
-        private const string loggerName = "log4netFileLogger";
+        private const string ConfigFileLocalPath = @"AppFunctionality\Logging\log4net.config";
+        private const string LoggerName = "log4netFileLogger";
 
         private Logger()
         {
             var baseSolutionDirectory = Path.GetFullPath(@"..\..\..\");
-            var configFileDirectory = baseSolutionDirectory + configFileLocalPath;
+            var configFileDirectory = baseSolutionDirectory + ConfigFileLocalPath;
 
-            FileInfo configFileInfo = new FileInfo( configFileDirectory);
+            var configFileInfo = new FileInfo(configFileDirectory);
             log4net.Config.XmlConfigurator.ConfigureAndWatch(configFileInfo);
 
-            _log = log4net.LogManager.GetLogger(loggerName);
+            _log = log4net.LogManager.GetLogger(LoggerName);
         }
 
         public static Logger GetInstance()

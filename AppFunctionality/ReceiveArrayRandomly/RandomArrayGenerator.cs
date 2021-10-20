@@ -6,7 +6,7 @@ namespace AppFunctionality.ReceiveArrayRandomly
     internal class RandomArrayGenerator
     {
         //the supported array2D types are "int", "double", "string"
-        private static readonly Random rnd = new Random();
+        private static readonly Random rand = new Random();
 
         public void Generate2DArrayRandomly<T>(T[,] arr, int lenRows, int lenCols)
         {
@@ -17,7 +17,7 @@ namespace AppFunctionality.ReceiveArrayRandomly
                 for (int i = 0; i < lenRows; i++)
                     for (int j = 0; j < lenCols; j++)
                     {
-                        int textLen = rnd.Next(1, maxStringLength);
+                        int textLen = rand.Next(1, maxStringLength);
                         arr[i, j] = (T)Convert.ChangeType(GenerateRandString(textLen), typeof(T));
                     }
             }
@@ -43,26 +43,26 @@ namespace AppFunctionality.ReceiveArrayRandomly
         {
             const string chars = "abcdefghijklmnopqrstuvwxyz";
             return new string(Enumerable.Repeat(chars, len)
-                .Select(s => s[rnd.Next(s.Length)]).ToArray());
+                .Select(s => s[rand.Next(s.Length)]).ToArray());
         }
 
         private static int GenerateRandInteger()
         {
             var rangeReducer = GetRangeReduceCoefficient();
-            return rnd.Next(int.MinValue / rangeReducer, int.MaxValue / rangeReducer);
+            return rand.Next(int.MinValue / rangeReducer, int.MaxValue / rangeReducer);
         }
 
         private static double GenerateRandDouble()
         {
             var rangeReducer = GetRangeReduceCoefficient();
-            var number = rnd.NextDouble() * 2d - 1d;
+            var number = rand.NextDouble() * 2d - 1d;
             return number * int.MaxValue / rangeReducer;
         }
 
         private static int GetRangeReduceCoefficient()
         {
             int reduceCoeff = 1;
-            bool isRangeReduce = rnd.Next(0, 2) > 0;
+            bool isRangeReduce = rand.Next(0, 2) > 0;
             if (isRangeReduce)
                 reduceCoeff = 1000;
 

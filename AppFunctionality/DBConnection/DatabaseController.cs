@@ -1,44 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Threading.Tasks;
 using AppFunctionality.Logging;
 
 namespace AppFunctionality.DBConnection
 {
     public class DatabaseController
     {
+        private readonly Logger log = Logger.GetInstance();
+
         public readonly bool isDatabaseConnectable = false;
 
         private readonly IDatabaseConnector dbConnector;
         public string tableName { get; private set; }
 
-        private const string configFileName = "config.ini";
+        private const string ConfigFileName = "config.ini";
 
-        private const string configSection = "database";
-        private const string configParamServer = "server";
-        private const string configParamDatabase = "database";
-        private const string configParamUser = "user";
-        private const string configParamPaaword = "password";
+        private const string ConfigSection = "database";
+        private const string ConfigParamServer = "server";
+        private const string ConfigParamDatabase = "database";
+        private const string ConfigParamUser = "user";
+        private const string ConfigParamPassword = "password";
 
-        private const string dbDefaultTableName = "Sortings";
-
-        private readonly Logger log = Logger.GetInstance();
+        private const string DbDefaultTableName = "Sortings";
 
         public DatabaseController(string dbTableName = null)
         {
             if (dbTableName == null)
-                tableName = dbDefaultTableName;
+                tableName = DbDefaultTableName;
             else tableName = dbTableName;
 
             var configurationsPath = GetConfigFilePath();
-            var configurationsReceiver = new ConfigReceiver(configurationsPath, configSection);
+            var configurationsReceiver = new ConfigReceiver(configurationsPath, ConfigSection);
 
-            dbConnector = new SQLServerConnector(configurationsReceiver.GetValue(configParamServer), configurationsReceiver.GetValue(configParamDatabase), 
-                configurationsReceiver.GetValue(configParamUser), configurationsReceiver.GetValue(configParamPaaword));
+            dbConnector = new SqlServerConnector(configurationsReceiver.GetValue(ConfigParamServer), configurationsReceiver.GetValue(ConfigParamDatabase), 
+                configurationsReceiver.GetValue(ConfigParamUser), configurationsReceiver.GetValue(ConfigParamPassword));
 
             if (dbConnector.IsDatabaseConnectionPossible() == false)
             {
@@ -76,7 +72,7 @@ namespace AppFunctionality.DBConnection
         
         private string GetConfigFilePath()
         {
-            string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, configFileName);
+            string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, ConfigFileName);
             return startupPath;
         }
     }

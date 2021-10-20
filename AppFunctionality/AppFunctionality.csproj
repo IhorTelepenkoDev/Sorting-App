@@ -65,7 +65,7 @@
     <Compile Include="ReceiveArrayFromFile\IArrayReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveArrayRandomly\RandomArrayGenerator.cs" />
-    <Compile Include="DBConnection\SQLServerConnector.cs" />
+    <Compile Include="DBConnection\SqlServerConnector.cs" />
     <Compile Include="ArrayHelpFunctionality.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,25 +2,23 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppFunctionality.Logging;
 
 namespace AppFunctionality
 {
     public class ConfigReceiver
     {
-        Dictionary<string, string> confValues;
-
         private readonly Logger log = Logger.GetInstance();
+
+        Dictionary<string, string> confValues;
 
         public ConfigReceiver(string configFilePath, string section = null)
         {
-            string sectionTitle = $"[{section}]";
+            var sectionTitle = $"[{section}]";
             var allConfigData = File.ReadAllLines(configFilePath);
-            List<string> wholeSectionData = new List<string>();
+            var wholeSectionData = new List<string>();
 
-            if (section != null && allConfigData.Contains(sectionTitle) == true)
+            if (section != null && allConfigData.Contains(sectionTitle))
             {
                 bool isSectionFound = false;
                 foreach (var line in allConfigData)

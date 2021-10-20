@@ -179,10 +179,8 @@ namespace WinFormSortApp
                                     if (thread.IsAlive)
                                         thread.Abort();
 
-                    if (InstancesOfAvailableSortTypes == null)
-                        runningSortThreads = new Thread[0];
-                    else
-                        runningSortThreads = new Thread[InstancesOfAvailableSortTypes.Length];
+                    runningSortThreads = InstancesOfAvailableSortTypes == null ? new Thread[0] : 
+                        new Thread[InstancesOfAvailableSortTypes.Length];
 
                     if (InstancesOfAvailableSortTypes != null)
                     {
@@ -224,10 +222,7 @@ namespace WinFormSortApp
                 if(isSortRunningOnTab.Count != 0)
                     if (isSortRunningOnTab[comboBoxSelectedSorter.SelectedIndex] == false)
                     {
-                        if (BasicArray2D[tabControlSortedArrResult.SelectedIndex] != null)
-                             buttonStartSorting.Enabled = true;
-                        
-                        else buttonStartSorting.Enabled = false;
+                        buttonStartSorting.Enabled = BasicArray2D[tabControlSortedArrResult.SelectedIndex] != null;
                     }             
             }                    
 
@@ -255,7 +250,7 @@ namespace WinFormSortApp
             InstancesOfAvailableSortTypes[selectedSorterIndex].CleanEventSortingEnd();
             InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnSortingEnd += new SortingEndHandler(() =>
             {
-                Invoke(new MethodInvoker(delegate ()
+                Invoke(new MethodInvoker(delegate
                 {
                     Invoke(resultArrPrinter);   //the array is already sorted, is displayed
 
@@ -272,25 +267,25 @@ namespace WinFormSortApp
             });
 
             Invoke(resultArrPrinter); // the array is not sorted yet, is displayed
-            Thread SortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, sortingCopyOfBasic2dArr)));
-            runningSortThreads[selectedSorterIndex] = SortCaller;
+            Thread sortCaller = new Thread(new ThreadStart(() => PerformSorting(selectedSorterIndex, sortingCopyOfBasic2dArr)));
+            runningSortThreads[selectedSorterIndex] = sortCaller;
             DisableBasicSortConfigControls();
 
             log.Info("Sorting is about to be started");
 
-            SortCaller.IsBackground = true;
-            SortCaller.Start();
+            sortCaller.IsBackground = true;
+            sortCaller.Start();
         }
 
         private void trackBarSortSlower_Scroll(object sender, EventArgs e)
         {
             if (InstancesOfAvailableSortTypes != null)
             {
-                int currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
+                var currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
                 InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
             }
-            double divisionSlowerCoeffValue = 1000f;
-            toolTipValue.SetToolTip(trackBarSortSlower, (Convert.ToDouble(trackBarSortSlower.Value)/divisionSlowerCoeffValue).ToString() + " seconds");
+            const double divisionSlowerCoeffValue = 1000f;
+            toolTipValue.SetToolTip(trackBarSortSlower, (Convert.ToDouble(trackBarSortSlower.Value)/divisionSlowerCoeffValue) + " seconds");
         }
 
         private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)

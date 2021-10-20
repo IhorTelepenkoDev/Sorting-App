@@ -11,12 +11,12 @@ namespace AppFunctionality.ReceiveSorters
     {
         private readonly Logger log = Logger.GetInstance();
 
-        public ISorter2D[] GetInstancesOfSortersInFolder(string pathToFolderWithDLL)
+        public ISorter2D[] GetInstancesOfSortersInFolder(string pathToFolderWithDLLs)
         {
-            var allDllFiles = GetPathesToAllDllFilesInGivenFolder(pathToFolderWithDLL);
+            var allDllFiles = GetPathsToAllDllFilesInGivenFolder(pathToFolderWithDLLs);
             try
             {
-                object[] constructorArgs = null;
+                const object[] constructorArgs = null;
 
                 var resultInstances = (from file in allDllFiles
                                        let asm = Assembly.LoadFile(file)
@@ -34,7 +34,7 @@ namespace AppFunctionality.ReceiveSorters
             }
         }
 
-        private static string[] GetPathesToAllDllFilesInGivenFolder(string pathToFolder)
+        private static string[] GetPathsToAllDllFilesInGivenFolder(string pathToFolder)
         {
             return Directory.GetFiles(pathToFolder, "*.dll");
         }
