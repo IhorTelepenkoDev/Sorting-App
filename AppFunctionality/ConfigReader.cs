@@ -6,13 +6,13 @@ using AppFunctionality.Logging;
 
 namespace AppFunctionality
 {
-    public class ConfigReceiver
+    public class ConfigReader
     {
         private readonly Logger log = Logger.GetInstance();
 
         Dictionary<string, string> confValues;
 
-        public ConfigReceiver(string configFilePath, string section = null)
+        public ConfigReader(string configFilePath, string section = null)
         {
             var sectionTitle = $"[{section}]";
             var allConfigData = File.ReadAllLines(configFilePath);

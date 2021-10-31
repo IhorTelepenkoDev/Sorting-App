@@ -72,7 +72,7 @@ namespace AppFunctionality.DBConnection
             }
         }
 
-        public void StoreSortData(string tableName, string sorterName, string unsortedArray, string sortedArray, string sortDate)
+        public void StoreSortingData(string tableName, string sorterName, string unsortedArray, string sortedArray, string sortDate)
         {
             try
             {

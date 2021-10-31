@@ -169,7 +169,7 @@ namespace WinFormSortApp
 
                 if (folderPath != null)
                 {
-                    ReaderFromDLL folderReader = new ReaderFromDLL();
+                    DLLSortersReader folderReader = new DLLSortersReader();
                     InstancesOfAvailableSortTypes = folderReader.GetInstancesOfSortersInFolder(folderPath);
                     log.Debug("Quantity of newly uploaded sorters: " + InstancesOfAvailableSortTypes.Length);
 
@@ -254,7 +254,8 @@ namespace WinFormSortApp
                 {
                     Invoke(resultArrPrinter);   //the array is already sorted, is displayed
 
-                    dbController.AddSortToHistory(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
+                    dbController.AddSortingToHistory(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, 
+                        BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
 
                     SetTabHeaderColor(tabControlSortedArrResult.TabPages[selectedSorterIndex], finishedSortingTabColor);
                     if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)

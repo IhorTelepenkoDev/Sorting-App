@@ -49,7 +49,7 @@ namespace WinFormSortApp
 
         private void DisplayDatabaseContent()
         {
-            DataTable contentDataTable = historyDatabaseController.GetSortHistory();
+            DataTable contentDataTable = historyDatabaseController.GetSortingHistory();
             dataGridViewSortHistory.DataSource = contentDataTable;
 
             dataGridViewSortHistory.ClearSelection();

@@ -9,7 +9,7 @@ namespace AppFunctionality.DBConnection
     {
         private readonly Logger log = Logger.GetInstance();
 
-        public readonly bool isDatabaseConnectable = false;
+        public readonly bool isDatabaseAvailable = false;
 
         private readonly IDatabaseConnector dbConnector;
         public string tableName { get; private set; }
@@ -31,18 +31,18 @@ namespace AppFunctionality.DBConnection
             else tableName = dbTableName;
 
             var configurationsPath = GetConfigFilePath();
-            var configurationsReceiver = new ConfigReceiver(configurationsPath, ConfigSection);
+            var configurationsReceiver = new ConfigReader(configurationsPath, ConfigSection);
 
             dbConnector = new SqlServerConnector(configurationsReceiver.GetValue(ConfigParamServer), configurationsReceiver.GetValue(ConfigParamDatabase), 
                 configurationsReceiver.GetValue(ConfigParamUser), configurationsReceiver.GetValue(ConfigParamPassword));
 
             if (dbConnector.IsDatabaseConnectionPossible() == false)
             {
-                isDatabaseConnectable = false;
+                isDatabaseAvailable = false;
                 log.Error("The database cannot be connected");
                 return;
             }
-            else isDatabaseConnectable = true;
+            else isDatabaseAvailable = true;
 
             if (dbConnector.DoesTableExist(tableName) == false)
             {
@@ -51,15 +51,15 @@ namespace AppFunctionality.DBConnection
             }
         }
 
-        public DataTable GetSortHistory()
+        public DataTable GetSortingHistory()
         {
             return dbConnector.ReadSortTable(tableName);
         }
 
-        public void AddSortToHistory(string sorter, dynamic unsortedArr2d, dynamic sortedArr2d, DateTime currentDate)
+        public void AddSortingToHistory(string sorter, dynamic unsortedArr2d, dynamic sortedArr2d, DateTime currentDate)
         {
             log.Info($"New data of sorting '{sorter}' will be added");
-            dbConnector.StoreSortData(tableName, sorter, ArrayHelpFunctionality.Arr2dToString(unsortedArr2d), 
+            dbConnector.StoreSortingData(tableName, sorter, ArrayHelpFunctionality.Arr2dToString(unsortedArr2d), 
                 ArrayHelpFunctionality.Arr2dToString(sortedArr2d), currentDate.ToString("yyyy-MM-dd"));
         }
 

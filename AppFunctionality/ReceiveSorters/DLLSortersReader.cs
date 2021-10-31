@@ -7,7 +7,7 @@ using BaseSort;
 
 namespace AppFunctionality.ReceiveSorters
 {
-    public class ReaderFromDLL
+    public class DLLSortersReader
     {
         private readonly Logger log = Logger.GetInstance();
 
