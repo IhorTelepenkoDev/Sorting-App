@@ -241,7 +241,7 @@ namespace WinFormSortApp
             MethodInvoker resultArrPrinter = new MethodInvoker(() => PrintArr2dIntoGridView(sortingCopyOfBasic2dArr, currentlySelectedSortedArrGridView));
 
 
-            InstancesOfAvailableSortTypes[selectedSorterIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+            InstancesOfAvailableSortTypes[selectedSorterIndex].MillisecTimeoutOnSortingDelay = GetSortSlowerValueMilliseconds();
 
             InstancesOfAvailableSortTypes[selectedSorterIndex].CleanEventChangeOfArrElements();
             InstancesOfAvailableSortTypes[selectedSorterIndex].FiredEventOnChangeOfArrayElements += 
@@ -278,15 +278,14 @@ namespace WinFormSortApp
             sortCaller.Start();
         }
 
-        private void trackBarSortSlower_Scroll(object sender, EventArgs e)
+        private void trackBarSortSpeed_Scroll(object sender, EventArgs e)
         {
             if (InstancesOfAvailableSortTypes != null)
             {
                 var currentlySelectedSortIndex = comboBoxSelectedSorter.SelectedIndex;
-                InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = trackBarSortSlower.Value;
+                InstancesOfAvailableSortTypes[currentlySelectedSortIndex].MillisecTimeoutOnSortingDelay = GetSortSlowerValueMilliseconds();
             }
-            const double divisionSlowerCoeffValue = 1000f;
-            toolTipValue.SetToolTip(trackBarSortSlower, (Convert.ToDouble(trackBarSortSlower.Value)/divisionSlowerCoeffValue) + " seconds");
+            //toolTipValue.SetToolTip(trackBarSortSlower, (trackBarSortSlower.Value) + " %");
         }
 
         private void tabControlSortedArrResult_SelectedTabChanged(object sender, TabControlCancelEventArgs e)
@@ -305,7 +304,8 @@ namespace WinFormSortApp
                     EnableBasicSortConfigControls();
                 else
                 {
-                    trackBarSortSlower.Value = InstancesOfAvailableSortTypes[currentTabIndex].MillisecTimeoutOnSortingDelay;
+                    trackBarSortSpeed.Value = GetTrackBarSortSpeedValue(InstancesOfAvailableSortTypes[currentTabIndex]
+                        .MillisecTimeoutOnSortingDelay);
                     DisableBasicSortConfigControls();
                 }
             } else

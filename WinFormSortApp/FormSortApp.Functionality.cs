@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Forms;
 using System.ComponentModel;
 using AppFunctionality.DBConnection;
 using AppFunctionality.Logging;
@@ -98,6 +97,22 @@ namespace WinFormSortApp
             tabControlSortedArrResult.TabPages.Add(newSortTab);
 
             isSortRunningOnTab.Add(false);
+        }
+
+        private int GetSortSlowerValueMilliseconds()
+        {
+            const int millisecondsConverterCoefficient = 10;
+            var slowerValue = (trackBarSortSpeed.Maximum - trackBarSortSpeed.Value) *
+                              millisecondsConverterCoefficient;
+            return slowerValue;
+        }
+
+        private int GetTrackBarSortSpeedValue(int sortSlowerValueMilliseconds)
+        {
+            const int millisecondsConverterCoefficient = 10;
+            var speedValue = trackBarSortSpeed.Maximum -
+                             sortSlowerValueMilliseconds / millisecondsConverterCoefficient;
+            return speedValue;
         }
 
         private void PrintArr2dIntoGridView(dynamic array2d, DataGridView dataGridVewField)
