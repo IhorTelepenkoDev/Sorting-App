@@ -7,7 +7,7 @@ namespace AppFunctionality.DBConnection
 {
     public class DatabaseController
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
 
         public readonly bool isDatabaseAvailable = false;
 
@@ -26,6 +26,8 @@ namespace AppFunctionality.DBConnection
 
         public DatabaseController(string dbTableName = null)
         {
+            log = Logger.GetInstance();
+
             if (dbTableName == null)
                 tableName = DbDefaultTableName;
             else tableName = dbTableName;

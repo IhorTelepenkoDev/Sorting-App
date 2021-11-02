@@ -7,7 +7,7 @@ namespace AppFunctionality
     //the supported array2D types are "int", "double", "string" 
     public class ArrayInitializer<T>
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log = Logger.GetInstance();
 
         public T[,] Array2D { get; }
 

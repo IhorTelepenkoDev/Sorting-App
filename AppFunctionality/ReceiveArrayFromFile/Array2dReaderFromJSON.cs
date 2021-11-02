@@ -13,7 +13,12 @@ namespace AppFunctionality.ReceiveArrayFromFile
 
     internal class Array2dReaderFromJSON<T> : IArrayReader<T>
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
+
+        public Array2dReaderFromJSON()
+        {
+            log = Logger.GetInstance();
+        }
 
         public T[,] Read2DArray(string dataInJSON)
         {

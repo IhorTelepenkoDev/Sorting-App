@@ -7,7 +7,7 @@ namespace AppFunctionality.DBConnection
 {
     internal class SqlServerConnector: IDatabaseConnector
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
 
         public string ServerName { private get; set; } = null;
         public string DatabaseName { private get; set; } = null;
@@ -21,6 +21,8 @@ namespace AppFunctionality.DBConnection
 
         public SqlServerConnector(string serverName, string dbName, string userId, string password)
         {
+            log = Logger.GetInstance();
+
             ServerName = serverName;
             DatabaseName = dbName;
             UserId = userId;

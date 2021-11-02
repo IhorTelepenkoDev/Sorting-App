@@ -7,7 +7,12 @@ namespace AppFunctionality.ReceiveArrayFromFile
 {
     public class ArrReadingHelpFunctionality
     {
-        private static readonly Logger log = Logger.GetInstance();
+        private static readonly ILogger log;
+
+        static ArrReadingHelpFunctionality()
+        {
+            log = Logger.GetInstance();
+        }
 
         public static string ReadFileContent(string filePath)
         {

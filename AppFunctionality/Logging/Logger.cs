@@ -2,7 +2,7 @@
 
 namespace AppFunctionality.Logging
 {
-    public class Logger
+    public class Logger: ILogger
     {
         private static Logger instance; //Logger is "Singleton"
 

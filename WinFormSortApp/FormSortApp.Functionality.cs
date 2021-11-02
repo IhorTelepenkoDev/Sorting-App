@@ -13,7 +13,7 @@ namespace WinFormSortApp
 {
     public partial class SortApp
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
 
         public List<dynamic> BasicArray2D { get; set; } = null;  // list of unsorted 2d arrays of any type
         public List<Type> ArrayElemType { get; set; }  //appropriate type of elements in unsorted basic array
@@ -35,6 +35,8 @@ namespace WinFormSortApp
 
         public SortApp()
         {
+            log = Logger.GetInstance();
+
             InitializeComponent();
             SetBasicVisibleElements();
 

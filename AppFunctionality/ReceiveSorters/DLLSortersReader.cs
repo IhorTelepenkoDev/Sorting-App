@@ -9,7 +9,12 @@ namespace AppFunctionality.ReceiveSorters
 {
     public class DLLSortersReader
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
+
+        public DLLSortersReader()
+        {
+            log = Logger.GetInstance();
+        }
 
         public ISorter2D[] GetInstancesOfSortersInFolder(string pathToFolderWithDLLs)
         {

@@ -8,12 +8,14 @@ namespace AppFunctionality
 {
     public class ConfigReader
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
 
         Dictionary<string, string> confValues;
 
         public ConfigReader(string configFilePath, string section = null)
         {
+            log = Logger.GetInstance();
+
             var sectionTitle = $"[{section}]";
             var allConfigData = File.ReadAllLines(configFilePath);
             var wholeSectionData = new List<string>();

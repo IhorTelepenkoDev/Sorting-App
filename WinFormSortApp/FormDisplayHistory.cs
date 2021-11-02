@@ -8,13 +8,15 @@ namespace WinFormSortApp
 {
     public partial class FormDisplayHistory : Form
     {
-        private readonly Logger log = Logger.GetInstance();
+        private readonly ILogger log;
 
         private SortApp parentSortAppForm;
         private DatabaseController historyDatabaseController;
 
         public FormDisplayHistory(SortApp parentForm, DatabaseController dbController)
         {
+            log = Logger.GetInstance();
+
             InitializeComponent();
             parentSortAppForm = parentForm;
             historyDatabaseController = dbController;
