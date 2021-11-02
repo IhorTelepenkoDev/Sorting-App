@@ -34,7 +34,6 @@ namespace WinFormSortApp
             this.dataGridViewSortHistory = new System.Windows.Forms.DataGridView();
             this.labelSortHistory = new System.Windows.Forms.Label();
             this.buttonUpdateContent = new System.Windows.Forms.Button();
-            this.buttonCleanContent = new System.Windows.Forms.Button();
             this.toolTipInfo = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSortHistory)).BeginInit();
             this.SuspendLayout();
@@ -48,21 +47,24 @@ namespace WinFormSortApp
             this.dataGridViewSortHistory.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dataGridViewSortHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewSortHistory.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dataGridViewSortHistory.Location = new System.Drawing.Point(12, 46);
+            this.dataGridViewSortHistory.Location = new System.Drawing.Point(18, 71);
+            this.dataGridViewSortHistory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridViewSortHistory.Name = "dataGridViewSortHistory";
             this.dataGridViewSortHistory.ReadOnly = true;
             this.dataGridViewSortHistory.RowHeadersVisible = false;
+            this.dataGridViewSortHistory.RowHeadersWidth = 62;
             this.dataGridViewSortHistory.ShowEditingIcon = false;
-            this.dataGridViewSortHistory.Size = new System.Drawing.Size(567, 346);
+            this.dataGridViewSortHistory.Size = new System.Drawing.Size(850, 532);
             this.dataGridViewSortHistory.TabIndex = 0;
             // 
             // labelSortHistory
             // 
             this.labelSortHistory.AutoSize = true;
             this.labelSortHistory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSortHistory.Location = new System.Drawing.Point(12, 13);
+            this.labelSortHistory.Location = new System.Drawing.Point(18, 20);
+            this.labelSortHistory.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSortHistory.Name = "labelSortHistory";
-            this.labelSortHistory.Size = new System.Drawing.Size(157, 21);
+            this.labelSortHistory.Size = new System.Drawing.Size(240, 32);
             this.labelSortHistory.TabIndex = 1;
             this.labelSortHistory.Text = "History of Sortings:";
             this.labelSortHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -70,35 +72,25 @@ namespace WinFormSortApp
             // buttonUpdateContent
             // 
             this.buttonUpdateContent.Image = ((System.Drawing.Image)(resources.GetObject("buttonUpdateContent.Image")));
-            this.buttonUpdateContent.Location = new System.Drawing.Point(598, 58);
+            this.buttonUpdateContent.Location = new System.Drawing.Point(897, 89);
+            this.buttonUpdateContent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonUpdateContent.Name = "buttonUpdateContent";
-            this.buttonUpdateContent.Size = new System.Drawing.Size(47, 46);
+            this.buttonUpdateContent.Size = new System.Drawing.Size(70, 71);
             this.buttonUpdateContent.TabIndex = 2;
             this.toolTipInfo.SetToolTip(this.buttonUpdateContent, "Update data");
             this.buttonUpdateContent.UseVisualStyleBackColor = true;
             this.buttonUpdateContent.Click += new System.EventHandler(this.buttonUpdateContent_Click);
             // 
-            // buttonCleanContent
-            // 
-            this.buttonCleanContent.Image = ((System.Drawing.Image)(resources.GetObject("buttonCleanContent.Image")));
-            this.buttonCleanContent.Location = new System.Drawing.Point(598, 121);
-            this.buttonCleanContent.Name = "buttonCleanContent";
-            this.buttonCleanContent.Size = new System.Drawing.Size(47, 46);
-            this.buttonCleanContent.TabIndex = 3;
-            this.toolTipInfo.SetToolTip(this.buttonCleanContent, "Clean history");
-            this.buttonCleanContent.UseVisualStyleBackColor = true;
-            this.buttonCleanContent.Click += new System.EventHandler(this.buttonCleanContent_Click);
-            // 
             // FormDisplayHistory
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(657, 404);
-            this.Controls.Add(this.buttonCleanContent);
+            this.ClientSize = new System.Drawing.Size(986, 622);
             this.Controls.Add(this.buttonUpdateContent);
             this.Controls.Add(this.labelSortHistory);
             this.Controls.Add(this.dataGridViewSortHistory);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDisplayHistory";
@@ -116,7 +108,6 @@ namespace WinFormSortApp
         private System.Windows.Forms.DataGridView dataGridViewSortHistory;
         private System.Windows.Forms.Label labelSortHistory;
         private System.Windows.Forms.Button buttonUpdateContent;
-        private System.Windows.Forms.Button buttonCleanContent;
         private System.Windows.Forms.ToolTip toolTipInfo;
     }
 }

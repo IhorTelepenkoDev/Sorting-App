@@ -41,19 +41,20 @@ namespace WinFormSortApp
             log.Info("Data of sortings history is updated");
         }
 
-        private void buttonCleanContent_Click(object sender, EventArgs e)
+        /*private void buttonCleanContent_Click(object sender, EventArgs e)
         {
             historyDatabaseController.CleanHistory();
             log.Info("Data of sortings history is cleaned");
 
             DisplayDatabaseContent();
-        }
+        }*/
 
         private void DisplayDatabaseContent()
         {
             DataTable contentDataTable = historyDatabaseController.GetSortingHistory();
             dataGridViewSortHistory.DataSource = contentDataTable;
-
+            dataGridViewSortHistory.FirstDisplayedScrollingRowIndex = 
+                dataGridViewSortHistory.RowCount - 1;   // to display the last
             dataGridViewSortHistory.ClearSelection();
         }
 
