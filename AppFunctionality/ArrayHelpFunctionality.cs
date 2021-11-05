@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace AppFunctionality
 {
@@ -53,7 +54,7 @@ namespace AppFunctionality
 
                 Array.Copy(array2d, resultCopiedArr2d, array2d.GetLength(0) * array2d.GetLength(1));
             }
-            catch { }
+            catch(RuntimeBinderException) { }   // Wrong format 'array2d'
 
             return resultCopiedArr2d;
         }

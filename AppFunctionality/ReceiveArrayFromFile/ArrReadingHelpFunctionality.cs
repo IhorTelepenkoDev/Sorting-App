@@ -23,9 +23,9 @@ namespace AppFunctionality.ReceiveArrayFromFile
                 using (StreamReader reader = new StreamReader(filePath))
                     fileContent = reader.ReadToEnd();
             }
-            catch (Exception e)
+            catch (IOException exception)
             {
-                log.Error($"File ({filePath}) cannot be read: {e}");
+                log.Error($"File ({filePath}) cannot be read: {exception}");
             }
             
             return fileContent;

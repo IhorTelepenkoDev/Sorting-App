@@ -39,9 +39,9 @@ namespace AppFunctionality.DBConnection
                 log.Debug("Database is successfully connected");
                 return true;
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Debug($"Database cannot be connected: {e}");
+                log.Debug($"Database cannot be connected: {exception}");
                 return false;
             }
         }
@@ -68,9 +68,9 @@ namespace AppFunctionality.DBConnection
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Error($"Failed to create a table '{tableName}' because: {e}");
+                log.Error($"Failed to create a table '{tableName}' because: {exception}");
             }
         }
 
@@ -92,16 +92,16 @@ namespace AppFunctionality.DBConnection
                             insertDataCommand.ExecuteNonQuery();
                             log.Debug($"'{sorterName}' sorting data is successfully stored");
                         }
-                        catch
+                        catch(Exception exc)
                         {
-                            log.Error($"Failed to insert the sorting data into DB table '{tableName}'");
+                            log.Error($"Failed to insert the sorting data into DB table '{tableName}': {exc}");
                         }
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Error($"Failed to store the '{sorterName}' sorting data: {e}");
+                log.Error($"Failed to store the '{sorterName}' sorting data: {exception}");
             }
         }
 
@@ -132,15 +132,15 @@ namespace AppFunctionality.DBConnection
                             }
                         }
                     }
-                    catch
+                    catch (SqlException)
                     {
                         log.Error($"Failed to process reading from DB table '{tableName}'");
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Error($"Failed to read sort data from DB table '{tableName}': {e}");
+                log.Error($"Failed to read sort data from DB table '{tableName}': {exception}");
             }
 
             return null;
@@ -163,16 +163,16 @@ namespace AppFunctionality.DBConnection
                             cleanDataCommand.ExecuteNonQuery();
                             log.Debug($"DB table '{tableName}' is successfully cleaned");
                         }
-                        catch
+                        catch (Exception exc)
                         {
-                            log.Error($"Failed to process cleaning of DB table '{tableName}'");
+                            log.Error($"Failed to process cleaning of DB table '{tableName}': {exc}");
                         }
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Error($"Failed to clean the DB table '{tableName}': {e}");
+                log.Error($"Failed to clean the DB table '{tableName}': {exception}");
             }
         }
 
@@ -207,9 +207,9 @@ namespace AppFunctionality.DBConnection
                     }
                 }
             }
-            catch (Exception e)
+            catch (SqlException exception)
             {
-                log.Error($"Failed to check if DB table '{tableName}' exists: {e}");
+                log.Error($"Failed to check if DB table '{tableName}' exists: {exception}");
             }
 
             return false;

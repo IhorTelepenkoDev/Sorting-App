@@ -31,9 +31,14 @@ namespace AppFunctionality.ReceiveArrayFromFile
 
                 readJaggedArr = JsonConvert.DeserializeObject<T[][]>(receivedDataItems.FirstOrDefault().Array);
             }
-            catch (Exception e)
+            catch (JsonSerializationException)
             {
-                log.Error($"Cannot read the array from JSON: {e}");
+                log.Error($"JSON data is not in the proper format, cannot read the array");
+                return null;
+            }
+            catch (JsonException exception)
+            {
+                log.Error($"Cannot read the array from JSON: {exception}");
                 return null;
             }
                 
