@@ -25,8 +25,9 @@ namespace AppFunctionality
                 bool isSectionFound = false;
                 foreach (var line in allConfigData)
                 {
-                    if (line[0] == Convert.ToChar("[") && line[line.Length - 1] == Convert.ToChar("]")) // if there is another section started
-                        isSectionFound = false;
+                    if (line.Length != 0)
+                        if (line[0] == Convert.ToChar("[") && line[line.Length - 1] == Convert.ToChar("]")) // if there is another section started
+                            isSectionFound = false;
 
                     if (isSectionFound)
                         wholeSectionData.Add(line);
