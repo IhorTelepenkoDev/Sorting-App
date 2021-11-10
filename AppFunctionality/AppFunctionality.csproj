@@ -68,6 +68,8 @@
     <Compile Include="ReceiveArrayRandomly\RandomArrayGenerator.cs" />
     <Compile Include="DBConnection\SqlServerConnector.cs" />
     <Compile Include="ArrayHelpFunctionality.cs" />
+    <Compile Include="StoreSortingToFIle\ArrayWritingHelpFunctionality.cs" />
+    <Compile Include="StoreSortingToFIle\SortingWriterToJSONFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Logging\log4net.config" />

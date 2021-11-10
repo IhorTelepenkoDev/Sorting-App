@@ -8,6 +8,8 @@ namespace WinFormSortApp
 {
     public partial class FormDisplayHistory : Form
     {
+        public bool isSortingHistoryAvailable { get; private set; } = true;
+
         private readonly ILogger log;
 
         private SortApp parentSortAppForm;
@@ -22,7 +24,7 @@ namespace WinFormSortApp
             historyDatabaseController = dbController;
 
             DisplayDatabaseContent();
-            log.Info("History of sortings is opened");
+            log.Info("History of sorting window is initialized");
         }
 
         private void FormDisplayDB_Load(object sender, EventArgs e)
@@ -53,6 +55,13 @@ namespace WinFormSortApp
         {
             DataTable contentDataTable = historyDatabaseController.GetSortingHistory();
             dataGridViewSortHistory.DataSource = contentDataTable;
+            if (dataGridViewSortHistory.DataSource == null)
+            {
+                isSortingHistoryAvailable = false;
+                return;
+            }
+
+            isSortingHistoryAvailable = true;
             dataGridViewSortHistory.FirstDisplayedScrollingRowIndex = 
                 dataGridViewSortHistory.RowCount - 1;   // to display the last
             dataGridViewSortHistory.ClearSelection();

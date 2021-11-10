@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using AppFunctionality;
 using AppFunctionality.ReceiveArrayFromFile;
 using AppFunctionality.ReceiveSorters;
+using AppFunctionality.StoreSortingToFIle;
 using BaseSort;
 
 namespace WinFormSortApp
@@ -254,8 +255,16 @@ namespace WinFormSortApp
                 {
                     Invoke(resultArrPrinter);   //the array is already sorted, is displayed
 
-                    dbController.AddSortingToHistory(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, 
-                        BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
+                    if(dbController.isDatabaseAvailable)
+                        dbController.AddSortingToHistory(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, 
+                            BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
+                    else
+                    {
+                        log.Debug("History database cannot be used, sorting data will be stored to file");
+                        var fileHistoryStorer = new SortingWriterToJSONFile();
+                        fileHistoryStorer.StoreSortingData(InstancesOfAvailableSortTypes[selectedSorterIndex].SortName, 
+                            BasicArray2D[selectedSorterIndex], sortingCopyOfBasic2dArr, DateTime.Today);
+                    }
 
                     SetTabHeaderColor(tabControlSortedArrResult.TabPages[selectedSorterIndex], finishedSortingTabColor);
                     if (tabControlSortedArrResult.SelectedIndex == selectedSorterIndex)
@@ -322,9 +331,19 @@ namespace WinFormSortApp
 
         private void buttonSortingHistory_Click(object sender, EventArgs e)
         {
-            var dbDisplayForm = new FormDisplayHistory(this, dbController);
-            buttonSortingHistory.Enabled = false;
-            dbDisplayForm.Show();
+            var historyDisplayForm = new FormDisplayHistory(this, dbController);
+            
+            if (historyDisplayForm.isSortingHistoryAvailable)
+            {
+                historyDisplayForm.Show();
+                buttonSortingHistory.Enabled = false;
+            }
+            else
+            {
+                string messageTitle = "Previous History";
+                string messageText = "No sorting history found.";
+                MessageBox.Show(messageText, messageTitle);
+            }
         }
 
     }
