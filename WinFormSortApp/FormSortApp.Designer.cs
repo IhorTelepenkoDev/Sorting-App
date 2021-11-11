@@ -67,30 +67,34 @@ namespace WinFormSortApp
             // 
             // textBoxFilePath
             // 
+            this.textBoxFilePath.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxFilePath.Location = new System.Drawing.Point(18, 52);
             this.textBoxFilePath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(812, 26);
+            this.textBoxFilePath.Size = new System.Drawing.Size(791, 29);
             this.textBoxFilePath.TabIndex = 0;
             this.textBoxFilePath.TextChanged += new System.EventHandler(this.textBoxFilePath_TextChanged);
             // 
             // labelForPathTextBox
             // 
             this.labelForPathTextBox.AutoSize = true;
-            this.labelForPathTextBox.Location = new System.Drawing.Point(22, 28);
+            this.labelForPathTextBox.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelForPathTextBox.Location = new System.Drawing.Point(20, 17);
             this.labelForPathTextBox.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelForPathTextBox.Name = "labelForPathTextBox";
-            this.labelForPathTextBox.Size = new System.Drawing.Size(161, 20);
+            this.labelForPathTextBox.Size = new System.Drawing.Size(190, 25);
             this.labelForPathTextBox.TabIndex = 1;
             this.labelForPathTextBox.Text = "Path to the Array File:";
             // 
             // buttonReadArrByPath
             // 
             this.buttonReadArrByPath.Enabled = false;
-            this.buttonReadArrByPath.Location = new System.Drawing.Point(936, 48);
+            this.buttonReadArrByPath.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonReadArrByPath.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.buttonReadArrByPath.Location = new System.Drawing.Point(907, 47);
             this.buttonReadArrByPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonReadArrByPath.Name = "buttonReadArrByPath";
-            this.buttonReadArrByPath.Size = new System.Drawing.Size(122, 35);
+            this.buttonReadArrByPath.Size = new System.Drawing.Size(150, 42);
             this.buttonReadArrByPath.TabIndex = 2;
             this.buttonReadArrByPath.Text = "Read Array";
             this.buttonReadArrByPath.UseVisualStyleBackColor = true;
@@ -99,11 +103,12 @@ namespace WinFormSortApp
             // buttonRandomArrayAssign
             // 
             this.buttonRandomArrayAssign.Enabled = false;
+            this.buttonRandomArrayAssign.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonRandomArrayAssign.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonRandomArrayAssign.Location = new System.Drawing.Point(9, 38);
+            this.buttonRandomArrayAssign.Location = new System.Drawing.Point(9, 29);
             this.buttonRandomArrayAssign.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonRandomArrayAssign.Name = "buttonRandomArrayAssign";
-            this.buttonRandomArrayAssign.Size = new System.Drawing.Size(158, 63);
+            this.buttonRandomArrayAssign.Size = new System.Drawing.Size(158, 72);
             this.buttonRandomArrayAssign.TabIndex = 3;
             this.buttonRandomArrayAssign.Text = "Assign the Array Randomly\r\n";
             this.buttonRandomArrayAssign.UseVisualStyleBackColor = true;
@@ -113,20 +118,22 @@ namespace WinFormSortApp
             // 
             this.comboBoxArrDataType.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
             this.comboBoxArrDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxArrDataType.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxArrDataType.FormattingEnabled = true;
             this.comboBoxArrDataType.Location = new System.Drawing.Point(219, 177);
             this.comboBoxArrDataType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxArrDataType.Name = "comboBoxArrDataType";
-            this.comboBoxArrDataType.Size = new System.Drawing.Size(91, 28);
+            this.comboBoxArrDataType.Size = new System.Drawing.Size(91, 29);
             this.comboBoxArrDataType.TabIndex = 4;
             this.comboBoxArrDataType.SelectedIndexChanged += new System.EventHandler(this.comboBoxArrDataType_SelectedIndexChanged);
             // 
             // labelForSelectDataType
             // 
+            this.labelForSelectDataType.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelForSelectDataType.Location = new System.Drawing.Point(214, 118);
             this.labelForSelectDataType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelForSelectDataType.Name = "labelForSelectDataType";
-            this.labelForSelectDataType.Size = new System.Drawing.Size(123, 54);
+            this.labelForSelectDataType.Size = new System.Drawing.Size(132, 54);
             this.labelForSelectDataType.TabIndex = 5;
             this.labelForSelectDataType.Text = "Type of the Array Elements:";
             // 
@@ -160,6 +167,7 @@ namespace WinFormSortApp
             // 
             // labelArrSizes
             // 
+            this.labelArrSizes.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelArrSizes.Location = new System.Drawing.Point(390, 134);
             this.labelArrSizes.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelArrSizes.Name = "labelArrSizes";
@@ -172,7 +180,7 @@ namespace WinFormSortApp
             this.buttonStartSorting.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.buttonStartSorting.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.buttonStartSorting.Enabled = false;
-            this.buttonStartSorting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonStartSorting.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonStartSorting.Location = new System.Drawing.Point(963, 134);
             this.buttonStartSorting.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonStartSorting.Name = "buttonStartSorting";
@@ -186,20 +194,22 @@ namespace WinFormSortApp
             // 
             this.comboBoxSelectedSorter.AccessibleRole = System.Windows.Forms.AccessibleRole.MenuBar;
             this.comboBoxSelectedSorter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSelectedSorter.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxSelectedSorter.FormattingEnabled = true;
             this.comboBoxSelectedSorter.Location = new System.Drawing.Point(616, 177);
             this.comboBoxSelectedSorter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.comboBoxSelectedSorter.Name = "comboBoxSelectedSorter";
-            this.comboBoxSelectedSorter.Size = new System.Drawing.Size(193, 28);
+            this.comboBoxSelectedSorter.Size = new System.Drawing.Size(193, 29);
             this.comboBoxSelectedSorter.TabIndex = 13;
             this.comboBoxSelectedSorter.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectedSorter_SelectedIndexChanged);
             // 
             // labelSelectSorter
             // 
-            this.labelSelectSorter.Location = new System.Drawing.Point(652, 134);
+            this.labelSelectSorter.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSelectSorter.Location = new System.Drawing.Point(647, 134);
             this.labelSelectSorter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSelectSorter.Name = "labelSelectSorter";
-            this.labelSelectSorter.Size = new System.Drawing.Size(126, 38);
+            this.labelSelectSorter.Size = new System.Drawing.Size(147, 38);
             this.labelSelectSorter.TabIndex = 14;
             this.labelSelectSorter.Text = "Sorting Method:";
             // 
@@ -234,10 +244,11 @@ namespace WinFormSortApp
             // labelSortSpeed
             // 
             this.labelSortSpeed.AutoSize = true;
+            this.labelSortSpeed.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSortSpeed.Location = new System.Drawing.Point(825, 134);
             this.labelSortSpeed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSortSpeed.Name = "labelSortSpeed";
-            this.labelSortSpeed.Size = new System.Drawing.Size(115, 20);
+            this.labelSortSpeed.Size = new System.Drawing.Size(119, 21);
             this.labelSortSpeed.TabIndex = 17;
             this.labelSortSpeed.Text = "Sorting Speed:";
             // 
@@ -266,6 +277,7 @@ namespace WinFormSortApp
             // tabControlSortedArrResult
             // 
             this.tabControlSortedArrResult.Controls.Add(this.tabPageDefaultSortedArr);
+            this.tabControlSortedArrResult.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControlSortedArrResult.Location = new System.Drawing.Point(536, 229);
             this.tabControlSortedArrResult.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControlSortedArrResult.Name = "tabControlSortedArrResult";
@@ -276,11 +288,11 @@ namespace WinFormSortApp
             // tabPageDefaultSortedArr
             // 
             this.tabPageDefaultSortedArr.Controls.Add(this.dataGridViewSortedArr0);
-            this.tabPageDefaultSortedArr.Location = new System.Drawing.Point(4, 29);
+            this.tabPageDefaultSortedArr.Location = new System.Drawing.Point(4, 30);
             this.tabPageDefaultSortedArr.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageDefaultSortedArr.Name = "tabPageDefaultSortedArr";
             this.tabPageDefaultSortedArr.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageDefaultSortedArr.Size = new System.Drawing.Size(470, 438);
+            this.tabPageDefaultSortedArr.Size = new System.Drawing.Size(470, 437);
             this.tabPageDefaultSortedArr.TabIndex = 0;
             this.tabPageDefaultSortedArr.UseVisualStyleBackColor = true;
             // 
@@ -322,7 +334,7 @@ namespace WinFormSortApp
             this.buttonSelectArrFileLocation.BackColor = System.Drawing.SystemColors.HighlightText;
             this.buttonSelectArrFileLocation.Font = new System.Drawing.Font("Impact", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonSelectArrFileLocation.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.buttonSelectArrFileLocation.Location = new System.Drawing.Point(837, 49);
+            this.buttonSelectArrFileLocation.Location = new System.Drawing.Point(818, 51);
             this.buttonSelectArrFileLocation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonSelectArrFileLocation.Name = "buttonSelectArrFileLocation";
             this.buttonSelectArrFileLocation.Size = new System.Drawing.Size(76, 35);

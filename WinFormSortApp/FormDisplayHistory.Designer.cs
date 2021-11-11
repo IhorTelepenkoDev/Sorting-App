@@ -60,11 +60,11 @@ namespace WinFormSortApp
             // labelSortHistory
             // 
             this.labelSortHistory.AutoSize = true;
-            this.labelSortHistory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSortHistory.Location = new System.Drawing.Point(18, 20);
+            this.labelSortHistory.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSortHistory.Location = new System.Drawing.Point(23, 25);
             this.labelSortHistory.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSortHistory.Name = "labelSortHistory";
-            this.labelSortHistory.Size = new System.Drawing.Size(240, 32);
+            this.labelSortHistory.Size = new System.Drawing.Size(206, 30);
             this.labelSortHistory.TabIndex = 1;
             this.labelSortHistory.Text = "History of Sortings:";
             this.labelSortHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -72,10 +72,10 @@ namespace WinFormSortApp
             // buttonUpdateContent
             // 
             this.buttonUpdateContent.Image = ((System.Drawing.Image)(resources.GetObject("buttonUpdateContent.Image")));
-            this.buttonUpdateContent.Location = new System.Drawing.Point(897, 89);
+            this.buttonUpdateContent.Location = new System.Drawing.Point(893, 88);
             this.buttonUpdateContent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonUpdateContent.Name = "buttonUpdateContent";
-            this.buttonUpdateContent.Size = new System.Drawing.Size(70, 71);
+            this.buttonUpdateContent.Size = new System.Drawing.Size(63, 63);
             this.buttonUpdateContent.TabIndex = 2;
             this.toolTipInfo.SetToolTip(this.buttonUpdateContent, "Update data");
             this.buttonUpdateContent.UseVisualStyleBackColor = true;
